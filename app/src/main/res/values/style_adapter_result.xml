@@ -5,6 +5,13 @@
         <item name="android:padding">@dimen/layout_margin</item>
     </style>
 
+    <style name="AdapterResultIcon">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <style name="AdapterResultNameWrapper" parent="HorizontalStretchable">
         <item name="android:orientation">vertical</item>
 
@@ -17,11 +24,6 @@
 
         <item name="android:textSize">@dimen/title</item>
         <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="AdapterResultRating" parent="WrapContent">
-        <item name="android:numStars">5</item>
-        <item name="android:isIndicator">true</item>
     </style>
 
     <style name="AdapterResultDistance" parent="WrapContent">

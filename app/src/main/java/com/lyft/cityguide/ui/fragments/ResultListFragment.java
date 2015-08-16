@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.models.structs.PlaceType;
 import com.lyft.cityguide.ui.adapters.ResultAdapter;
 
 import butterknife.Bind;
@@ -64,15 +65,17 @@ public class ResultListFragment extends BaseFragment {
         super.onResume();
 
         _isFetchingMore = false;
+        fork();
         getPlaceBLL().getBarsAround(
             (pois) -> {
+                done();
                 if (pois.size() == 0) {
                     _noContent.setVisibility(View.VISIBLE);
                     _list.setVisibility(View.GONE);
                 } else {
                     _noContent.setVisibility(View.GONE);
                     _list.setVisibility(View.VISIBLE);
-                    _currentAdapter = new ResultAdapter(pois, getActivity());
+                    _currentAdapter = new ResultAdapter(pois, getActivity(), PlaceType.BAR);
                     _list.setAdapter(_currentAdapter);
                 }
             },
@@ -86,16 +89,25 @@ public class ResultListFragment extends BaseFragment {
         }
 
         _isFetchingMore = true;
+        fork();
         getPlaceBLL().moreBarsAround(
             (pois) -> {
+                done();
                 _isFetchingMore = false;
                 if (_currentAdapter == null) {
                     return;
                 }
-                _currentAdapter.appendItems(pois);
-                _currentAdapter.notifyDataSetChanged();
+                if (pois.size() == 0) {
+                    inform(getString(R.string.no_more_result));
+                } else {
+                    _currentAdapter.appendItems(pois);
+                    _currentAdapter.notifyDataSetChanged();
+                }
             },
-            this::onError
+            (error) -> {
+                _isFetchingMore = false;
+                onError(error);
+            }
         );
     }
 }

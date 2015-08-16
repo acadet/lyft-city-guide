@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Slider">
+        <attr name="selectedForeground" format="color" />
+        <attr name="defaultForeground" format="color" />
+        <attr name="fontSize" format="dimension" />
+
+        <attr name="labels" format="reference" />
+    </declare-styleable>
+</resources>

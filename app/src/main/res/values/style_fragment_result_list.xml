@@ -14,4 +14,7 @@
 
         <item name="android:background">@color/pink</item>
     </style>
+
+    <style name="FragmentResultList" parent="MatchParentWrapContent">
+    </style>
 </resources>

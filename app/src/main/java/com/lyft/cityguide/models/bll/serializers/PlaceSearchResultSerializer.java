@@ -21,7 +21,10 @@ public class PlaceSearchResultSerializer implements JsonDeserializer<PlaceSearch
         PlaceSearchResult results = new PlaceSearchResult();
         JsonArray resultNode;
 
-        results.setPageToken(json.getAsJsonObject().get("next_page_token").getAsString());
+        if (json.getAsJsonObject().has("next_page_token")) {
+            results.setPageToken(json.getAsJsonObject().get("next_page_token").getAsString());
+        }
+
         resultNode = json.getAsJsonObject().get("results").getAsJsonArray();
         for (JsonElement e : resultNode) {
             JsonObject o = e.getAsJsonObject();
@@ -30,6 +33,7 @@ public class PlaceSearchResultSerializer implements JsonDeserializer<PlaceSearch
 
             p.setId(o.get("id").getAsString());
             p.setName(o.get("name").getAsString());
+            p.setRating(o.get("rating").getAsFloat());
 
             locationNode = o.get("geometry").getAsJsonObject().get("location").getAsJsonObject();
             p.setLatitude(locationNode.get("lat").getAsFloat());
