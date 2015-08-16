@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.structs.PlaceType;
 import com.lyft.cityguide.models.structs.PointOfInterest;
@@ -78,6 +80,10 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
         name.setText(currentPOI.getPlace().getName());
         _setDistance(distance, currentPOI.getDistance());
         rating.setRating(Math.round(currentPOI.getPlace().getRating()));
+
+        YoYo.with(Techniques.FadeIn)
+            .duration(500)
+            .playOn(adapter);
 
         return adapter;
     }
