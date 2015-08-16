@@ -148,11 +148,6 @@ public class ResultListFragment extends BaseFragment {
             () -> {
                 Action0 customDone = () -> _listWrapper.setRefreshing(false);
 
-                if (_currentAdapter == null) {
-                    // Content no set yet
-                    customDone.run();
-                    return;
-                }
                 switch (_currentType) {
                     case BAR:
                         _setBarContent(customDone);
