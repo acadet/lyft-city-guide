@@ -3,6 +3,6 @@
 
     <style name="FragmentResultListNoContent" parent="WrapContent">
         <item name="android:textSize">@dimen/title</item>
-        <item name="android:color">@color/black</item>
+        <item name="android:color">@color/gray</item>
     </style>
 </resources>

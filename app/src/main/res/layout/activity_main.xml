@@ -1,5 +1,5 @@
 <LinearLayout
-    style="@style/MatchParent"
+    style="@style/MatchParent.Vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
@@ -7,13 +7,11 @@
 
     <FrameLayout
         android:id="@+id/main_header"
-        android:name="com.adriencadet.marvin.ui.fragments.landing.ListHeaderFragment"
         style="@style/MainHeader"
         />
 
     <FrameLayout
         android:id="@+id/main_body"
-        android:name="com.adriencadet.marvin.ui.fragments.landing.ReminderListFragment"
         style="@style/MainBody"
         />
 

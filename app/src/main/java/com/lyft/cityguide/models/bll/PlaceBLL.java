@@ -11,9 +11,11 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.beans.Place;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
 import com.lyft.cityguide.models.bll.utils.PlaceSearchResult;
+import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -33,8 +35,24 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
             getContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
+    double _getDistance(Place place) {
+        double latA, latB, longA, longB;
+
+        latA = _latestLocation.getLatitude();
+        longA = _latestLocation.getLongitude();
+        latB = place.getLatitude();
+        longB = place.getLongitude();
+
+        return Math.round(
+            Math.acos(
+                Math.sin(latA) * Math.sin(latB)
+                + Math.cos(latA) * Math.cos(latB) * Math.cos(longB - longA)
+            ) * 100d
+        ) / 100d;
+    }
+
     @Override
-    public void getBarsAround(Action<List<Place>> success, Action<String> failure) {
+    public void getBarsAround(Action<List<PointOfInterest>> success, Action<String> failure) {
         Action0 fetchAction = () -> {
             connectAPI(
                 (api) -> {
@@ -46,7 +64,13 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                         new BLLCallback<PlaceSearchResult>(failure) {
                             @Override
                             public void success(PlaceSearchResult placeSearchResult, Response response) {
-                                runOnMainThread(() -> success.run(placeSearchResult.getResults()));
+                                List<PointOfInterest> outcome = new ArrayList<>();
+
+                                for (Place p : placeSearchResult.getResults()) {
+                                    outcome.add(new PointOfInterest(p, _getDistance(p)));
+                                }
+
+                                runOnMainThread(() -> success.run(outcome));
                             }
                         }
                     );

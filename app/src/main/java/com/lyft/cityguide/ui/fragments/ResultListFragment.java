@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.ui.adapters.ResultAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,9 +30,28 @@ public class ResultListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_result_list, container);
+        fragment = inflater.inflate(R.layout.fragment_result_list, container, false);
         ButterKnife.bind(this, fragment);
 
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getPlaceBLL().getBarsAround(
+            (pois) -> {
+                if (pois.size() == 0) {
+                    _noContent.setVisibility(View.VISIBLE);
+                    _list.setVisibility(View.GONE);
+                } else {
+                    _noContent.setVisibility(View.GONE);
+                    _list.setVisibility(View.VISIBLE);
+                    _list.setAdapter(new ResultAdapter(pois, getActivity()));
+                }
+            },
+            this::onError
+        );
     }
 }

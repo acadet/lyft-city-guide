@@ -1,6 +1,6 @@
 package com.lyft.cityguide.models.bll.interfaces;
 
-import com.lyft.cityguide.models.beans.Place;
+import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.utils.actions.Action;
 
 import java.util.List;
@@ -10,5 +10,5 @@ import java.util.List;
  * @brief
  */
 public interface IPlaceBLL {
-    void getBarsAround(Action<List<Place>> success, Action<String> failure);
+    void getBarsAround(Action<List<PointOfInterest>> success, Action<String> failure);
 }

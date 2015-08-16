@@ -20,7 +20,7 @@ public abstract class BaseActivity extends Activity {
         return BLLFactory.place(getApplicationContext());
     }
 
-    public void setFragment(int resourceId, Fragment fragment) {
+    void setFragment(int resourceId, Fragment fragment) {
         getFragmentManager()
             .beginTransaction()
             .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
@@ -29,7 +29,7 @@ public abstract class BaseActivity extends Activity {
             .commit();
     }
 
-    public void setFragments(Map<Integer, Fragment> fragments, boolean keepInStack) {
+    void setFragments(Map<Integer, Fragment> fragments, boolean keepInStack) {
         FragmentTransaction t = getFragmentManager().beginTransaction();
 
         t.setCustomAnimations(R.animator.fade_in, R.animator.fade_out);
@@ -44,7 +44,7 @@ public abstract class BaseActivity extends Activity {
         t.commit();
     }
 
-    public void setFragments(Map<Integer, Fragment> fragments) {
+    void setFragments(Map<Integer, Fragment> fragments) {
         setFragments(fragments, true);
     }
 }
