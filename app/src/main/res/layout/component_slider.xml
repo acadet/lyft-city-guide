@@ -1,34 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    style="@style/MatchParent"
+<LinearLayout
+    android:id="@+id/component_slider_label_wrapper"
+    android:background="@drawable/slider_background"
+    android:gravity="center_vertical"
+    style="@style/MatchParentWrapContent.Horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <!--<ImageView-->
-    <!--android:background="@drawable/slider_background"-->
-    <!--style="@style/MatchParent"-->
-    <!--/>-->
-
-    <!--<ImageView-->
-    <!--android:layout_marginLeft="-4dp"-->
-    <!--android:layout_marginTop="-4dp"-->
-    <!--android:background="@drawable/slider"-->
-    <!--android:scaleType="center"-->
-    <!--style="@style/WrapContent"-->
-    <!--/>-->
-
-    <SeekBar
-        android:background="@drawable/tray"
-        android:progressDrawable="@null"
-        android:thumb="@drawable/slider"
-        style="@style/MatchParentWrapContent"
-        />
-
-    <LinearLayout
-        android:id="@+id/slider_label_wrapper"
-        style="@style/MatchParentWrapContent.Horizontal"
-        >
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

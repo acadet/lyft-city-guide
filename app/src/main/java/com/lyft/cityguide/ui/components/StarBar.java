@@ -57,6 +57,7 @@ public class StarBar extends LinearLayout {
                 img.setImageResource(R.drawable.star_grey);
             }
 
+            img.setLayoutParams(params);
             img.setAdjustViewBounds(true);
             img.setMaxWidth(Math.round(MetricHelper.toPixels(getContext(), 20)));
             img.setMaxHeight(Math.round(MetricHelper.toPixels(getContext(), 20)));
