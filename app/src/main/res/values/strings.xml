@@ -13,4 +13,6 @@
     <string name="error_unknown">
         Whoops! Something wrong happened. Please try again.
     </string>
+
+    <string name="no_result">Nothing around :(</string>
 </resources>
