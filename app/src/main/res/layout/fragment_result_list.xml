@@ -14,9 +14,16 @@
         tools:visibility="visible"
         />
 
-    <ListView
-        android:id="@+id/fragment_result_list"
-        style="@style/FragmentResultList"
-        />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_result_list_wrapper"
+        style="@style/MatchParentWrapContent"
+        >
+
+        <ListView
+            android:id="@+id/fragment_result_list"
+            style="@style/FragmentResultList"
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

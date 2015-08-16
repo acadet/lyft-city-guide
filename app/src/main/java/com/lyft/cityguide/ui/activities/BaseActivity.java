@@ -28,6 +28,9 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  * @brief
  */
 public abstract class BaseActivity extends Activity {
+    private final static int SPINNER_DELAY_MS         = 250;
+    private final static int SPINNER_DELAY_TIMEOUT_MS = 10 * 1000;
+
     private static EventBus _spinnerBus;
     private final static Object _spinnerBusLock = new Object();
     private static EventBus _popupBus;
@@ -35,7 +38,8 @@ public abstract class BaseActivity extends Activity {
 
     private ProgressDialog _spinner;
     private int            _backgroundThreads;
-    private Handler        _backgroundHandler;
+    private Handler        _spinnerDelayHandler;
+    private Handler        _spinnerTimeoutHandler;
 
     IPlaceBLL getPlaceBLL() {
         return BLLFactory.place(getApplicationContext());
@@ -98,8 +102,11 @@ public abstract class BaseActivity extends Activity {
             _spinner.dismiss();
         }
 
-        if (_backgroundHandler != null) {
-            _backgroundHandler.removeCallbacksAndMessages(null);
+        if (_spinnerDelayHandler != null) {
+            _spinnerDelayHandler.removeCallbacksAndMessages(null);
+        }
+        if (_spinnerTimeoutHandler != null) {
+            _spinnerTimeoutHandler.removeCallbacksAndMessages(null);
         }
 
         getPlaceBLL().cancelAllTasks();
@@ -146,15 +153,25 @@ public abstract class BaseActivity extends Activity {
         _backgroundThreads++;
 
         if (_backgroundThreads == 1) {
-            _backgroundHandler = new Handler(Looper.getMainLooper());
+            _spinnerDelayHandler = new Handler(Looper.getMainLooper());
             // Delay showing
-            _backgroundHandler.postDelayed(
+            _spinnerDelayHandler.postDelayed(
                 () -> {
-                    _backgroundHandler = null;
+                    _spinnerDelayHandler = null;
                     _spinner.show();
                     _spinner.setContentView(R.layout.spinner); // Must be called after show()
+
+                    _spinnerTimeoutHandler = new Handler(Looper.getMainLooper());
+                    _spinnerTimeoutHandler.postDelayed(
+                        () -> {
+                            _spinnerTimeoutHandler = null;
+                            _spinner.dismiss();
+                            getPopupBus().post(new ErrorEvent(getString(R.string.error_unknown)));
+                        },
+                        SPINNER_DELAY_TIMEOUT_MS
+                    );
                 },
-                250
+                SPINNER_DELAY_MS
             );
         }
     }
@@ -163,10 +180,13 @@ public abstract class BaseActivity extends Activity {
         _backgroundThreads--;
 
         if (_backgroundThreads == 0) {
-            if (_backgroundHandler == null) {
+            if (_spinnerDelayHandler == null) {
                 _spinner.dismiss();
+                if (_spinnerTimeoutHandler != null) {
+                    _spinnerTimeoutHandler.removeCallbacksAndMessages(null);
+                }
             } else {
-                _backgroundHandler.removeCallbacksAndMessages(null);
+                _spinnerDelayHandler.removeCallbacksAndMessages(null);
             }
         }
     }
