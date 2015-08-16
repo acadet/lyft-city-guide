@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.structs.PointOfInterest;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -22,6 +21,19 @@ import butterknife.ButterKnife;
 public class ResultAdapter extends BaseAdapter<PointOfInterest> {
     public ResultAdapter(List<PointOfInterest> items, Context context) {
         super(items, context);
+    }
+
+    private void _setDistance(TextView field, double value) {
+        String text = "1";
+
+        if (value < 1) {
+            text = "0";
+        }
+
+        text += "." + (Math.floor(value * 100) - Math.floor(value) * 100);
+        text += " mi";
+
+        field.setText(text);
     }
 
     @Override
@@ -41,7 +53,7 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
         currentPOI = itemAt(position);
 
         name.setText(currentPOI.getPlace().getName());
-        distance.setText(new DecimalFormat("#.0").format(currentPOI.getDistance()));
+        _setDistance(distance, currentPOI.getDistance());
 
         return adapter;
     }

@@ -31,8 +31,8 @@ public class PlaceSearchResultSerializer implements JsonDeserializer<PlaceSearch
             p.setName(o.get("name").getAsString());
 
             locationNode = o.get("geometry").getAsJsonObject().get("location").getAsJsonObject();
-            p.setLatitude(locationNode.get("latitude").getAsFloat());
-            p.setLongitude(locationNode.get("longitude").getAsFloat());
+            p.setLatitude(locationNode.get("lat").getAsFloat());
+            p.setLongitude(locationNode.get("lng").getAsFloat());
 
             results.addResult(p);
         }
