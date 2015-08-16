@@ -22,6 +22,7 @@
     </LinearLayout>
 
     <com.lyft.cityguide.ui.components.Slider
+        android:id="@+id/fragment_header_slider"
         style="@style/FragmentHeaderSlider"
         custom:labels="@array/place_categories"
         />

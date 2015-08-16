@@ -9,8 +9,16 @@ import java.util.List;
  * @class IPlaceBLL
  * @brief
  */
-public interface IPlaceBLL {
+public interface IPlaceBLL extends IBLL {
     void getBarsAround(Action<List<PointOfInterest>> success, Action<String> failure);
 
     void moreBarsAround(Action<List<PointOfInterest>> success, Action<String> failure);
+
+    void getBistrosAround(Action<List<PointOfInterest>> success, Action<String> failure);
+
+    void moreBistrosAround(Action<List<PointOfInterest>> success, Action<String> failure);
+
+    void getCafesAround(Action<List<PointOfInterest>> success, Action<String> failure);
+
+    void moreCafesAround(Action<List<PointOfInterest>> success, Action<String> failure);
 }

@@ -11,11 +11,16 @@ import com.lyft.cityguide.ui.events.ErrorEvent;
 import com.lyft.cityguide.ui.events.ForkEvent;
 import com.lyft.cityguide.ui.events.InfoEvent;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * @class BaseFragment
  * @brief
  */
 public class BaseFragment extends Fragment {
+    private static EventBus _resultListBus;
+    private final static Object _resultListBusLock = new Object();
+
     IPlaceBLL getPlaceBLL() {
         return BLLFactory.place(getActivity());
     }
@@ -41,7 +46,22 @@ public class BaseFragment extends Fragment {
     }
 
     void onError(String message) {
-        BaseActivity.getSpinnerBus().post(new DoneEvent());
+        done();
         warn(message);
+    }
+
+    static EventBus getResultListBus() {
+        if (_resultListBus == null) {
+            synchronized (_resultListBusLock) {
+                if (_resultListBus == null) {
+                    _resultListBus = EventBus.builder()
+                                             .logNoSubscriberMessages(true)
+                                             .sendNoSubscriberEvent(true)
+                                             .build();
+                }
+            }
+        }
+
+        return _resultListBus;
     }
 }

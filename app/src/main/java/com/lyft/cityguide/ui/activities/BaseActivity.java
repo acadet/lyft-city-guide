@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.bll.BLLFactory;
@@ -75,9 +76,6 @@ public abstract class BaseActivity extends Activity {
         _spinner = new ProgressDialog(this);
         _spinner.setIndeterminate(true);
         _spinner.setCancelable(false);
-
-        getSpinnerBus().register(this);
-        getPopupBus().register(this);
     }
 
     @Override
@@ -85,6 +83,8 @@ public abstract class BaseActivity extends Activity {
         super.onResume();
 
         _backgroundThreads = 0;
+        getSpinnerBus().register(this);
+        getPopupBus().register(this);
     }
 
     @Override
@@ -101,6 +101,8 @@ public abstract class BaseActivity extends Activity {
         if (_backgroundHandler != null) {
             _backgroundHandler.removeCallbacksAndMessages(null);
         }
+
+        getPlaceBLL().cancelAllTasks();
     }
 
     @Override
@@ -144,7 +146,7 @@ public abstract class BaseActivity extends Activity {
         _backgroundThreads++;
 
         if (_backgroundThreads == 1) {
-            _backgroundHandler = new Handler();
+            _backgroundHandler = new Handler(Looper.getMainLooper());
             // Delay showing
             _backgroundHandler.postDelayed(
                 () -> {
@@ -152,7 +154,7 @@ public abstract class BaseActivity extends Activity {
                     _spinner.show();
                     _spinner.setContentView(R.layout.spinner); // Must be called after show()
                 },
-                300
+                250
             );
         }
     }

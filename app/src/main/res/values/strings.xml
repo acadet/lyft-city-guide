@@ -16,7 +16,7 @@
     </string>
 
     <string name="no_result">Nothing around :(</string>
-    <string name="no_more_result">That\'s all amigo</string>
+    <string name="no_more_result">That\'s all amigo!</string>
 
     <array name="place_categories">
         <item>Bar</item>

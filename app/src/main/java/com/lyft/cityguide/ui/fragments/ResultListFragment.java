@@ -11,7 +11,14 @@ import android.widget.TextView;
 
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.structs.PlaceType;
+import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.ui.adapters.ResultAdapter;
+import com.lyft.cityguide.ui.events.ShowBarsEvent;
+import com.lyft.cityguide.ui.events.ShowBistrosEvent;
+import com.lyft.cityguide.ui.events.ShowCafesEvent;
+import com.lyft.cityguide.utils.actions.Action;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,6 +28,7 @@ import butterknife.ButterKnife;
  * @brief
  */
 public class ResultListFragment extends BaseFragment {
+    private PlaceType     _currentType;
     private boolean       _isFetchingMore;
     private ResultAdapter _currentAdapter;
 
@@ -29,6 +37,26 @@ public class ResultListFragment extends BaseFragment {
 
     @Bind(R.id.fragment_result_list)
     ListView _list;
+
+    private void _fetchPOIsCallback(List<PointOfInterest> pois) {
+        if (pois.size() == 0) {
+            _noContent.setVisibility(View.VISIBLE);
+            _list.setVisibility(View.GONE);
+        } else {
+            _noContent.setVisibility(View.GONE);
+            _list.setVisibility(View.VISIBLE);
+            _currentAdapter = new ResultAdapter(pois, getActivity(), _currentType);
+            _list.setAdapter(_currentAdapter);
+        }
+        done();
+    }
+
+    private void _setBarContent() {
+        _currentType = PlaceType.BAR;
+        fork();
+        getPlaceBLL().cancelAllTasks();
+        getPlaceBLL().getBarsAround(this::_fetchPOIsCallback, this::onError);
+    }
 
     @Nullable
     @Override
@@ -65,49 +93,83 @@ public class ResultListFragment extends BaseFragment {
         super.onResume();
 
         _isFetchingMore = false;
-        fork();
-        getPlaceBLL().getBarsAround(
-            (pois) -> {
-                done();
-                if (pois.size() == 0) {
-                    _noContent.setVisibility(View.VISIBLE);
-                    _list.setVisibility(View.GONE);
-                } else {
-                    _noContent.setVisibility(View.GONE);
-                    _list.setVisibility(View.VISIBLE);
-                    _currentAdapter = new ResultAdapter(pois, getActivity(), PlaceType.BAR);
-                    _list.setAdapter(_currentAdapter);
-                }
-            },
-            this::onError
-        );
+        _setBarContent();
+        getResultListBus().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getResultListBus().unregister(this);
+        getPlaceBLL().cancelAllTasks();
     }
 
     public void onMore() {
+        Action<List<PointOfInterest>> successCallback;
+        Action<String> errorCallback;
+
         if (_currentAdapter == null || _isFetchingMore) {
             return;
         }
 
         _isFetchingMore = true;
         fork();
-        getPlaceBLL().moreBarsAround(
-            (pois) -> {
-                done();
-                _isFetchingMore = false;
-                if (_currentAdapter == null) {
-                    return;
-                }
-                if (pois.size() == 0) {
-                    inform(getString(R.string.no_more_result));
-                } else {
-                    _currentAdapter.appendItems(pois);
-                    _currentAdapter.notifyDataSetChanged();
-                }
-            },
-            (error) -> {
-                _isFetchingMore = false;
-                onError(error);
+        successCallback = (pois) -> {
+            _isFetchingMore = false;
+            if (pois.size() == 0) {
+                inform(getString(R.string.no_more_result));
+            } else {
+                _currentAdapter.appendItems(pois);
+                _currentAdapter.notifyDataSetChanged();
             }
-        );
+            done();
+        };
+        errorCallback = (error) -> {
+            _isFetchingMore = false;
+            onError(error);
+        };
+
+        switch (_currentType) {
+            case BAR:
+                getPlaceBLL().moreBarsAround(successCallback, errorCallback);
+                break;
+            case BISTRO:
+                getPlaceBLL().moreBistrosAround(successCallback, errorCallback);
+                break;
+            case CAFE:
+                getPlaceBLL().moreCafesAround(successCallback, errorCallback);
+                break;
+        }
+    }
+
+    public void onEventMainThread(ShowBarsEvent e) {
+        if (_currentType == PlaceType.BAR) {
+            return;
+        }
+
+        _setBarContent();
+    }
+
+    public void onEventMainThread(ShowBistrosEvent e) {
+        if (_currentType == PlaceType.BISTRO) {
+            return;
+        }
+        _currentType = PlaceType.BISTRO;
+
+        fork();
+        getPlaceBLL().cancelAllTasks();
+        getPlaceBLL().getBistrosAround(this::_fetchPOIsCallback, this::onError);
+    }
+
+    public void onEventMainThread(ShowCafesEvent e) {
+        if (_currentType == PlaceType.CAFE) {
+            return;
+        }
+        _currentType = PlaceType.CAFE;
+
+        fork();
+        getPlaceBLL().cancelAllTasks();
+        getPlaceBLL().getCafesAround(this::_fetchPOIsCallback, this::onError);
     }
 }
