@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.ui.utils.MetricHelper;
 
 /**
  * @class StarBar
@@ -55,6 +56,10 @@ public class StarBar extends LinearLayout {
             } else {
                 img.setImageResource(R.drawable.star_grey);
             }
+
+            img.setAdjustViewBounds(true);
+            img.setMaxWidth(Math.round(MetricHelper.toPixels(getContext(), 20)));
+            img.setMaxHeight(Math.round(MetricHelper.toPixels(getContext(), 20)));
 
             _wrapper.addView(img);
         }

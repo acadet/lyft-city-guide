@@ -16,7 +16,5 @@
     </style>
 
     <style name="FragmentResultList" parent="MatchParentWrapContent">
-        <item name="android:paddingLeft">@dimen/vertical_layout_margin</item>
-        <item name="android:paddingRight">@dimen/vertical_layout_margin</item>
     </style>
 </resources>

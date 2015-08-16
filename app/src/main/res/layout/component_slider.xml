@@ -4,17 +4,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <ImageView
-        android:background="@drawable/slider_background"
-        style="@style/MatchParent"
-        />
+    <!--<ImageView-->
+    <!--android:background="@drawable/slider_background"-->
+    <!--style="@style/MatchParent"-->
+    <!--/>-->
 
-    <ImageView
-        android:layout_marginLeft="-4dp"
-        android:layout_marginTop="-4dp"
-        android:background="@drawable/slider"
-        android:scaleType="center"
-        style="@style/WrapContent"
+    <!--<ImageView-->
+    <!--android:layout_marginLeft="-4dp"-->
+    <!--android:layout_marginTop="-4dp"-->
+    <!--android:background="@drawable/slider"-->
+    <!--android:scaleType="center"-->
+    <!--style="@style/WrapContent"-->
+    <!--/>-->
+
+    <SeekBar
+        android:background="@drawable/tray"
+        android:progressDrawable="@null"
+        android:thumb="@drawable/slider"
+        style="@style/MatchParentWrapContent"
         />
 
     <LinearLayout
