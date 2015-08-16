@@ -17,6 +17,8 @@ import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +31,11 @@ import retrofit.client.Response;
 class PlaceBLL extends BaseBLL implements IPlaceBLL {
     private final static Object _asyncTaskLock = new Object();
 
+    private final static int LOCATION_COOLDOWN_SEC = 20;
+
     private LocationManager _locationManager;
     private Location        _latestLocation;
+    private DateTime        _latestLocationDate;
     private String          _latestNextPageToken;
 
     private AsyncTask _getBarsAroundTask;
@@ -91,87 +96,96 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
         setTaskPointer.run(
             runInBackground(
                 () -> {
-                    Action<String> customFailure = (s) -> {
+                    Action0 customWhenDone = () -> {
                         synchronized (_asyncTaskLock) {
                             whenDone(taskPointer);
                             resetTaskPointer.run();
                         }
+                    };
+                    Action<String> customFailure = (s) -> {
+                        customWhenDone.run();
                         runOnMainThread(() -> failure.run(s));
                     };
 
                     Action0 fetchAction = () -> {
-                        synchronized (_asyncTaskLock) {
-                            whenDone(taskPointer);
-                            resetTaskPointer.run();
-                        }
+                        connectAPI(
+                            (api) -> {
+                                api.search(
+                                    latLngFromLocation(_latestLocation),
+                                    2000,
+                                    type,
+                                    getAPIKey(),
+                                    new BLLCallback<PlaceSearchResult>(customFailure) {
+                                        @Override
+                                        public void success(PlaceSearchResult placeSearchResult, Response response) {
+                                            List<PointOfInterest> outcome
+                                                = _toPOIs(placeSearchResult.getResults());
+                                            _latestNextPageToken = placeSearchResult.getPageToken();
 
-                        setTaskPointer.run(
-                            runInBackground(
-                                () ->
-                                    connectAPI(
-                                        (api) -> {
-                                            api.search(
-                                                latLngFromLocation(_latestLocation),
-                                                2000,
-                                                type,
-                                                getAPIKey(),
-                                                new BLLCallback<PlaceSearchResult>(customFailure) {
-                                                    @Override
-                                                    public void success(PlaceSearchResult placeSearchResult, Response response) {
-                                                        List<PointOfInterest> outcome
-                                                            = _toPOIs(placeSearchResult.getResults());
-                                                        _latestNextPageToken = placeSearchResult.getPageToken();
-
-                                                        synchronized (_asyncTaskLock) {
-                                                            whenDone(taskPointer);
-                                                            resetTaskPointer.run();
-                                                        }
-                                                        runOnMainThread(() -> success.run(outcome));
-                                                    }
-                                                }
-                                            );
-                                        },
-                                        customFailure
-                                    )
-                            )
+                                            customWhenDone.run();
+                                            runOnMainThread(() -> success.run(outcome));
+                                        }
+                                    }
+                                );
+                            },
+                            customFailure
                         );
                     };
 
                     _latestNextPageToken = null;
+                    if (_latestLocationDate != null
+                        && _latestLocationDate.plusSeconds(LOCATION_COOLDOWN_SEC).isAfterNow()) {
+                        fetchAction.run();
+                    } else {
+                        _locationManager.requestSingleUpdate(
+                            LocationManager.NETWORK_PROVIDER,
+                            new LocationListener() {
+                                @Override
+                                public void onLocationChanged(Location location) {
+                                    _latestLocation = location;
+                                    _latestLocationDate = DateTime.now();
 
-                    _locationManager.requestSingleUpdate(
-                        LocationManager.NETWORK_PROVIDER,
-                        new LocationListener() {
-                            @Override
-                            public void onLocationChanged(Location location) {
-                                _latestLocation = location;
+                                    customWhenDone.run();
+                                    setTaskPointer.run(
+                                        runInBackground(
+                                            () -> {
+                                                fetchAction.run();
+                                            }
+                                        )
+                                    );
+                                }
 
-                                fetchAction.run();
-                            }
-
-                            @Override
-                            public void onStatusChanged(String provider, int status, Bundle extras) {
-                                if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
-                                    if (_latestLocation != null) {
-                                        fetchAction.run();
-                                    } else {
-                                        customFailure.run(getContext().getString(R.string.error_no_network));
+                                @Override
+                                public void onStatusChanged(String provider, int status, Bundle extras) {
+                                    if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
+                                        if (_latestLocation != null) {
+                                            customWhenDone.run();
+                                            setTaskPointer.run(
+                                                runInBackground(
+                                                    () -> {
+                                                        fetchAction.run();
+                                                    }
+                                                )
+                                            );
+                                        } else {
+                                            customFailure.run(getContext().getString(R.string.error_no_network));
+                                        }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onProviderEnabled(String provider) {
+                                @Override
+                                public void onProviderEnabled(String provider) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onProviderDisabled(String provider) {
-                                customFailure.run(getContext().getString(R.string.error_location_disabled));
-                            }
-                        },
-                        Looper.getMainLooper()
-                    );
+                                @Override
+                                public void onProviderDisabled(String provider) {
+                                    customFailure.run(getContext().getString(R.string.error_location_disabled));
+                                }
+                            },
+                            Looper.getMainLooper()
+                        );
+                    }
                 }
             )
         );
