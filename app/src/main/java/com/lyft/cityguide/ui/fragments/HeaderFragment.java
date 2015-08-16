@@ -11,16 +11,16 @@ import com.lyft.cityguide.R;
 import butterknife.ButterKnife;
 
 /**
- * @class MainHeaderFragment
+ * @class HeaderFragment
  * @brief
  */
-public class MainHeaderFragment extends BaseFragment {
+public class HeaderFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_main_header, container, false);
+        fragment = inflater.inflate(R.layout.fragment_header, container, false);
         ButterKnife.bind(this, fragment);
 
         return fragment;
