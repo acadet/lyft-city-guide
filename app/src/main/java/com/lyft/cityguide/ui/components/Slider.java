@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,25 +18,51 @@ import com.lyft.cityguide.ui.utils.MetricHelper;
  * @brief
  */
 public class Slider extends LinearLayout {
+    public static interface SliderListener {
+        void onSlide(int index, CharSequence label);
+    }
+
     private LinearLayout _labelWrapper;
-    private View         _thumb;
 
-    private int _current;
+    private int            _currentIndex;
+    private SliderListener _listener;
 
-    private int   _selectedForeground;
-    private int   _defaultForeground;
-    private float _fontSize;
+    private CharSequence[] _labels;
+    private int            _selectedForeground;
+    private int            _defaultForeground;
+    private float          _fontSize;
 
     public Slider(Context context, AttributeSet attributes) {
         super(context, attributes);
 
-        _current = 0;
+        _currentIndex = 0;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.component_slider, this, true);
 
         _labelWrapper = (LinearLayout) findViewById(R.id.component_slider_label_wrapper);
-        //        _thumb = findViewById(R.id.component_slider_thumb);
+        _labelWrapper.setOnTouchListener(
+            new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int width = _labelWrapper.getWidth();
+                    int n = _labels.length;
+                    int touchedIndex = Math.round(event.getX()) / (width / n);
+
+                    if (touchedIndex != _currentIndex) {
+                        _setDefault((TextView) _labelWrapper.getChildAt(_currentIndex));
+                        _setCurrent((TextView) _labelWrapper.getChildAt(touchedIndex));
+
+                        _currentIndex = touchedIndex;
+                        if (_listener != null) {
+                            _listener.onSlide(touchedIndex, _labels[touchedIndex]);
+                        }
+                    }
+
+                    return true;
+                }
+            }
+        );
 
         TypedArray styledAttributes = context.obtainStyledAttributes(attributes, R.styleable.Slider);
         _selectedForeground = styledAttributes.getColor(
@@ -53,10 +80,20 @@ public class Slider extends LinearLayout {
         this(context, null);
     }
 
+    private void _setCurrent(TextView field) {
+        field.setTextColor(_selectedForeground);
+        field.setBackgroundResource(R.drawable.slider_thumb);
+    }
+
+    private void _setDefault(TextView field) {
+        field.setTextColor(_defaultForeground);
+        field.setBackgroundResource(0);
+    }
+
     public void setLabels(CharSequence[] labels) {
         int i = 0;
         LinearLayout.LayoutParams params;
-        int padding = Math.round(MetricHelper.toPixels(getContext(), 8));
+        int padding = Math.round(MetricHelper.toPixels(getContext(), 10));
 
         params = new LinearLayout.LayoutParams(
             0,
@@ -67,18 +104,16 @@ public class Slider extends LinearLayout {
         _labelWrapper.removeAllViewsInLayout();
         for (CharSequence c : labels) {
             TextView t = new TextView(getContext());
-            int color = (i == _current) ? _selectedForeground : _defaultForeground;
 
             t.setLayoutParams(params);
-            t.setTextColor(color);
             t.setTextSize(_fontSize);
             t.setGravity(Gravity.CENTER);
             t.setPadding(padding, padding, padding, padding);
 
-            if (i == _current) {
-                t.setBackgroundResource(R.drawable.slider_thumb);
+            if (i == _currentIndex) {
+                _setCurrent(t);
             } else {
-                t.setBackgroundResource(0);
+                _setDefault(t);
             }
 
             t.setText(c);
@@ -86,12 +121,13 @@ public class Slider extends LinearLayout {
             i++;
         }
 
+        _labels = labels;
         invalidate();
     }
 
     public void setSelectedForeground(int color) {
         _selectedForeground = color;
-        ((TextView) _labelWrapper.getChildAt(_current)).setTextColor(_selectedForeground);
+        ((TextView) _labelWrapper.getChildAt(_currentIndex)).setTextColor(_selectedForeground);
     }
 
     public void setDefaultForeground(int color) {
@@ -99,7 +135,7 @@ public class Slider extends LinearLayout {
         for (int i = 0, s = _labelWrapper.getChildCount(); i < s; i++) {
             TextView t = (TextView) _labelWrapper.getChildAt(i);
 
-            if (i != _current) {
+            if (i != _currentIndex) {
                 t.setTextColor(_defaultForeground);
             }
         }
@@ -112,5 +148,9 @@ public class Slider extends LinearLayout {
 
             t.setTextSize(_fontSize);
         }
+    }
+
+    public void setSlideListener(SliderListener listener) {
+        _listener = listener;
     }
 }

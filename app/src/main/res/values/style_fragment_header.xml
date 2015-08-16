@@ -2,7 +2,7 @@
 <resources>
 
     <style name="FragmentHeaderMenuWrapper" parent="MatchParentWrapContent.Horizontal">
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginBottom">@dimen/horizontal_layout_margin</item>
 
         <item name="android:gravity">center_vertical</item>
     </style>
