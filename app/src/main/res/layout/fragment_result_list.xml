@@ -14,7 +14,7 @@
         tools:visibility="visible"
         />
 
-    <com.yalantis.phoenix.PullToRefreshView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fragment_result_list_wrapper"
         style="@style/MatchParentWrapContent"
         >
@@ -24,6 +24,6 @@
             style="@style/FragmentResultList"
             />
 
-    </com.yalantis.phoenix.PullToRefreshView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
