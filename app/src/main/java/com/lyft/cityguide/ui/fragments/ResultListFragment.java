@@ -83,6 +83,13 @@ public class ResultListFragment extends BaseFragment {
         );
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getPlaceBLL().cancelAllTasks();
+    }
+
     public void onMore() {
         if (_currentAdapter == null || _isFetchingMore) {
             return;

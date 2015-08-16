@@ -90,7 +90,7 @@ class BaseBLL implements IBLL {
         synchronized (_backgroundTaskLock) {
             for (int i = 0, s = _backgroundTasks.size(); i < s; i++) {
                 if (_backgroundTasks.get(i) == task) {
-                    task.cancel(false);
+                    task.cancel(true);
                     _backgroundTasks.remove(i);
                     return;
                 }
@@ -122,7 +122,7 @@ class BaseBLL implements IBLL {
     public void cancelAllTasks() {
         synchronized (_backgroundTaskLock) {
             for (AsyncTask t : _backgroundTasks) {
-                t.cancel(false);
+                t.cancel(true);
             }
             _backgroundTasks = new LinkedList<>();
         }

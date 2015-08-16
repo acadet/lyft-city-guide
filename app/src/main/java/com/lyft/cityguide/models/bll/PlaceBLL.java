@@ -27,6 +27,8 @@ import retrofit.client.Response;
  * @brief
  */
 class PlaceBLL extends BaseBLL implements IPlaceBLL {
+    private final static Object _asyncTaskLock = new Object();
+
     private LocationManager _locationManager;
     private Location        _latestLocation;
     private String          _latestNextPageToken;
@@ -70,14 +72,20 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     @Override
     public void getBarsAround(Action<List<PointOfInterest>> success, Action<String> failure) {
         if (_getBarsAroundTask != null) {
-            cancel(_getBarsAroundTask);
+            synchronized (_asyncTaskLock) {
+                if (_getBarsAroundTask != null) {
+                    cancel(_getBarsAroundTask);
+                }
+            }
         }
 
         _getBarsAroundTask = runInBackground(
             () -> {
                 Action<String> customFailure = (s) -> {
-                    whenDone(_getBarsAroundTask);
-                    _getBarsAroundTask = null;
+                    synchronized (_asyncTaskLock) {
+                        whenDone(_getBarsAroundTask);
+                        _getBarsAroundTask = null;
+                    }
                     runOnMainThread(() -> failure.run(s));
                 };
 
@@ -96,8 +104,10 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                             = _toPOIs(placeSearchResult.getResults());
                                         _latestNextPageToken = placeSearchResult.getPageToken();
 
-                                        whenDone(_getBarsAroundTask);
-                                        _getBarsAroundTask = null;
+                                        synchronized (_asyncTaskLock) {
+                                            whenDone(_getBarsAroundTask);
+                                            _getBarsAroundTask = null;
+                                        }
                                         runOnMainThread(() -> success.run(outcome));
                                     }
                                 }
@@ -154,14 +164,20 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
         }
 
         if (_moreBarsAroundTask != null) {
-            cancel(_moreBarsAroundTask);
+            synchronized (_asyncTaskLock) {
+                if (_moreBarsAroundTask != null) {
+                    cancel(_moreBarsAroundTask);
+                }
+            }
         }
 
         _moreBarsAroundTask = runInBackground(
             () -> {
                 Action<String> customFailure = (s) -> {
-                    whenDone(_moreBarsAroundTask);
-                    _moreBarsAroundTask = null;
+                    synchronized (_asyncTaskLock) {
+                        whenDone(_moreBarsAroundTask);
+                        _moreBarsAroundTask = null;
+                    }
                     runOnMainThread(() -> failure.run(s));
                 };
 
@@ -178,8 +194,10 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                     );
 
                                     _latestNextPageToken = placeSearchResult.getPageToken();
-                                    whenDone(_moreBarsAroundTask);
-                                    _moreBarsAroundTask = null;
+                                    synchronized (_asyncTaskLock) {
+                                        whenDone(_moreBarsAroundTask);
+                                        _moreBarsAroundTask = null;
+                                    }
                                     runOnMainThread(() -> success.run(outcome));
                                 }
                             }
