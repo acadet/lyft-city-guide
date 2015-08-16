@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class PlaceSearchResult {
     private List<Place> _results;
+    private String      _pageToken;
 
     public PlaceSearchResult() {
         _results = new ArrayList<>();
@@ -23,5 +24,13 @@ public class PlaceSearchResult {
     public PlaceSearchResult addResult(Place place) {
         _results.add(place);
         return this;
+    }
+
+    public String getPageToken() {
+        return _pageToken;
+    }
+
+    public void setPageToken(String value) {
+        _pageToken = value;
     }
 }

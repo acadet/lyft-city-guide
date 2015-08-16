@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface IPlaceBLL {
     void getBarsAround(Action<List<PointOfInterest>> success, Action<String> failure);
+
+    void moreBarsAround(Action<List<PointOfInterest>> success, Action<String> failure);
 }

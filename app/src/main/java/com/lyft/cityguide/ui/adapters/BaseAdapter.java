@@ -60,4 +60,10 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
             return (U) convertView;
         }
     }
+
+    public void appendItems(List<T> items) {
+        for (T i : items) {
+            _items.add(i);
+        }
+    }
 }

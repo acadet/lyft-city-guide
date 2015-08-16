@@ -30,7 +30,7 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
             text = "0";
         }
 
-        text += "." + (Math.floor(value * 100) - Math.floor(value) * 100);
+        text += "." + (Math.round(value * 100) - Math.round(value) * 100);
         text += " mi";
 
         field.setText(text);

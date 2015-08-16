@@ -27,6 +27,7 @@ import retrofit.client.Response;
 class PlaceBLL extends BaseBLL implements IPlaceBLL {
     private LocationManager _locationManager;
     private Location        _latestLocation;
+    private String          _latestNextPageToken;
 
     PlaceBLL(Context context) {
         super(context);
@@ -35,7 +36,17 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
             getContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
-    double _getDistance(Place place) {
+    private List<PointOfInterest> _toPOIS(List<Place> places) {
+        List<PointOfInterest> outcome = new ArrayList<>();
+
+        for (Place p : places) {
+            outcome.add(new PointOfInterest(p, _getDistance(p)));
+        }
+
+        return outcome;
+    }
+
+    private double _getDistance(Place place) {
         double latA, latB, longA, longB;
 
         latA = _latestLocation.getLatitude();
@@ -64,11 +75,9 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                         new BLLCallback<PlaceSearchResult>(failure) {
                             @Override
                             public void success(PlaceSearchResult placeSearchResult, Response response) {
-                                List<PointOfInterest> outcome = new ArrayList<>();
-
-                                for (Place p : placeSearchResult.getResults()) {
-                                    outcome.add(new PointOfInterest(p, _getDistance(p)));
-                                }
+                                List<PointOfInterest> outcome
+                                    = _toPOIS(placeSearchResult.getResults());
+                                _latestNextPageToken = placeSearchResult.getPageToken();
 
                                 runOnMainThread(() -> success.run(outcome));
                             }
@@ -78,6 +87,8 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                 failure
             );
         };
+
+        _latestNextPageToken = null;
 
         _locationManager.requestSingleUpdate(
             LocationManager.NETWORK_PROVIDER,
@@ -113,4 +124,32 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
             null
         );
     }
+
+    @Override
+    public void moreBarsAround(Action<List<PointOfInterest>> success, Action<String> failure) {
+        if (_latestNextPageToken == null || _latestNextPageToken.isEmpty()) {
+            runOnMainThread(() -> success.run(new ArrayList<>()));
+            return;
+        }
+
+        connectAPI(
+            (api) -> {
+                api.more(
+                    _latestNextPageToken,
+                    getAPIKey(),
+                    new BLLCallback<PlaceSearchResult>(failure) {
+                        @Override
+                        public void success(PlaceSearchResult placeSearchResult, Response response) {
+                            List<PointOfInterest> outcome = _toPOIS(placeSearchResult.getResults());
+
+                            _latestNextPageToken = placeSearchResult.getPageToken();
+                            runOnMainThread(() -> success.run(outcome));
+                        }
+                    }
+                );
+            },
+            failure
+        );
+    }
+
 }

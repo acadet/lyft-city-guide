@@ -19,4 +19,11 @@ public interface GooglePlaceAPI {
         @Query("key") String apiKey,
         Callback<PlaceSearchResult> callback
     );
+
+    @GET("/nearbysearch/json")
+    void more(
+        @Query("pagetoken") String pageToken,
+        @Query("key") String apiKey,
+        Callback<PlaceSearchResult> callback
+    );
 }
