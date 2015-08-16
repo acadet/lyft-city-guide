@@ -150,7 +150,7 @@ public class Slider extends LinearLayout {
         }
     }
 
-    public void setSlideListener(SliderListener listener) {
+    public void setOnSlideListener(SliderListener listener) {
         _listener = listener;
     }
 }

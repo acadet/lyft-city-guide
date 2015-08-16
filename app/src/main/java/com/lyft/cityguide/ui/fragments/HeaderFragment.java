@@ -31,7 +31,7 @@ public class HeaderFragment extends BaseFragment {
         fragment = inflater.inflate(R.layout.fragment_header, container, false);
         ButterKnife.bind(this, fragment);
 
-        _slider.setSlideListener(
+        _slider.setOnSlideListener(
             (index, label) -> {
                 switch (index) {
                     case 0:
