@@ -2,6 +2,7 @@
 <LinearLayout
     style="@style/MainHeader"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     >
 
     <LinearLayout
@@ -10,7 +11,7 @@
 
         <ImageView
             android:src="@drawable/ic_menu"
-            style="@style/Image"
+            style="@style/FragmentHeaderMenuIcon"
             />
 
         <TextView
@@ -19,5 +20,10 @@
             />
 
     </LinearLayout>
+
+    <com.lyft.cityguide.ui.components.Slider
+        style="@style/FragmentHeaderSlider"
+        custom:labels="@array/place_categories"
+        />
 
 </LinearLayout>

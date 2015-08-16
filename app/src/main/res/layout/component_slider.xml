@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    style="@style/MatchParent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <ImageView
+        android:background="@drawable/slider_background"
+        style="@style/MatchParent"
+        />
+
+    <ImageView
+        android:layout_marginLeft="-4dp"
+        android:layout_marginTop="-4dp"
+        android:background="@drawable/slider"
+        android:scaleType="center"
+        style="@style/WrapContent"
+        />
+
+    <LinearLayout
+        android:id="@+id/slider_label_wrapper"
+        style="@style/MatchParentWrapContent.Horizontal"
+        >
+
+    </LinearLayout>
+
+</RelativeLayout>
