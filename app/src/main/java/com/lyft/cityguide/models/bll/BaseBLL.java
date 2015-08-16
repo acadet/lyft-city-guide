@@ -52,7 +52,7 @@ class BaseBLL implements IBLL {
     }
 
     String getAPIKey() {
-        return getContext().getString(R.string.api_key);
+        return getContext().getString(R.string.google_service_api_key);
     }
 
     String latLngFromLocation(Location l) {

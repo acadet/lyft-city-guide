@@ -12,7 +12,7 @@ import android.os.Looper;
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.beans.Place;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
-import com.lyft.cityguide.models.bll.utils.PlaceSearchResult;
+import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
 import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.utils.DeviceHelper;
 import com.lyft.cityguide.utils.actions.Action;

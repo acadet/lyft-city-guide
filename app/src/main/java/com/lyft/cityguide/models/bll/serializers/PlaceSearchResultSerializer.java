@@ -7,7 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.lyft.cityguide.models.beans.Place;
-import com.lyft.cityguide.models.bll.utils.PlaceSearchResult;
+import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
 
 import java.lang.reflect.Type;
 
