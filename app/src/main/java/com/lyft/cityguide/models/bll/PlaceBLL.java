@@ -100,30 +100,40 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                     };
 
                     Action0 fetchAction = () -> {
-                        connectAPI(
-                            (api) -> {
-                                api.search(
-                                    latLngFromLocation(_latestLocation),
-                                    2000,
-                                    type,
-                                    getAPIKey(),
-                                    new BLLCallback<PlaceSearchResult>(customFailure) {
-                                        @Override
-                                        public void success(PlaceSearchResult placeSearchResult, Response response) {
-                                            List<PointOfInterest> outcome
-                                                = _toPOIs(placeSearchResult.getResults());
-                                            _latestNextPageToken = placeSearchResult.getPageToken();
+                        synchronized (_asyncTaskLock) {
+                            whenDone(taskPointer);
+                            resetTaskPointer.run();
+                        }
 
-                                            synchronized (_asyncTaskLock) {
-                                                whenDone(taskPointer);
-                                                resetTaskPointer.run();
-                                            }
-                                            runOnMainThread(() -> success.run(outcome));
-                                        }
-                                    }
-                                );
-                            },
-                            customFailure
+                        setTaskPointer.run(
+                            runInBackground(
+                                () ->
+                                    connectAPI(
+                                        (api) -> {
+                                            api.search(
+                                                latLngFromLocation(_latestLocation),
+                                                2000,
+                                                type,
+                                                getAPIKey(),
+                                                new BLLCallback<PlaceSearchResult>(customFailure) {
+                                                    @Override
+                                                    public void success(PlaceSearchResult placeSearchResult, Response response) {
+                                                        List<PointOfInterest> outcome
+                                                            = _toPOIs(placeSearchResult.getResults());
+                                                        _latestNextPageToken = placeSearchResult.getPageToken();
+
+                                                        synchronized (_asyncTaskLock) {
+                                                            whenDone(taskPointer);
+                                                            resetTaskPointer.run();
+                                                        }
+                                                        runOnMainThread(() -> success.run(outcome));
+                                                    }
+                                                }
+                                            );
+                                        },
+                                        customFailure
+                                    )
+                            )
                         );
                     };
 

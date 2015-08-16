@@ -38,7 +38,6 @@ public class ResultListFragment extends BaseFragment {
     ListView _list;
 
     private void _fetchPOIsCallback(List<PointOfInterest> pois) {
-        done();
         if (pois.size() == 0) {
             _noContent.setVisibility(View.VISIBLE);
             _list.setVisibility(View.GONE);
@@ -48,13 +47,10 @@ public class ResultListFragment extends BaseFragment {
             _currentAdapter = new ResultAdapter(pois, getActivity(), _currentType);
             _list.setAdapter(_currentAdapter);
         }
+        done();
     }
 
     private void _setBarContent() {
-        if (_currentType == PlaceType.BAR) {
-            return;
-        }
-
         _currentType = PlaceType.BAR;
         fork();
         getPlaceBLL().getBarsAround(this::_fetchPOIsCallback, this::onError);
@@ -87,8 +83,6 @@ public class ResultListFragment extends BaseFragment {
             }
         );
 
-        _setBarContent();
-
         return fragment;
     }
 
@@ -97,6 +91,7 @@ public class ResultListFragment extends BaseFragment {
         super.onResume();
 
         _isFetchingMore = false;
+        _setBarContent();
         getResultListBus().register(this);
     }
 
@@ -137,6 +132,10 @@ public class ResultListFragment extends BaseFragment {
     }
 
     public void onEventMainThread(ShowBarsEvent e) {
+        if (_currentType == PlaceType.BAR) {
+            return;
+        }
+
         _setBarContent();
     }
 

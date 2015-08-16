@@ -46,7 +46,7 @@ public class BaseFragment extends Fragment {
     }
 
     void onError(String message) {
-        BaseActivity.getSpinnerBus().post(new DoneEvent());
+        done();
         warn(message);
     }
 
