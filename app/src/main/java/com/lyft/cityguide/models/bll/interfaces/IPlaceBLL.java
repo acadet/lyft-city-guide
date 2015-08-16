@@ -9,7 +9,7 @@ import java.util.List;
  * @class IPlaceBLL
  * @brief
  */
-public interface IPlaceBLL {
+public interface IPlaceBLL extends IBLL {
     void getBarsAround(Action<List<PointOfInterest>> success, Action<String> failure);
 
     void moreBarsAround(Action<List<PointOfInterest>> success, Action<String> failure);

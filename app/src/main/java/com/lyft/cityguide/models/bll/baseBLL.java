@@ -2,6 +2,7 @@ package com.lyft.cityguide.models.bll;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -10,12 +11,11 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.bll.api.GooglePlaceAPI;
 import com.lyft.cityguide.models.bll.api.GooglePlaceAPIOutletFactory;
 import com.lyft.cityguide.models.bll.interfaces.IBLL;
-import com.lyft.cityguide.models.bll.utils.BackgroundTask;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -25,8 +25,9 @@ import retrofit.RetrofitError;
  * @brief
  */
 class BaseBLL implements IBLL {
-    private Context                     _context;
-    private Map<String, BackgroundTask> _backgroundTasks;
+    private Context         _context;
+    private List<AsyncTask> _backgroundTasks;
+    private final Object _backgroundTaskLock = new Object();
 
     abstract class BLLCallback<T> implements Callback<T> {
         private Action<String> _failure;
@@ -43,7 +44,7 @@ class BaseBLL implements IBLL {
 
     BaseBLL(Context context) {
         _context = context;
-        _backgroundTasks = new HashMap<>();
+        _backgroundTasks = new LinkedList<>();
     }
 
     Context getContext() {
@@ -67,10 +68,45 @@ class BaseBLL implements IBLL {
             );
     }
 
-    void run(BackgroundTask task) {
-        _backgroundTasks.put(task.getId(), task);
-        task.whenDone((t) -> _backgroundTasks.remove(task.getId()));
-        task.execute();
+    AsyncTask runInBackground(Action0 task) {
+        AsyncTask asyncTask;
+
+        asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+                task.run();
+
+                return null;
+            }
+        };
+
+        _backgroundTasks.add(asyncTask);
+        asyncTask.execute();
+
+        return asyncTask;
+    }
+
+    void cancel(AsyncTask task) {
+        synchronized (_backgroundTaskLock) {
+            for (int i = 0, s = _backgroundTasks.size(); i < s; i++) {
+                if (_backgroundTasks.get(i) == task) {
+                    task.cancel(false);
+                    _backgroundTasks.remove(i);
+                    return;
+                }
+            }
+        }
+    }
+
+    void whenDone(AsyncTask task) {
+        synchronized (_backgroundTaskLock) {
+            for (int i = 0, s = _backgroundTasks.size(); i < s; i++) {
+                if (_backgroundTasks.get(i) == task) {
+                    _backgroundTasks.remove(i);
+                    return;
+                }
+            }
+        }
     }
 
     void runOnMainThread(Action0 action) {
@@ -84,10 +120,11 @@ class BaseBLL implements IBLL {
 
     @Override
     public void cancelAllTasks() {
-        for (Map.Entry<String, BackgroundTask> pair : _backgroundTasks.entrySet()) {
-            pair.getValue().cancel(false);
+        synchronized (_backgroundTaskLock) {
+            for (AsyncTask t : _backgroundTasks) {
+                t.cancel(false);
+            }
+            _backgroundTasks = new LinkedList<>();
         }
-
-        _backgroundTasks = new HashMap<>();
     }
 }

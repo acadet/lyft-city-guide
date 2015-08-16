@@ -101,6 +101,8 @@ public abstract class BaseActivity extends Activity {
         if (_backgroundHandler != null) {
             _backgroundHandler.removeCallbacksAndMessages(null);
         }
+
+        getPlaceBLL().cancelAllTasks();
     }
 
     @Override
