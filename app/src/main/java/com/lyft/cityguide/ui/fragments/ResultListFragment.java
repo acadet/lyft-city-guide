@@ -96,10 +96,17 @@ public class ResultListFragment extends BaseFragment {
                 if (_currentAdapter == null) {
                     return;
                 }
-                _currentAdapter.appendItems(pois);
-                _currentAdapter.notifyDataSetChanged();
+                if (pois.size() == 0) {
+                    inform(getString(R.string.no_more_result));
+                } else {
+                    _currentAdapter.appendItems(pois);
+                    _currentAdapter.notifyDataSetChanged();
+                }
             },
-            this::onError
+            (error) -> {
+                _isFetchingMore = false;
+                onError(error);
+            }
         );
     }
 }

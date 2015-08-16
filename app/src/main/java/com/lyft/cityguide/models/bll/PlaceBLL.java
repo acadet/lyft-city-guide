@@ -36,7 +36,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
             getContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
-    private List<PointOfInterest> _toPOIS(List<Place> places) {
+    private List<PointOfInterest> _toPOIs(List<Place> places) {
         List<PointOfInterest> outcome = new ArrayList<>();
 
         for (Place p : places) {
@@ -76,7 +76,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                             @Override
                             public void success(PlaceSearchResult placeSearchResult, Response response) {
                                 List<PointOfInterest> outcome
-                                    = _toPOIS(placeSearchResult.getResults());
+                                    = _toPOIs(placeSearchResult.getResults());
                                 _latestNextPageToken = placeSearchResult.getPageToken();
 
                                 runOnMainThread(() -> success.run(outcome));
@@ -140,9 +140,13 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                     new BLLCallback<PlaceSearchResult>(failure) {
                         @Override
                         public void success(PlaceSearchResult placeSearchResult, Response response) {
-                            List<PointOfInterest> outcome = _toPOIS(placeSearchResult.getResults());
+                            List<PointOfInterest> outcome = _toPOIs(placeSearchResult.getResults());
 
-                            _latestNextPageToken = placeSearchResult.getPageToken();
+                            if (_latestNextPageToken == placeSearchResult.getPageToken()) {
+                                _latestNextPageToken = null;
+                            } else {
+                                _latestNextPageToken = placeSearchResult.getPageToken();
+                            }
                             runOnMainThread(() -> success.run(outcome));
                         }
                     }
