@@ -14,9 +14,16 @@
         tools:visibility="visible"
         />
 
-    <ListView
-        android:id="@+id/fragment_result_list"
-        style="@style/FragmentResultList"
-        />
+    <com.yalantis.phoenix.PullToRefreshView
+        android:id="@+id/fragment_result_list_wrapper"
+        style="@style/MatchParentWrapContent"
+        >
+
+        <ListView
+            android:id="@+id/fragment_result_list"
+            style="@style/FragmentResultList"
+            />
+
+    </com.yalantis.phoenix.PullToRefreshView>
 
 </RelativeLayout>

@@ -17,6 +17,7 @@ import com.lyft.cityguide.ui.events.ShowBarsEvent;
 import com.lyft.cityguide.ui.events.ShowBistrosEvent;
 import com.lyft.cityguide.ui.events.ShowCafesEvent;
 import com.lyft.cityguide.utils.actions.Action;
+import com.yalantis.phoenix.PullToRefreshView;
 
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class ResultListFragment extends BaseFragment {
 
     @Bind(R.id.fragment_result_list_no_content)
     TextView _noContent;
+
+    @Bind(R.id.fragment_result_list_wrapper)
+    PullToRefreshView _listWrapper;
 
     @Bind(R.id.fragment_result_list)
     ListView _list;
@@ -56,6 +60,20 @@ public class ResultListFragment extends BaseFragment {
         fork();
         getPlaceBLL().cancelAllTasks();
         getPlaceBLL().getBarsAround(this::_fetchPOIsCallback, this::onError);
+    }
+
+    private void _setBistroContent() {
+        _currentType = PlaceType.BISTRO;
+        fork();
+        getPlaceBLL().cancelAllTasks();
+        getPlaceBLL().getBistrosAround(this::_fetchPOIsCallback, this::onError);
+    }
+
+    private void _setCafeContent() {
+        _currentType = PlaceType.CAFE;
+        fork();
+        getPlaceBLL().cancelAllTasks();
+        getPlaceBLL().getCafesAround(this::_fetchPOIsCallback, this::onError);
     }
 
     @Nullable
@@ -84,6 +102,23 @@ public class ResultListFragment extends BaseFragment {
                 }
             }
         );
+
+        _listWrapper.setOnRefreshListener(
+            () -> {
+                switch (_currentType) {
+                    case BAR:
+                        _setBarContent();
+                        break;
+                    case BISTRO:
+                        _setBistroContent();
+                        break;
+                    case CAFE:
+                        _setCafeContent();
+                        break;
+                }
+            }
+        );
+
 
         return fragment;
     }
@@ -155,21 +190,13 @@ public class ResultListFragment extends BaseFragment {
         if (_currentType == PlaceType.BISTRO) {
             return;
         }
-        _currentType = PlaceType.BISTRO;
-
-        fork();
-        getPlaceBLL().cancelAllTasks();
-        getPlaceBLL().getBistrosAround(this::_fetchPOIsCallback, this::onError);
+        _setBistroContent();
     }
 
     public void onEventMainThread(ShowCafesEvent e) {
         if (_currentType == PlaceType.CAFE) {
             return;
         }
-        _currentType = PlaceType.CAFE;
-
-        fork();
-        getPlaceBLL().cancelAllTasks();
-        getPlaceBLL().getCafesAround(this::_fetchPOIsCallback, this::onError);
+        _setCafeContent();
     }
 }
