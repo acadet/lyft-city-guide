@@ -43,10 +43,14 @@ public class ResultListFragment extends BaseFragment {
     @Bind(R.id.fragment_result_list)
     ListView _list;
 
+    private void _setNoContentMessage() {
+        _noContent.setVisibility(View.VISIBLE);
+        _list.setVisibility(View.GONE);
+    }
+
     private void _fetchPOIsCallback(List<PointOfInterest> pois, Action0 customDone) {
         if (pois.size() == 0) {
-            _noContent.setVisibility(View.VISIBLE);
-            _list.setVisibility(View.GONE);
+            _setNoContentMessage();
         } else {
             _noContent.setVisibility(View.GONE);
             _list.setVisibility(View.VISIBLE);
@@ -60,6 +64,11 @@ public class ResultListFragment extends BaseFragment {
         }
     }
 
+    private void _onResultFetchingError(String msg) {
+        _setNoContentMessage();
+        onError(msg);
+    }
+
     private void _setBarContent() {
         _setBarContent(null);
     }
@@ -70,7 +79,10 @@ public class ResultListFragment extends BaseFragment {
             fork();
         }
         getPlaceBLL().cancelAllTasks();
-        getPlaceBLL().getBarsAround((pois) -> _fetchPOIsCallback(pois, customDone), this::onError);
+        getPlaceBLL().getBarsAround(
+            (pois) -> _fetchPOIsCallback(pois, customDone),
+            this::_onResultFetchingError
+        );
     }
 
     private void _setBistroContent() {
@@ -83,7 +95,10 @@ public class ResultListFragment extends BaseFragment {
             fork();
         }
         getPlaceBLL().cancelAllTasks();
-        getPlaceBLL().getBistrosAround((pois) -> _fetchPOIsCallback(pois, customDone), this::onError);
+        getPlaceBLL().getBistrosAround(
+            (pois) -> _fetchPOIsCallback(pois, customDone),
+            this::_onResultFetchingError
+        );
     }
 
     private void _setCafeContent() {
@@ -96,7 +111,10 @@ public class ResultListFragment extends BaseFragment {
             fork();
         }
         getPlaceBLL().cancelAllTasks();
-        getPlaceBLL().getCafesAround((pois) -> _fetchPOIsCallback(pois, customDone), this::onError);
+        getPlaceBLL().getCafesAround(
+            (pois) -> _fetchPOIsCallback(pois, customDone),
+            this::_onResultFetchingError
+        );
     }
 
     @Nullable
@@ -130,11 +148,6 @@ public class ResultListFragment extends BaseFragment {
             () -> {
                 Action0 customDone = () -> _listWrapper.setRefreshing(false);
 
-                if (_currentAdapter == null) {
-                    // Content no set yet
-                    customDone.run();
-                    return;
-                }
                 switch (_currentType) {
                     case BAR:
                         _setBarContent(customDone);
