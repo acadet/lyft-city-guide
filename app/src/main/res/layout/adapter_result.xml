@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/AdapterResult"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ImageView
+        android:id="@+id/adapter_result_icon"
+        style="@style/WrapContent"
+        />
+
+    <LinearLayout
+        style="@style/AdapterResultNameWrapper"
+        >
+
+        <TextView
+            android:id="@+id/adapter_result_name"
+            style="@style/AdapterResultName"
+            tools:text="Mon bar"
+            />
+
+        <RatingBar
+            android:id="@+id/adapter_result_rating"
+            style="@style/AdapterResultRating"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/adapter_result_distance"
+        style="@style/AdapterResultDistance"
+        tools:text="0.4 mi"
+        />
+
+</LinearLayout>
