@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.structs.PointOfInterest;
+import com.lyft.cityguide.ui.components.StarBar;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
         View adapter;
         ImageView icon;
         TextView name, distance;
-        RatingBar rating;
+        StarBar rating;
         PointOfInterest currentPOI;
 
         adapter = recycle(convertView, R.layout.adapter_result, parent);
