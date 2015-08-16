@@ -14,6 +14,7 @@ import com.lyft.cityguide.models.beans.Place;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
 import com.lyft.cityguide.models.bll.utils.PlaceSearchResult;
 import com.lyft.cityguide.models.structs.PointOfInterest;
+import com.lyft.cityguide.utils.DeviceHelper;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
 
@@ -137,6 +138,11 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                         && _latestLocationDate.plusSeconds(LOCATION_COOLDOWN_SEC).isAfterNow()) {
                         fetchAction.run();
                     } else {
+                        if (!DeviceHelper.isNetworkAvailable(getContext())) {
+                            customFailure.run(getContext().getString(R.string.error_no_network));
+                            return;
+                        }
+
                         _locationManager.requestSingleUpdate(
                             LocationManager.NETWORK_PROVIDER,
                             new LocationListener() {
