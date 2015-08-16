@@ -46,6 +46,7 @@ public class StarBar extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             );
 
+        _wrapper.removeAllViewsInLayout();
         for (int i = 0; i < value; i++) {
             ImageView img = new ImageView(getContext());
 

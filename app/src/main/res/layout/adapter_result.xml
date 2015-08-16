@@ -8,6 +8,7 @@
 
     <ImageView
         android:id="@+id/adapter_result_icon"
+        android:src="@drawable/ic_unknown"
         style="@style/WrapContent"
         />
 

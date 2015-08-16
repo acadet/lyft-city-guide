@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.models.structs.PlaceType;
 import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.ui.components.StarBar;
 
@@ -19,8 +20,12 @@ import butterknife.ButterKnife;
  * @brief
  */
 public class ResultAdapter extends BaseAdapter<PointOfInterest> {
-    public ResultAdapter(List<PointOfInterest> items, Context context) {
+
+    private PlaceType _currentType;
+
+    public ResultAdapter(List<PointOfInterest> items, Context context, PlaceType type) {
         super(items, context);
+        _currentType = type;
     }
 
     private void _setDistance(TextView field, double value) {
@@ -34,6 +39,23 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
         text += " mi";
 
         field.setText(text);
+    }
+
+    private int _getIcon() {
+        switch (_currentType) {
+            case BAR:
+                return R.drawable.ic_bar;
+            case BISTRO:
+                return R.drawable.ic_bistro;
+            case CAFE:
+                return R.drawable.ic_cafe;
+            default:
+                return R.drawable.ic_unknown;
+        }
+    }
+
+    public void setType(PlaceType type) {
+        _currentType = type;
     }
 
     @Override
@@ -52,8 +74,10 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
 
         currentPOI = itemAt(position);
 
+        icon.setImageResource(_getIcon());
         name.setText(currentPOI.getPlace().getName());
         _setDistance(distance, currentPOI.getDistance());
+        rating.setRating(Math.round(currentPOI.getPlace().getRating()));
 
         return adapter;
     }

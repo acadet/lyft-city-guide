@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.models.structs.PlaceType;
 import com.lyft.cityguide.ui.adapters.ResultAdapter;
 
 import butterknife.Bind;
@@ -74,7 +75,7 @@ public class ResultListFragment extends BaseFragment {
                 } else {
                     _noContent.setVisibility(View.GONE);
                     _list.setVisibility(View.VISIBLE);
-                    _currentAdapter = new ResultAdapter(pois, getActivity());
+                    _currentAdapter = new ResultAdapter(pois, getActivity(), PlaceType.BAR);
                     _list.setAdapter(_currentAdapter);
                 }
             },
