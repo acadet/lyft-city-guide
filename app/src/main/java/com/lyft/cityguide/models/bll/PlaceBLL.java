@@ -142,11 +142,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                         public void success(PlaceSearchResult placeSearchResult, Response response) {
                             List<PointOfInterest> outcome = _toPOIs(placeSearchResult.getResults());
 
-                            if (_latestNextPageToken == placeSearchResult.getPageToken()) {
-                                _latestNextPageToken = null;
-                            } else {
-                                _latestNextPageToken = placeSearchResult.getPageToken();
-                            }
+                            _latestNextPageToken = placeSearchResult.getPageToken();
                             runOnMainThread(() -> success.run(outcome));
                         }
                     }

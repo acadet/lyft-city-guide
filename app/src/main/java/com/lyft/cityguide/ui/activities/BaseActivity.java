@@ -170,14 +170,17 @@ public abstract class BaseActivity extends Activity {
     }
 
     public void onEventMainThread(InfoEvent event) {
-        Crouton.makeText(this, event.getMessage(), Style.INFO);
+        Crouton.cancelAllCroutons();
+        Crouton.makeText(this, event.getMessage(), Style.INFO).show();
     }
 
     public void onEventMainThread(ConfirmationEvent event) {
-        Crouton.makeText(this, event.getMessage(), Style.CONFIRM);
+        Crouton.cancelAllCroutons();
+        Crouton.makeText(this, event.getMessage(), Style.CONFIRM).show();
     }
 
     public void onEventMainThread(ErrorEvent event) {
-        Crouton.makeText(this, event.getMessage(), Style.ALERT);
+        Crouton.cancelAllCroutons();
+        Crouton.makeText(this, event.getMessage(), Style.ALERT).show();
     }
 }
