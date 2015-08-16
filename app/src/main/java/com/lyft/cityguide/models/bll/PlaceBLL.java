@@ -11,6 +11,8 @@ import android.os.Looper;
 
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.beans.Place;
+import com.lyft.cityguide.models.bll.api.GooglePlaceAPI;
+import com.lyft.cityguide.models.bll.api.APIOutletFactory;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
 import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
 import com.lyft.cityguide.models.structs.PointOfInterest;
@@ -253,6 +255,15 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                 }
             )
         );
+    }
+
+    void connectAPI(Action<GooglePlaceAPI> success, Action<String> failure) {
+        APIOutletFactory
+            .googlePlace(getContext())
+            .connect(
+                (api) -> success.run(api),
+                () -> failure.run(getContext().getString(R.string.error_no_network))
+            );
     }
 
     @Override
