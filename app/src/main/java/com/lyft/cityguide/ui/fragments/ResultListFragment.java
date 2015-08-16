@@ -64,8 +64,10 @@ public class ResultListFragment extends BaseFragment {
         super.onResume();
 
         _isFetchingMore = false;
+        fork();
         getPlaceBLL().getBarsAround(
             (pois) -> {
+                done();
                 if (pois.size() == 0) {
                     _noContent.setVisibility(View.VISIBLE);
                     _list.setVisibility(View.GONE);
@@ -86,8 +88,10 @@ public class ResultListFragment extends BaseFragment {
         }
 
         _isFetchingMore = true;
+        fork();
         getPlaceBLL().moreBarsAround(
             (pois) -> {
+                done();
                 _isFetchingMore = false;
                 if (_currentAdapter == null) {
                     return;
