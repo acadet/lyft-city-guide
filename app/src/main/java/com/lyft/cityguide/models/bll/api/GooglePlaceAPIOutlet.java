@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.models.bll.api.interfaces.IGooglePlaceAPIOutlet;
 import com.lyft.cityguide.models.bll.serializers.PlaceSearchResultSerializer;
 import com.lyft.cityguide.models.bll.utils.PlaceSearchResult;
 import com.lyft.cityguide.utils.actions.Action;
