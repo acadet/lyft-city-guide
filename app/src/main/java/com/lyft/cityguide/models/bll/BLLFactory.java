@@ -25,7 +25,7 @@ public class BLLFactory {
         if (_place == null) {
             synchronized (_placeLock) {
                 if (_place == null) {
-                    _place = new PlaceBLL(context, distance(context));
+                    _place = new PlaceBLL(context, distance(context), settings(context));
                 }
             }
         }

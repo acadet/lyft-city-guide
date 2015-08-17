@@ -12,10 +12,12 @@ import android.os.Looper;
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.beans.Distance;
 import com.lyft.cityguide.models.beans.Place;
+import com.lyft.cityguide.models.beans.RangeSetting;
 import com.lyft.cityguide.models.bll.api.APIOutletFactory;
 import com.lyft.cityguide.models.bll.api.GooglePlaceAPI;
 import com.lyft.cityguide.models.bll.interfaces.IDistanceBLL;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
+import com.lyft.cityguide.models.bll.interfaces.ISettingsBLL;
 import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
 import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.utils.DeviceHelper;
@@ -39,6 +41,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     private final static int LOCATION_COOLDOWN_SEC = 20;
 
     private IDistanceBLL _distanceBLL;
+    private ISettingsBLL _settingsBLL;
 
     private LocationManager _locationManager;
     private Location        _latestLocation;
@@ -54,10 +57,11 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     private AsyncTask _getCafesAroundTask;
     private AsyncTask _moreCafesAroundTask;
 
-    PlaceBLL(Context context, IDistanceBLL distanceBLL) {
+    PlaceBLL(Context context, IDistanceBLL distanceBLL, ISettingsBLL settingsBLL) {
         super(context);
 
         _distanceBLL = distanceBLL;
+        _settingsBLL = settingsBLL;
 
         _locationManager = (LocationManager)
             getContext().getSystemService(Context.LOCATION_SERVICE);
@@ -105,9 +109,24 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                     Action0 fetchAction = () -> {
                         connectAPI(
                             (api) -> {
+                                int range;
+                                RangeSetting setting = _settingsBLL.get();
+
+                                switch (setting) {
+                                    case ONE_MILE:
+                                        range = 1;
+                                        break;
+                                    case TWO_MILE:
+                                        range = 2;
+                                        break;
+                                    default:
+                                        range = 5;
+                                        break;
+                                }
+
                                 api.search(
                                     latLngFromLocation(_latestLocation),
-                                    2000,
+                                    range * 1609,
                                     type,
                                     getAPIKey(),
                                     new BLLCallback<PlaceSearchResult>(customFailure) {
