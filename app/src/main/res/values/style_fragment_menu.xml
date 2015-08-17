@@ -12,7 +12,7 @@
         <item name="android:textColor">@color/pink</item>
     </style>
 
-    <style name="FragmentMenuLabel" parent="WrapContent">
+    <style name="FragmentMenuLabel" parent="MatchParentWrapContent">
         <item name="android:padding">@dimen/layout_margin</item>
 
         <item name="android:textSize">@dimen/subhead</item>
