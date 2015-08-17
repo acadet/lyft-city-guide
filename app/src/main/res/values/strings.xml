@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">City Guide</string>
-    <string name="menu_label">Menu</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="google_place_api_endpoint">https://maps.googleapis.com/maps/api/place/</string>

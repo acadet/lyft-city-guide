@@ -15,8 +15,8 @@
             />
 
         <TextView
-            android:text="@string/menu_label"
-            style="@style/FragmentHeaderMenu"
+            android:text="@string/app_name"
+            style="@style/FragmentHeaderAppName"
             />
 
     </LinearLayout>

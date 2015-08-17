@@ -12,7 +12,7 @@
         <item name="android:layout_height">30dp</item>
     </style>
 
-    <style name="FragmentHeaderMenu" parent="WrapContent">
+    <style name="FragmentHeaderAppName" parent="WrapContent">
         <item name="android:layout_marginLeft">20dp</item>
 
         <item name="android:textSize">@dimen/title</item>
