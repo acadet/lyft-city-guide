@@ -12,7 +12,7 @@ import java.util.List;
  * @class IDistanceBLL
  * @brief
  */
-public interface IDistanceBLL {
+public interface IDistanceBLL extends IBLL {
     void getDistances(Location currentLocation, List<Place> places,
                       Action<List<Distance>> success, Action<String> failure);
 }

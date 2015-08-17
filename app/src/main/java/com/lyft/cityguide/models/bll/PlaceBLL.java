@@ -362,4 +362,10 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
             () -> _moreCafesAroundTask = null
         );
     }
+
+    @Override
+    public void cancelAllTasks() {
+        super.cancelAllTasks();
+        _distanceBLL.cancelAllTasks();
+    }
 }
