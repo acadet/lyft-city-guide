@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.beans.RangeSetting;
+import com.lyft.cityguide.ui.activities.BaseActivity;
+import com.lyft.cityguide.ui.events.ConfirmationEvent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -76,6 +78,9 @@ public class SettingsFragment extends BaseFragment {
                     }
 
                     getSettingsBLL().save(RangeSetting.fromInt(progress));
+                    BaseActivity
+                        .getPopupBus()
+                        .post(new ConfirmationEvent(getString(R.string.settings_save_confirmation)));
                 }
 
                 @Override
