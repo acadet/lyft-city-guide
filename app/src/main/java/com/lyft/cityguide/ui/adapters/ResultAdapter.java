@@ -78,7 +78,7 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
 
         icon.setImageResource(_getIcon());
         name.setText(currentPOI.getPlace().getName());
-        _setDistance(distance, currentPOI.getDistance());
+        _setDistance(distance, currentPOI.getDistance().toMiles());
         rating.setRating(Math.round(currentPOI.getPlace().getRating()));
 
         YoYo.with(Techniques.FadeIn)

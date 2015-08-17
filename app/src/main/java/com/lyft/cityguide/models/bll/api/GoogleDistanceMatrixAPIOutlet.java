@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.bll.api.interfaces.IGoogleDistanceMatrixAPIOutlet;
 import com.lyft.cityguide.models.bll.serializers.DistanceResultSerializer;
+import com.lyft.cityguide.models.bll.structs.DistanceResult;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
 
@@ -26,7 +27,7 @@ class GoogleDistanceMatrixAPIOutlet implements IGoogleDistanceMatrixAPIOutlet {
 
     private RestAdapter.Builder _build() {
         Gson gson = new GsonBuilder()
-            .registerTypeAdapter(DistanceResultSerializer.class, new DistanceResultSerializer())
+            .registerTypeAdapter(DistanceResult.class, new DistanceResultSerializer())
             .create();
 
         return new RestAdapter.Builder()
