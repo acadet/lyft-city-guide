@@ -109,11 +109,15 @@ class BaseBLL implements IBLL {
 
     @Override
     public void cancelAllTasks() {
-        synchronized (_backgroundTaskLock) {
-            for (AsyncTask t : _backgroundTasks) {
-                t.cancel(true);
+        if (_backgroundTasks.size() > 0) { // Do not lock if nothing to remove
+            synchronized (_backgroundTaskLock) {
+                if (_backgroundTasks.size() > 0) {
+                    for (AsyncTask t : _backgroundTasks) {
+                        t.cancel(true);
+                    }
+                    _backgroundTasks = new LinkedList<>();
+                }
             }
-            _backgroundTasks = new LinkedList<>();
         }
     }
 }
