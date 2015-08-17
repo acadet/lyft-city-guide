@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/adapter_result_name"
             style="@style/AdapterResultName"
-            tools:text="Mon bar"
+            tools:text="My bar"
             />
 
         <com.lyft.cityguide.ui.components.StarBar
