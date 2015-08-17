@@ -43,11 +43,20 @@ public class ResultListFragment extends BaseFragment {
     @Bind(R.id.fragment_result_list)
     ListView _list;
 
+    /**
+     * Displays a no content msg (if no element at all)
+     */
     private void _setNoContentMessage() {
         _noContent.setVisibility(View.VISIBLE);
         _list.setVisibility(View.GONE);
     }
 
+    /**
+     * Displays fetched POIs. Allows a custom done callback for spinners
+     *
+     * @param pois
+     * @param customDone
+     */
     private void _fetchPOIsCallback(List<PointOfInterest> pois, Action0 customDone) {
         if (pois.size() == 0) {
             _setNoContentMessage();
@@ -57,6 +66,7 @@ public class ResultListFragment extends BaseFragment {
             _currentAdapter = new ResultAdapter(pois, getActivity(), _currentType);
             _list.setAdapter(_currentAdapter);
         }
+
         if (customDone != null) {
             customDone.run();
         } else {
@@ -138,12 +148,16 @@ public class ResultListFragment extends BaseFragment {
                         && _list.getLastVisiblePosition() == (_list.getAdapter().getCount() - 1)
                         && _list.getChildAt(_list.getChildCount() - 1).getBottom() <= _list
                         .getHeight()) {
+                        // Display more content when reaching the bottom of the list
+                        // Do not fetch if latest element is not at the bottom (no
+                        // more element)
                         onMore();
                     }
                 }
             }
         );
 
+        // Pull to refresh support
         _listWrapper.setOnRefreshListener(
             () -> {
                 Action0 customDone = () -> _listWrapper.setRefreshing(false);

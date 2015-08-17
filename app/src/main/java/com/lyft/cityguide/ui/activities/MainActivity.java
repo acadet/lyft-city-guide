@@ -18,6 +18,10 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 
+/**
+ * @class MainActivity
+ * @brief Handles main layout (header + body + aside menu)
+ */
 public class MainActivity extends BaseActivity {
     private void _setDefaultContent() {
         Map<Integer, Fragment> fragments = new HashMap<>();

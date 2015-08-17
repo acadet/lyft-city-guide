@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @class BaseAdapter
- * @brief
+ * @brief Generic base adapter
  */
 public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
     private List<T>        _items;
@@ -53,6 +53,15 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
         return _inflater;
     }
 
+    /**
+     * Recycles view if possible, else instanciante a new one
+     *
+     * @param convertView
+     * @param layoutId
+     * @param parent
+     * @param <U>
+     * @return
+     */
     public <U extends View> U recycle(View convertView, int layoutId, ViewGroup parent) {
         if (convertView == null) {
             return (U) getLayoutInflater().inflate(layoutId, parent, false);

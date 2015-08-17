@@ -31,11 +31,13 @@ public abstract class BaseActivity extends Activity {
     private final static int SPINNER_DELAY_MS         = 250;
     private final static int SPINNER_DELAY_TIMEOUT_MS = 10 * 1000;
 
+    // Custom event buses
     private static EventBus _spinnerBus;
     private final static Object _spinnerBusLock = new Object();
     private static EventBus _popupBus;
     private final static Object _popupBusLock = new Object();
 
+    // Relative to the spinner
     private ProgressDialog _spinner;
     private int            _backgroundThreads;
     private Handler        _spinnerDelayHandler;
@@ -54,6 +56,12 @@ public abstract class BaseActivity extends Activity {
             .commit();
     }
 
+    /**
+     * Sets new fragments
+     *
+     * @param fragments
+     * @param keepInStack
+     */
     void setFragments(Map<Integer, Fragment> fragments, boolean keepInStack) {
         FragmentTransaction t = getFragmentManager().beginTransaction();
 
@@ -98,10 +106,12 @@ public abstract class BaseActivity extends Activity {
         getSpinnerBus().unregister(this);
         getPopupBus().unregister(this);
 
+        // Stop spinner
         if (_spinner != null && _spinner.isShowing()) {
             _spinner.dismiss();
         }
 
+        // Cancel pending timers
         if (_spinnerDelayHandler != null) {
             _spinnerDelayHandler.removeCallbacksAndMessages(null);
         }
@@ -109,6 +119,7 @@ public abstract class BaseActivity extends Activity {
             _spinnerTimeoutHandler.removeCallbacksAndMessages(null);
         }
 
+        // Cancel background tasks
         getPlaceBLL().cancelAllTasks();
     }
 
@@ -152,15 +163,17 @@ public abstract class BaseActivity extends Activity {
     public void onEventMainThread(ForkEvent event) {
         _backgroundThreads++;
 
-        if (_backgroundThreads == 1) {
+        if (_backgroundThreads == 1) { // Run on UI thread only, so no lock
             _spinnerDelayHandler = new Handler(Looper.getMainLooper());
-            // Delay showing
+
+            // Delay showing for short operations
             _spinnerDelayHandler.postDelayed(
                 () -> {
                     _spinnerDelayHandler = null;
                     _spinner.show();
                     _spinner.setContentView(R.layout.spinner); // Must be called after show()
 
+                    // Hide it automatically after a certain timeout
                     _spinnerTimeoutHandler = new Handler(Looper.getMainLooper());
                     _spinnerTimeoutHandler.postDelayed(
                         () -> {
@@ -179,13 +192,14 @@ public abstract class BaseActivity extends Activity {
     public void onEventMainThread(DoneEvent event) {
         _backgroundThreads--;
 
-        if (_backgroundThreads == 0) {
+        if (_backgroundThreads == 0) { // Run on UI thread only, so no lock
             if (_spinnerDelayHandler == null) {
                 _spinner.dismiss();
                 if (_spinnerTimeoutHandler != null) {
                     _spinnerTimeoutHandler.removeCallbacksAndMessages(null);
                 }
             } else {
+                // Still hidden
                 _spinnerDelayHandler.removeCallbacksAndMessages(null);
             }
         }

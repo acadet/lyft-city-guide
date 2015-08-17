@@ -15,18 +15,24 @@ import com.lyft.cityguide.ui.utils.MetricHelper;
 
 /**
  * @class Slider
- * @brief
+ * @brief Custom slider component
  */
 public class Slider extends LinearLayout {
-    public static interface SliderListener {
+    /**
+     * @class SliderListener
+     * @brief Custom listener for this component. Triggered when a new value has been set
+     */
+    public interface SliderListener {
         void onSlide(int index, CharSequence label);
     }
 
     private LinearLayout _labelWrapper;
 
+    // For internal purpose only
     private int            _currentIndex;
     private SliderListener _listener;
 
+    // Custom attributes
     private CharSequence[] _labels;
     private int            _selectedForeground;
     private int            _defaultForeground;
@@ -50,8 +56,8 @@ public class Slider extends LinearLayout {
                     int touchedIndex = Math.round(event.getX()) / (width / n);
 
                     if (touchedIndex != _currentIndex) {
-                        _setDefault((TextView) _labelWrapper.getChildAt(_currentIndex));
-                        _setCurrent((TextView) _labelWrapper.getChildAt(touchedIndex));
+                        _setFieldAsDefault((TextView) _labelWrapper.getChildAt(_currentIndex));
+                        _setFieldAsCurrent((TextView) _labelWrapper.getChildAt(touchedIndex));
 
                         _currentIndex = touchedIndex;
                         if (_listener != null) {
@@ -64,6 +70,7 @@ public class Slider extends LinearLayout {
             }
         );
 
+        // Collect custom attributes
         TypedArray styledAttributes = context.obtainStyledAttributes(attributes, R.styleable.Slider);
         _selectedForeground = styledAttributes.getColor(
             R.styleable.Slider_selectedForeground, getResources().getColor(android.R.color.black)
@@ -73,6 +80,7 @@ public class Slider extends LinearLayout {
         );
         _fontSize = styledAttributes.getDimension(R.styleable.Slider_fontSize, 12f);
 
+        // Set content
         setLabels(styledAttributes.getTextArray(R.styleable.Slider_labels));
     }
 
@@ -80,16 +88,21 @@ public class Slider extends LinearLayout {
         this(context, null);
     }
 
-    private void _setCurrent(TextView field) {
+    private void _setFieldAsCurrent(TextView field) {
         field.setTextColor(_selectedForeground);
         field.setBackgroundResource(R.drawable.slider_thumb);
     }
 
-    private void _setDefault(TextView field) {
+    private void _setFieldAsDefault(TextView field) {
         field.setTextColor(_defaultForeground);
         field.setBackgroundResource(0);
     }
 
+    /**
+     * Builds the internal content of the slider
+     *
+     * @param labels
+     */
     public void setLabels(CharSequence[] labels) {
         int i = 0;
         LinearLayout.LayoutParams params;
@@ -111,9 +124,9 @@ public class Slider extends LinearLayout {
             t.setPadding(padding, padding, padding, padding);
 
             if (i == _currentIndex) {
-                _setCurrent(t);
+                _setFieldAsCurrent(t);
             } else {
-                _setDefault(t);
+                _setFieldAsDefault(t);
             }
 
             t.setText(c);

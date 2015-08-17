@@ -13,7 +13,7 @@ import com.lyft.cityguide.ui.utils.MetricHelper;
 
 /**
  * @class StarBar
- * @brief
+ * @brief Custom star bar component (similar to a rating bar)
  */
 public class StarBar extends LinearLayout {
     private LinearLayout _wrapper;
@@ -31,6 +31,8 @@ public class StarBar extends LinearLayout {
         inflater.inflate(R.layout.component_star_bar, this, true);
 
         _wrapper = (LinearLayout) findViewById(R.id.component_star_bar_wrapper);
+
+        // Collect custom attributes
         TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.Slider);
         setRating(styledAttributes.getInteger(R.styleable.StarBar_rating, 0));
         setNumbers(styledAttributes.getInteger(R.styleable.StarBar_numbers, 5));

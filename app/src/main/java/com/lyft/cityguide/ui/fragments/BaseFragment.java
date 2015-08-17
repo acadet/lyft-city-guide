@@ -16,15 +16,16 @@ import de.greenrobot.event.EventBus;
 
 /**
  * @class BaseFragment
- * @brief
+ * @brief Mother of any fragment
  */
 public class BaseFragment extends Fragment {
+    // Relative to event buses
     private static EventBus _resultListBus;
     private final static Object _resultListBusLock = new Object();
-
     private static EventBus _menuBus;
     private final static Object _menuBusLock = new Object();
 
+    // Relative to BLLs
     IPlaceBLL getPlaceBLL() {
         return BLLFactory.place(getActivity());
     }
@@ -33,6 +34,7 @@ public class BaseFragment extends Fragment {
         return BLLFactory.settings(getActivity());
     }
 
+    // Relative to the message pipeline
     void inform(String message) {
         BaseActivity.getPopupBus().post(new InfoEvent(message));
     }
@@ -45,6 +47,7 @@ public class BaseFragment extends Fragment {
         BaseActivity.getPopupBus().post(new ErrorEvent(message));
     }
 
+    // Relative to the spinner pipeline
     void fork() {
         BaseActivity.getSpinnerBus().post(new ForkEvent());
     }

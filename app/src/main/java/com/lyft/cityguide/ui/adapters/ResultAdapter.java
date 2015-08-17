@@ -30,6 +30,12 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
         _currentType = type;
     }
 
+    /**
+     * Fills distance field with a user-friendly value
+     *
+     * @param field
+     * @param value
+     */
     private void _setDistance(TextView field, double value) {
         String text;
 
@@ -60,10 +66,6 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
             default:
                 return R.drawable.ic_unknown;
         }
-    }
-
-    public void setType(PlaceType type) {
-        _currentType = type;
     }
 
     @Override

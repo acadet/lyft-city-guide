@@ -22,7 +22,7 @@ import butterknife.OnTouch;
 
 /**
  * @class MenuFragment
- * @brief
+ * @brief Handles aside menu
  */
 public class MenuFragment extends BaseFragment {
     private boolean _isVisible;
@@ -109,6 +109,7 @@ public class MenuFragment extends BaseFragment {
 
     @OnTouch(R.id.fragment_menu)
     public boolean onTouch(View view, MotionEvent e) {
+        // Hide if slightly touched
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
             _startPoint = new Point(Math.round(e.getX()), Math.round(e.getY()));
         } else if (e.getAction() == MotionEvent.ACTION_MOVE && _startPoint != null) {
