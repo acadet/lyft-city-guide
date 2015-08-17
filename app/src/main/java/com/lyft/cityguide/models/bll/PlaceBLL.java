@@ -69,11 +69,19 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
 
     private List<PointOfInterest> _toPOIs(List<Place> places, List<Distance> distances) {
         List<PointOfInterest> outcome = new ArrayList<>();
+        int s2 = distances.size();
 
-        for (int i = 0, s = places.size(); i < s; i++) {
-            outcome.add(
-                new PointOfInterest(places.get(i), distances.get(i))
-            );
+        for (int i = 0, s1 = places.size(); i < s1; i++) {
+            Distance d;
+
+            if (i < s2) {
+                d = distances.get(i);
+            } else { // No distance found, prevent index overflows
+                d = new Distance();
+                d.setDistance(0);
+            }
+
+            outcome.add(new PointOfInterest(places.get(i), d));
         }
 
         return outcome;
