@@ -13,6 +13,14 @@ import java.util.List;
  * @brief
  */
 public interface IDistanceBLL extends IBLL {
+    /**
+     * Returns distances between current location and provided places
+     *
+     * @param currentLocation
+     * @param places
+     * @param success
+     * @param failure
+     */
     void getDistances(Location currentLocation, List<Place> places,
                       Action<List<Distance>> success, Action<String> failure);
 }

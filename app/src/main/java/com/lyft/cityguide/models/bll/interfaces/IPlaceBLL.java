@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @class IPlaceBLL
- * @brief
+ * @brief Provides all the operations relative to places
  */
 public interface IPlaceBLL extends IBLL {
     void getBarsAround(Action<List<PointOfInterest>> success, Action<String> failure);

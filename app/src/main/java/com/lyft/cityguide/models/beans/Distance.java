@@ -5,7 +5,7 @@ package com.lyft.cityguide.models.beans;
  * @brief
  */
 public class Distance {
-    private float _distance; // in meters
+    private float _distance; // stored in meters
 
     public float getDistance() {
         return _distance;

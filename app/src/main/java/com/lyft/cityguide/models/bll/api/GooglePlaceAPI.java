@@ -8,7 +8,7 @@ import retrofit.http.Query;
 
 /**
  * @class GooglePlaceAPI
- * @brief
+ * @brief https://developers.google.com/places/webservice/intro
  */
 public interface GooglePlaceAPI {
     @GET("/nearbysearch/json")

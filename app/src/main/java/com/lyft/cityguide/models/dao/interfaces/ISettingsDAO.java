@@ -4,7 +4,7 @@ import com.lyft.cityguide.models.beans.RangeSetting;
 
 /**
  * @class ISettingsDAO
- * @brief
+ * @brief Saves settings
  */
 public interface ISettingsDAO {
     RangeSetting get();

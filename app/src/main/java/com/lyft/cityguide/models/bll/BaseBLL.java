@@ -20,10 +20,11 @@ import retrofit.RetrofitError;
 
 /**
  * @class BaseBLL
- * @brief
+ * @brief Mother of all BLL classes
  */
 class BaseBLL implements IBLL {
     private Context         _context;
+    // Store background tasks relative to current instance
     private List<AsyncTask> _backgroundTasks;
     private final Object _backgroundTaskLock = new Object();
 
@@ -53,8 +54,14 @@ class BaseBLL implements IBLL {
         return getContext().getString(R.string.google_service_api_key);
     }
 
+    /**
+     * Formats the location for the Google APIs
+     *
+     * @param l
+     * @return
+     */
     String latLngFromLocation(Location l) {
-        return new Double(l.getLatitude()).toString() + ',' + new Double(l.getLongitude()).toString();
+        return l.getLatitude() + "," + l.getLongitude();
     }
 
     AsyncTask runInBackground(Action0 task) {
@@ -87,6 +94,11 @@ class BaseBLL implements IBLL {
         }
     }
 
+    /**
+     * Must be called by any async task when it is done
+     *
+     * @param task
+     */
     void whenDone(AsyncTask task) {
         synchronized (_backgroundTaskLock) {
             for (int i = 0, s = _backgroundTasks.size(); i < s; i++) {

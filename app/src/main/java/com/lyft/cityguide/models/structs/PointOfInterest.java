@@ -5,7 +5,7 @@ import com.lyft.cityguide.models.beans.Place;
 
 /**
  * @class PointOfInterest
- * @brief
+ * @brief Wraps place + distance for the UI layer
  */
 public class PointOfInterest {
     private Place    _place;

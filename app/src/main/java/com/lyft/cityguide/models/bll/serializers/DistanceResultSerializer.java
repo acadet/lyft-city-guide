@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 
 /**
  * @class DistanceResultSerializer
- * @brief
+ * @brief Cf. documentation for schema
  */
 public class DistanceResultSerializer implements JsonDeserializer<DistanceResult> {
     @Override
@@ -24,7 +24,7 @@ public class DistanceResultSerializer implements JsonDeserializer<DistanceResult
                       .get("rows")
                       .getAsJsonArray();
 
-        if (rowNode.size() < 1) {
+        if (rowNode.size() < 1) { // No result has been returned
             return result;
         }
 

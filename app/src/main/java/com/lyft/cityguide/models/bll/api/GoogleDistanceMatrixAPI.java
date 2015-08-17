@@ -8,7 +8,7 @@ import retrofit.http.Query;
 
 /**
  * @class GoogleDistanceMatrixAPI
- * @brief
+ * @brief https://developers.google.com/maps/documentation/distancematrix/intro
  */
 public interface GoogleDistanceMatrixAPI {
     @GET("/json")

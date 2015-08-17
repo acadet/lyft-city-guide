@@ -41,7 +41,7 @@ class DistanceBLL extends BaseBLL implements IDistanceBLL {
 
     @Override
     public void getDistances(Location currentLocation, List<Place> places, Action<List<Distance>> success, Action<String> failure) {
-        if (_getDistancesTask != null) {
+        if (_getDistancesTask != null) { // Cancel same task if any
             synchronized (_asyncTaskLock) {
                 if (_getDistancesTask != null) {
                     cancel(_getDistancesTask);
@@ -60,6 +60,7 @@ class DistanceBLL extends BaseBLL implements IDistanceBLL {
                 };
                 StringBuffer destinations = new StringBuffer();
 
+                // Format data for the API
                 for (int i = 0, s = places.size(); i < s; i++) {
                     Place p = places.get(i);
 
@@ -76,7 +77,7 @@ class DistanceBLL extends BaseBLL implements IDistanceBLL {
                 connectAPI(
                     (api) -> {
                         api.getDistances(
-                            currentLocation.getLatitude() + "," + currentLocation.getLongitude(),
+                            latLngFromLocation(currentLocation),
                             destinations.toString(),
                             "walking",
                             "en",

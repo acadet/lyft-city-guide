@@ -38,6 +38,7 @@ import retrofit.client.Response;
 class PlaceBLL extends BaseBLL implements IPlaceBLL {
     private final static Object _asyncTaskLock = new Object();
 
+    // Prevent app to fetch location anytime
     private final static int LOCATION_COOLDOWN_SEC = 20;
 
     private IDistanceBLL _distanceBLL;
@@ -48,6 +49,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     private DateTime        _latestLocationDate;
     private String          _latestNextPageToken;
 
+    // Background tasks
     private AsyncTask _getBarsAroundTask;
     private AsyncTask _moreBarsAroundTask;
 
@@ -67,6 +69,13 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
             getContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
+    /**
+     * Returns a list of POIs using places and distances
+     *
+     * @param places
+     * @param distances
+     * @return
+     */
     private List<PointOfInterest> _toPOIs(List<Place> places, List<Distance> distances) {
         List<PointOfInterest> outcome = new ArrayList<>();
         int s2 = distances.size();
@@ -87,12 +96,22 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
         return outcome;
     }
 
+    /**
+     * Generic method for returning POIs
+     *
+     * @param success
+     * @param failure
+     * @param type             Type to fetch
+     * @param taskPointer      Background task pointer
+     * @param setTaskPointer   Action setting pointer
+     * @param resetTaskPointer Action resetting pointer
+     */
     private void _getPOIsAround(
         Action<List<PointOfInterest>> success, Action<String> failure,
         String type, final AsyncTask taskPointer, Action<AsyncTask> setTaskPointer,
         Action0 resetTaskPointer) {
 
-        if (taskPointer != null) {
+        if (taskPointer != null) { // Abort similar task if any
             synchronized (_asyncTaskLock) {
                 if (taskPointer != null) {
                     cancel(taskPointer);
@@ -114,6 +133,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                         runOnMainThread(() -> failure.run(s));
                     };
 
+                    // Action to trigger once the location has been engined
                     Action0 fetchAction = () -> {
                         connectAPI(
                             (api) -> {
@@ -157,7 +177,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                                     },
                                                     customFailure
                                                 );
-                                            } else {
+                                            } else { // No matching place. Return an empty list
                                                 List<PointOfInterest> outcome = new ArrayList<>();
 
                                                 customWhenDone.run();
@@ -172,15 +192,21 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                     };
 
                     _latestNextPageToken = null;
+
                     if (_latestLocationDate != null
                         && _latestLocationDate.plusSeconds(LOCATION_COOLDOWN_SEC).isAfterNow()) {
+                        // Prevent too many location research
                         fetchAction.run();
                     } else {
                         if (!DeviceHelper.isNetworkAvailable(getContext())) {
+                            // No connectivity
                             customFailure.run(getContext().getString(R.string.error_no_network));
                             return;
                         }
 
+                        // This service requires the main thread to run
+                        // Then, following actions are dispatched when
+                        // the location has been engined
                         _locationManager.requestSingleUpdate(
                             LocationManager.NETWORK_PROVIDER,
                             new LocationListener() {
@@ -203,6 +229,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                 public void onStatusChanged(String provider, int status, Bundle extras) {
                                     if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
                                         if (_latestLocation != null) {
+                                            // Use latest location if no connectivity
                                             customWhenDone.run();
                                             setTaskPointer.run(
                                                 runInBackground(
@@ -235,6 +262,15 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
         );
     }
 
+    /**
+     * Generic method for fetching more POIs around
+     *
+     * @param success
+     * @param failure
+     * @param taskPointer
+     * @param setTaskPointer
+     * @param resetTaskPointer
+     */
     private void _morePOIsAround(
         Action<List<PointOfInterest>> success, Action<String> failure,
         final AsyncTask taskPointer, Action<AsyncTask> setTaskPointer,
@@ -245,7 +281,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
             return;
         }
 
-        if (taskPointer != null) {
+        if (taskPointer != null) { // Prevent similar task
             synchronized (_asyncTaskLock) {
                 if (taskPointer != null) {
                     cancel(taskPointer);
@@ -393,6 +429,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     @Override
     public void cancelAllTasks() {
         super.cancelAllTasks();
+        // As this class uses the distanceBLL, abort its pending operations too
         _distanceBLL.cancelAllTasks();
     }
 }

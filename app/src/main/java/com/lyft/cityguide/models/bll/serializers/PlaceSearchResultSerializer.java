@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
 
 /**
  * @class PlaceSearchResultSerializer
- * @brief
+ * @brief Cf. documentation for schema
  */
 public class PlaceSearchResultSerializer implements JsonDeserializer<PlaceSearchResult> {
     @Override
