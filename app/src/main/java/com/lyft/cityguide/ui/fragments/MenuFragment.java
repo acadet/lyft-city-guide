@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.ui.events.ShowSettings;
 import com.lyft.cityguide.ui.events.ToggleMenuEvent;
 import com.nineoldandroids.animation.Animator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTouch;
 
 /**
@@ -121,4 +123,9 @@ public class MenuFragment extends BaseFragment {
         return true;
     }
 
+    @OnClick(R.id.fragment_menu_settings)
+    public void onSettingsClick(View v) {
+        hide();
+        getMenuBus().post(new ShowSettings());
+    }
 }

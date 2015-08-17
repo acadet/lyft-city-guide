@@ -18,11 +18,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * @class HeaderFragment
+ * @class ResultListHeaderFragment
  * @brief
  */
-public class HeaderFragment extends BaseFragment {
-    @Bind(R.id.fragment_header_slider)
+public class ResultListHeaderFragment extends BaseFragment {
+    @Bind(R.id.fragment_result_list_header_slider)
     Slider _slider;
 
     @Nullable
@@ -30,7 +30,7 @@ public class HeaderFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_header, container, false);
+        fragment = inflater.inflate(R.layout.fragment_result_list_header, container, false);
         ButterKnife.bind(this, fragment);
 
         _slider.setOnSlideListener(
@@ -52,7 +52,7 @@ public class HeaderFragment extends BaseFragment {
         return fragment;
     }
 
-    @OnClick(R.id.fragment_header_menu)
+    @OnClick(R.id.fragment_result_list_header_menu)
     public void onMenuToggle(View v) {
         BaseFragment.getMenuBus().post(new ToggleMenuEvent());
     }

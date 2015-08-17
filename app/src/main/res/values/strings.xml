@@ -26,5 +26,5 @@
         <item>Café</item>
     </array>
 
-    <string name="menu_settings">Settings</string>
+    <string name="settings_label">Settings</string>
 </resources>

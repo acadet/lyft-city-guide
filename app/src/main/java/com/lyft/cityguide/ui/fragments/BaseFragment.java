@@ -68,7 +68,7 @@ public class BaseFragment extends Fragment {
         return _resultListBus;
     }
 
-    static EventBus getMenuBus() {
+    public static EventBus getMenuBus() {
         if (_menuBus == null) {
             synchronized (_menuBusLock) {
                 if (_menuBus == null) {
