@@ -21,6 +21,9 @@ public class BaseFragment extends Fragment {
     private static EventBus _resultListBus;
     private final static Object _resultListBusLock = new Object();
 
+    private static EventBus _menuBus;
+    private final static Object _menuBusLock = new Object();
+
     IPlaceBLL getPlaceBLL() {
         return BLLFactory.place(getActivity());
     }
@@ -63,5 +66,20 @@ public class BaseFragment extends Fragment {
         }
 
         return _resultListBus;
+    }
+
+    static EventBus getMenuBus() {
+        if (_menuBus == null) {
+            synchronized (_menuBusLock) {
+                if (_menuBus == null) {
+                    _menuBus = EventBus.builder()
+                                       .logNoSubscriberMessages(true)
+                                       .sendNoSubscriberEvent(true)
+                                       .build();
+                }
+            }
+        }
+
+        return _menuBus;
     }
 }

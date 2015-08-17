@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.ui.fragments.HeaderFragment;
+import com.lyft.cityguide.ui.fragments.MenuFragment;
 import com.lyft.cityguide.ui.fragments.ResultListFragment;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class MainActivity extends BaseActivity {
 
         fragments.put(R.id.main_header, new HeaderFragment());
         fragments.put(R.id.main_body, new ResultListFragment());
+        fragments.put(R.id.main_menu, new MenuFragment());
 
         setFragments(fragments);
     }

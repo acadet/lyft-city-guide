@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/fragment_menu"
+    android:visibility="gone"
+    style="@style/MainMenu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:visiblity="visible"
+    >
+
+    <LinearLayout
+        style="@style/MainMenuInnerWrapper"
+        >
+
+        <TextView
+            android:text="@string/app_name"
+            style="@style/FragmentMenuTitle"
+            />
+
+        <TextView
+            android:id="@+id/fragment_menu_settings"
+            android:text="@string/menu_settings"
+            style="@style/FragmentMenuLabel"
+            />
+
+        <ImageView
+            style="@style/FragmentMenuSeparator"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

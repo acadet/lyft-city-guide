@@ -25,4 +25,6 @@
         <item>Bistro</item>
         <item>Café</item>
     </array>
+
+    <string name="menu_settings">Settings</string>
 </resources>

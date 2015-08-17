@@ -8,4 +8,8 @@
     </style>
 
     <style name="MainBody" parent="FullVerticalStretchable"></style>
+
+    <style name="MainMenu" parent="MatchParent">
+        <item name="android:paddingRight">20dp</item>
+    </style>
 </resources>

@@ -5,4 +5,7 @@
     <color name="black">#595955</color>
     <color name="gray">#DEDDDB</color>
     <color name="orange">#F5A500</color>
+
+    <color name="menu_background">#1c1c1c</color>
+    <color name="menu_separator">#000</color>
 </resources>

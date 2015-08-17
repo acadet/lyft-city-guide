@@ -120,7 +120,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                             if (places.size() > 0) {
                                                 _distanceBLL.getDistances(
                                                     _latestLocation,
-                                                    placeSearchResult.getResults(),
+                                                    places,
                                                     (distances) -> {
                                                         List<PointOfInterest> outcome
                                                             = _toPOIs(places, distances);
@@ -252,7 +252,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                         if (places.size() > 0) {
                                             _distanceBLL.getDistances(
                                                 _latestLocation,
-                                                placeSearchResult.getResults(),
+                                                places,
                                                 (distances) -> {
                                                     List<PointOfInterest> outcome
                                                         = _toPOIs(places, distances);

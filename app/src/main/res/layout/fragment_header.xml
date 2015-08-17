@@ -10,6 +10,7 @@
         >
 
         <ImageView
+            android:id="@+id/fragment_header_menu"
             android:src="@drawable/ic_menu"
             style="@style/FragmentHeaderMenuIcon"
             />
