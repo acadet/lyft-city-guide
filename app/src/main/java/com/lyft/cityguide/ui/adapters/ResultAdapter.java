@@ -33,10 +33,15 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
     private void _setDistance(TextView field, double value) {
         String text;
 
+        if (value < 0.001) { // No value or too small
+            field.setText("");
+            return;
+        }
         if (value < 1) {
             text = "0." + ((int) Math.floor(value * 100));
         } else {
-            text = "1." + ((int) (Math.floor(value * 100) - Math.floor(value) * 100));
+            text = ((int) Math.floor(value)) + ".";
+            text += ((int) (Math.floor(value * 100) - Math.floor(value) * 100));
         }
 
         text += " mi";
