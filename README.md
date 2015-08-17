@@ -4,10 +4,10 @@ My implementation of the Lyft City Guide exercice.
 
 Supports:
 
-* Any required functional feature. 
-* Settings support
-* Use the Google Distance API.
-* Supports pull to refresh
+* Any required functional feature
+* Settings
+* Google Distance API
+* Pull to refresh
 
 ## Architecture
 
@@ -23,7 +23,7 @@ Wraps the following components:
 
 ### Model
 
-* Beans: the POJO
+* Beans: aka POJOs
 * BLL: the smartest part of the model. Handles any connection with the APIs and engines data if needed. Runs long operations in the background, whenever it is possible.
 * DAO: data access layer. Only saves settings
 
