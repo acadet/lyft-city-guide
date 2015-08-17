@@ -1,4 +1,4 @@
-package com.lyft.cityguide.models.bll.utils;
+package com.lyft.cityguide.models.bll.structs;
 
 import com.lyft.cityguide.models.beans.Place;
 

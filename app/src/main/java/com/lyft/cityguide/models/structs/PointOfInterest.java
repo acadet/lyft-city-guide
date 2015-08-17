@@ -1,5 +1,6 @@
 package com.lyft.cityguide.models.structs;
 
+import com.lyft.cityguide.models.beans.Distance;
 import com.lyft.cityguide.models.beans.Place;
 
 /**
@@ -7,10 +8,10 @@ import com.lyft.cityguide.models.beans.Place;
  * @brief
  */
 public class PointOfInterest {
-    private Place  _place;
-    private double _distance;
+    private Place    _place;
+    private Distance _distance;
 
-    public PointOfInterest(Place place, double distance) {
+    public PointOfInterest(Place place, Distance distance) {
         _place = place;
         _distance = distance;
     }
@@ -19,7 +20,7 @@ public class PointOfInterest {
         return _place;
     }
 
-    public double getDistance() {
+    public Distance getDistance() {
         return _distance;
     }
 }

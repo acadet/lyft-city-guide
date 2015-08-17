@@ -5,50 +5,50 @@ package com.lyft.cityguide.models.beans;
  * @brief
  */
 public class Place {
-    private String id;
+    private String _id;
 
-    private float  latitude;
-    private float  longitude;
-    private String name;
-    private float  rating;
+    private float  _latitude;
+    private float  _longitude;
+    private String _name;
+    private float  _rating;
 
     public float getLatitude() {
-        return latitude;
+        return _latitude;
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public float getLongitude() {
-        return longitude;
+        return _longitude;
     }
 
     public String getName() {
-        return name;
+        return _name;
     }
 
     public float getRating() {
-        return rating;
+        return _rating;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public void setLatitude(float latitude) {
-        this.latitude = latitude;
+        this._latitude = latitude;
     }
 
     public void setLongitude(float longitude) {
-        this.longitude = longitude;
+        this._longitude = longitude;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this._name = name;
     }
 
     public void setRating(float rating) {
-        this.rating = rating;
+        this._rating = rating;
     }
 }

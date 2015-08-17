@@ -8,8 +8,6 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.bll.api.GooglePlaceAPI;
-import com.lyft.cityguide.models.bll.api.GooglePlaceAPIOutletFactory;
 import com.lyft.cityguide.models.bll.interfaces.IBLL;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
@@ -52,20 +50,11 @@ class BaseBLL implements IBLL {
     }
 
     String getAPIKey() {
-        return getContext().getString(R.string.api_key);
+        return getContext().getString(R.string.google_service_api_key);
     }
 
     String latLngFromLocation(Location l) {
         return new Double(l.getLatitude()).toString() + ',' + new Double(l.getLongitude()).toString();
-    }
-
-    void connectAPI(Action<GooglePlaceAPI> success, Action<String> failure) {
-        GooglePlaceAPIOutletFactory
-            .build(getContext())
-            .connect(
-                (api) -> success.run(api),
-                () -> failure.run(getContext().getString(R.string.error_no_network))
-            );
     }
 
     AsyncTask runInBackground(Action0 task) {

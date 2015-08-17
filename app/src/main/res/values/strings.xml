@@ -3,7 +3,10 @@
     <string name="menu_label">Menu</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="api_endpoint">https://maps.googleapis.com/maps/api/place/</string>
+    <string name="google_place_api_endpoint">https://maps.googleapis.com/maps/api/place/</string>
+    <string name="google_distance_api_endpoint">
+        https://maps.googleapis.com/maps/api/distancematrix/
+    </string>
 
     <string name="error_location_disabled">
         The location feature is disabled. Please turn it on.

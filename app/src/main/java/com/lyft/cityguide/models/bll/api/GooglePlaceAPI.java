@@ -1,6 +1,6 @@
 package com.lyft.cityguide.models.bll.api;
 
-import com.lyft.cityguide.models.bll.utils.PlaceSearchResult;
+import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
 
 import retrofit.Callback;
 import retrofit.http.GET;

@@ -31,13 +31,14 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
     }
 
     private void _setDistance(TextView field, double value) {
-        String text = "1";
+        String text;
 
         if (value < 1) {
-            text = "0";
+            text = "0." + ((int) Math.floor(value * 100));
+        } else {
+            text = "1." + ((int) (Math.floor(value * 100) - Math.floor(value) * 100));
         }
 
-        text += "." + (Math.round(value * 100) - Math.round(value) * 100);
         text += " mi";
 
         field.setText(text);
@@ -78,7 +79,7 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
 
         icon.setImageResource(_getIcon());
         name.setText(currentPOI.getPlace().getName());
-        _setDistance(distance, currentPOI.getDistance());
+        _setDistance(distance, currentPOI.getDistance().toMiles());
         rating.setRating(Math.round(currentPOI.getPlace().getRating()));
 
         YoYo.with(Techniques.FadeIn)
