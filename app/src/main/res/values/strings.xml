@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">City Guide</string>
-    <string name="menu_label">Menu</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="google_place_api_endpoint">https://maps.googleapis.com/maps/api/place/</string>
@@ -26,4 +25,13 @@
         <item>Bistro</item>
         <item>Café</item>
     </array>
+
+    <string name="settings_label">Settings</string>
+
+    <string name="fragment_settings_range">Search range</string>
+    <string name="range_1_mi">1 mi</string>
+    <string name="range_2_mi">2 mi</string>
+    <string name="range_5_mi">5 mi</string>
+
+    <string name="settings_save_confirmation">Saved!</string>
 </resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/FragmentSettings"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <TextView
+        android:text="@string/fragment_settings_range"
+        style="@style/FragmentSettingsTitle"
+        />
+
+    <SeekBar
+        android:id="@+id/fragment_settings_range_seek_bar"
+        android:max="2"
+        style="@style/FragmentSettingsSeekBar"
+        />
+
+    <LinearLayout
+        style="@style/MatchParentWrapContent.Horizontal"
+        >
+
+        <TextView
+            android:id="@+id/fragment_settings_range_1"
+            android:gravity="left"
+            android:text="@string/range_1_mi"
+            style="@style/FragmentSettingsSeekBarLabel"
+            />
+
+        <TextView
+            android:id="@+id/fragment_settings_range_2"
+            android:gravity="center"
+            android:text="@string/range_2_mi"
+            style="@style/FragmentSettingsSeekBarLabel"
+            />
+
+        <TextView
+            android:id="@+id/fragment_settings_range_5"
+            android:gravity="right"
+            android:text="@string/range_5_mi"
+            style="@style/FragmentSettingsSeekBarLabel"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

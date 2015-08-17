@@ -4,6 +4,7 @@ import android.app.Fragment;
 
 import com.lyft.cityguide.models.bll.BLLFactory;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
+import com.lyft.cityguide.models.bll.interfaces.ISettingsBLL;
 import com.lyft.cityguide.ui.activities.BaseActivity;
 import com.lyft.cityguide.ui.events.ConfirmationEvent;
 import com.lyft.cityguide.ui.events.DoneEvent;
@@ -21,8 +22,15 @@ public class BaseFragment extends Fragment {
     private static EventBus _resultListBus;
     private final static Object _resultListBusLock = new Object();
 
+    private static EventBus _menuBus;
+    private final static Object _menuBusLock = new Object();
+
     IPlaceBLL getPlaceBLL() {
         return BLLFactory.place(getActivity());
+    }
+
+    ISettingsBLL getSettingsBLL() {
+        return BLLFactory.settings(getActivity());
     }
 
     void inform(String message) {
@@ -63,5 +71,20 @@ public class BaseFragment extends Fragment {
         }
 
         return _resultListBus;
+    }
+
+    public static EventBus getMenuBus() {
+        if (_menuBus == null) {
+            synchronized (_menuBusLock) {
+                if (_menuBus == null) {
+                    _menuBus = EventBus.builder()
+                                       .logNoSubscriberMessages(true)
+                                       .sendNoSubscriberEvent(true)
+                                       .build();
+                }
+            }
+        }
+
+        return _menuBus;
     }
 }
