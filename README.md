@@ -13,8 +13,6 @@ Supports:
 
 ### UI
 
-Wraps the following components:
-
 * Activities
 * Adapters
 * Components: custom UI components. Here, includes a custom slider and rating bar.
