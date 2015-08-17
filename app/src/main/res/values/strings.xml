@@ -27,4 +27,9 @@
     </array>
 
     <string name="settings_label">Settings</string>
+
+    <string name="fragment_settings_range">Search range</string>
+    <string name="range_1_mi">1 mi</string>
+    <string name="range_2_mi">2 mi</string>
+    <string name="range_5_mi">5 mi</string>
 </resources>
