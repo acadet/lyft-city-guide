@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.models.beans.Distance;
 import com.lyft.cityguide.models.beans.Place;
-import com.lyft.cityguide.models.bll.api.GooglePlaceAPI;
 import com.lyft.cityguide.models.bll.api.APIOutletFactory;
+import com.lyft.cityguide.models.bll.api.GooglePlaceAPI;
+import com.lyft.cityguide.models.bll.interfaces.IDistanceBLL;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
 import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
 import com.lyft.cityguide.models.structs.PointOfInterest;
@@ -36,6 +38,8 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
 
     private final static int LOCATION_COOLDOWN_SEC = 20;
 
+    private IDistanceBLL _distanceBLL;
+
     private LocationManager _locationManager;
     private Location        _latestLocation;
     private DateTime        _latestLocationDate;
@@ -50,37 +54,25 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     private AsyncTask _getCafesAroundTask;
     private AsyncTask _moreCafesAroundTask;
 
-    PlaceBLL(Context context) {
+    PlaceBLL(Context context, IDistanceBLL distanceBLL) {
         super(context);
+
+        _distanceBLL = distanceBLL;
 
         _locationManager = (LocationManager)
             getContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
-    private List<PointOfInterest> _toPOIs(List<Place> places) {
+    private List<PointOfInterest> _toPOIs(List<Place> places, List<Distance> distances) {
         List<PointOfInterest> outcome = new ArrayList<>();
 
-        for (Place p : places) {
-            outcome.add(new PointOfInterest(p, _getDistance(p)));
+        for (int i = 0, s = places.size(); i < s; i++) {
+            outcome.add(
+                new PointOfInterest(places.get(i), distances.get(i))
+            );
         }
 
         return outcome;
-    }
-
-    private double _getDistance(Place place) {
-        double latA, latB, longA, longB;
-
-        latA = _latestLocation.getLatitude();
-        longA = _latestLocation.getLongitude();
-        latB = place.getLatitude();
-        longB = place.getLongitude();
-
-        return Math.round(
-            Math.acos(
-                Math.sin(latA) * Math.sin(latB)
-                + Math.cos(latA) * Math.cos(latB) * Math.cos(longB - longA)
-            ) * 100d
-        ) / 100d;
     }
 
     private void _getPOIsAround(
@@ -121,12 +113,24 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                     new BLLCallback<PlaceSearchResult>(customFailure) {
                                         @Override
                                         public void success(PlaceSearchResult placeSearchResult, Response response) {
-                                            List<PointOfInterest> outcome
-                                                = _toPOIs(placeSearchResult.getResults());
                                             _latestNextPageToken = placeSearchResult.getPageToken();
 
-                                            customWhenDone.run();
-                                            runOnMainThread(() -> success.run(outcome));
+                                            _distanceBLL.getDistances(
+                                                _latestLocation,
+                                                placeSearchResult.getResults(),
+                                                (distances) -> {
+                                                    List<PointOfInterest> outcome
+                                                        = _toPOIs(
+                                                        placeSearchResult.getResults(),
+                                                        distances
+                                                    );
+
+                                                    customWhenDone.run();
+                                                    runOnMainThread(() -> success.run(outcome));
+                                                },
+                                                customFailure
+                                            );
+
                                         }
                                     }
                                 );
@@ -236,16 +240,26 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                 new BLLCallback<PlaceSearchResult>(customFailure) {
                                     @Override
                                     public void success(PlaceSearchResult placeSearchResult, Response response) {
-                                        List<PointOfInterest> outcome = _toPOIs(
-                                            placeSearchResult.getResults()
-                                        );
-
                                         _latestNextPageToken = placeSearchResult.getPageToken();
-                                        synchronized (_asyncTaskLock) {
-                                            whenDone(taskPointer);
-                                            resetTaskPointer.run();
-                                        }
-                                        runOnMainThread(() -> success.run(outcome));
+
+                                        _distanceBLL.getDistances(
+                                            _latestLocation,
+                                            placeSearchResult.getResults(),
+                                            (distances) -> {
+                                                List<PointOfInterest> outcome
+                                                    = _toPOIs(
+                                                    placeSearchResult.getResults(),
+                                                    distances
+                                                );
+
+                                                synchronized (_asyncTaskLock) {
+                                                    whenDone(taskPointer);
+                                                    resetTaskPointer.run();
+                                                }
+                                                runOnMainThread(() -> success.run(outcome));
+                                            },
+                                            customFailure
+                                        );
                                     }
                                 }
                             );
