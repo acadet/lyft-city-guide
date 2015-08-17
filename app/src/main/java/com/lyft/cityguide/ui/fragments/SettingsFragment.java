@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 /**
  * @class SettingsFragment
- * @brief
+ * @brief Body of the settings view
  */
 public class SettingsFragment extends BaseFragment {
     @Bind(R.id.fragment_settings_range_seek_bar)
@@ -35,6 +35,11 @@ public class SettingsFragment extends BaseFragment {
 
     private TextView[] _rangeLabels;
 
+    /**
+     * Makes current label's color darker
+     *
+     * @param progress
+     */
     private void _setLabels(int progress) {
         for (int i = 0; i < 3; i++) {
             int color;
@@ -57,10 +62,12 @@ public class SettingsFragment extends BaseFragment {
         fragment = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, fragment);
 
+        // Set default content
         _rangeLabels = new TextView[] { _oneMileRange, _twoMileRange, _fiveMileRange };
         int progress = getSettingsBLL().get().toInt();
         _rangeBar.setProgress(progress);
         _setLabels(progress);
+
         _rangeBar.setOnSeekBarChangeListener(
             new SeekBar.OnSeekBarChangeListener() {
                 @Override

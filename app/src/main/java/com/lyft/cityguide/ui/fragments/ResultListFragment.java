@@ -202,10 +202,11 @@ public class ResultListFragment extends BaseFragment {
         Action<String> errorCallback;
 
         if (_currentAdapter == null || _isFetchingMore) {
+            // No content yet or already fetching
             return;
         }
 
-        _isFetchingMore = true;
+        _isFetchingMore = true; // Pause fetching
         fork();
         successCallback = (pois) -> {
             _isFetchingMore = false;
@@ -218,7 +219,7 @@ public class ResultListFragment extends BaseFragment {
             done();
         };
         errorCallback = (error) -> {
-            _isFetchingMore = false;
+            _isFetchingMore = false; // Release lock if error
             onError(error);
         };
 
