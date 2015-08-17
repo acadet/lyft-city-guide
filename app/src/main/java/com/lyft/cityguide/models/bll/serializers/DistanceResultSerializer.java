@@ -18,27 +18,33 @@ public class DistanceResultSerializer implements JsonDeserializer<DistanceResult
     @Override
     public DistanceResult deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         DistanceResult result = new DistanceResult();
-        JsonArray rowNode;
+        JsonArray rowNode, elementNode;
 
         rowNode = json.getAsJsonObject()
                       .get("rows")
-                      .getAsJsonArray()
-                      .get(0)
-                      .getAsJsonObject()
-                      .get("elements")
                       .getAsJsonArray();
 
-        for (JsonElement e : rowNode) {
-            Distance d = new Distance();
-            float value = e
-                .getAsJsonObject()
-                .get("distance")
-                .getAsJsonObject()
-                .get("value")
-                .getAsFloat();
+        if (rowNode.size() < 1) {
+            return result;
+        }
 
-            d.setDistance(value);
-            result.addDistance(d);
+        elementNode = rowNode.get(0)
+                             .getAsJsonObject()
+                             .get("elements")
+                             .getAsJsonArray();
+
+        for (JsonElement e : elementNode) {
+            if (e.getAsJsonObject().has("distance")) {
+                Distance d = new Distance();
+                float value = e.getAsJsonObject()
+                               .get("distance")
+                               .getAsJsonObject()
+                               .get("value")
+                               .getAsFloat();
+
+                d.setDistance(value);
+                result.addDistance(d);
+            }
         }
 
         return result;

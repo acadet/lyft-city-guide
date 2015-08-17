@@ -131,8 +131,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                                     customFailure
                                                 );
                                             } else {
-                                                List<PointOfInterest> outcome
-                                                    = _toPOIs(places, new ArrayList<>());
+                                                List<PointOfInterest> outcome = new ArrayList<>();
 
                                                 customWhenDone.run();
                                                 runOnMainThread(() -> success.run(outcome));
@@ -256,10 +255,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                                 placeSearchResult.getResults(),
                                                 (distances) -> {
                                                     List<PointOfInterest> outcome
-                                                        = _toPOIs(
-                                                        placeSearchResult.getResults(),
-                                                        distances
-                                                    );
+                                                        = _toPOIs(places, distances);
 
                                                     synchronized (_asyncTaskLock) {
                                                         whenDone(taskPointer);
@@ -270,11 +266,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                                 customFailure
                                             );
                                         } else {
-                                            List<PointOfInterest> outcome
-                                                = _toPOIs(
-                                                placeSearchResult.getResults(),
-                                                new ArrayList<>()
-                                            );
+                                            List<PointOfInterest> outcome = new ArrayList<>();
 
                                             synchronized (_asyncTaskLock) {
                                                 whenDone(taskPointer);
