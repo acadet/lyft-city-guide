@@ -113,24 +113,30 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                     new BLLCallback<PlaceSearchResult>(customFailure) {
                                         @Override
                                         public void success(PlaceSearchResult placeSearchResult, Response response) {
+                                            List<Place> places = placeSearchResult.getResults();
+
                                             _latestNextPageToken = placeSearchResult.getPageToken();
 
-                                            _distanceBLL.getDistances(
-                                                _latestLocation,
-                                                placeSearchResult.getResults(),
-                                                (distances) -> {
-                                                    List<PointOfInterest> outcome
-                                                        = _toPOIs(
-                                                        placeSearchResult.getResults(),
-                                                        distances
-                                                    );
+                                            if (places.size() > 0) {
+                                                _distanceBLL.getDistances(
+                                                    _latestLocation,
+                                                    placeSearchResult.getResults(),
+                                                    (distances) -> {
+                                                        List<PointOfInterest> outcome
+                                                            = _toPOIs(places, distances);
 
-                                                    customWhenDone.run();
-                                                    runOnMainThread(() -> success.run(outcome));
-                                                },
-                                                customFailure
-                                            );
+                                                        customWhenDone.run();
+                                                        runOnMainThread(() -> success.run(outcome));
+                                                    },
+                                                    customFailure
+                                                );
+                                            } else {
+                                                List<PointOfInterest> outcome
+                                                    = _toPOIs(places, new ArrayList<>());
 
+                                                customWhenDone.run();
+                                                runOnMainThread(() -> success.run(outcome));
+                                            }
                                         }
                                     }
                                 );
@@ -240,26 +246,42 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                 new BLLCallback<PlaceSearchResult>(customFailure) {
                                     @Override
                                     public void success(PlaceSearchResult placeSearchResult, Response response) {
+                                        List<Place> places = placeSearchResult.getResults();
+
                                         _latestNextPageToken = placeSearchResult.getPageToken();
 
-                                        _distanceBLL.getDistances(
-                                            _latestLocation,
-                                            placeSearchResult.getResults(),
-                                            (distances) -> {
-                                                List<PointOfInterest> outcome
-                                                    = _toPOIs(
-                                                    placeSearchResult.getResults(),
-                                                    distances
-                                                );
+                                        if (places.size() > 0) {
+                                            _distanceBLL.getDistances(
+                                                _latestLocation,
+                                                placeSearchResult.getResults(),
+                                                (distances) -> {
+                                                    List<PointOfInterest> outcome
+                                                        = _toPOIs(
+                                                        placeSearchResult.getResults(),
+                                                        distances
+                                                    );
 
-                                                synchronized (_asyncTaskLock) {
-                                                    whenDone(taskPointer);
-                                                    resetTaskPointer.run();
-                                                }
-                                                runOnMainThread(() -> success.run(outcome));
-                                            },
-                                            customFailure
-                                        );
+                                                    synchronized (_asyncTaskLock) {
+                                                        whenDone(taskPointer);
+                                                        resetTaskPointer.run();
+                                                    }
+                                                    runOnMainThread(() -> success.run(outcome));
+                                                },
+                                                customFailure
+                                            );
+                                        } else {
+                                            List<PointOfInterest> outcome
+                                                = _toPOIs(
+                                                placeSearchResult.getResults(),
+                                                new ArrayList<>()
+                                            );
+
+                                            synchronized (_asyncTaskLock) {
+                                                whenDone(taskPointer);
+                                                resetTaskPointer.run();
+                                            }
+                                            runOnMainThread(() -> success.run(outcome));
+                                        }
                                     }
                                 }
                             );
