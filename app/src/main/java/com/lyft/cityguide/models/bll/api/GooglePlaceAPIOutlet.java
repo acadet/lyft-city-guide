@@ -8,6 +8,7 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.bll.api.interfaces.IGooglePlaceAPIOutlet;
 import com.lyft.cityguide.models.bll.serializers.PlaceSearchResultSerializer;
 import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
+import com.lyft.cityguide.models.services.google.place.api.IGooglePlaceAPI;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
 
@@ -37,11 +38,11 @@ class GooglePlaceAPIOutlet implements IGooglePlaceAPIOutlet {
 
 
     @Override
-    public void connect(Action<GooglePlaceAPI> success, Action0 failure) {
-        GooglePlaceAPI api = null;
+    public void connect(Action<IGooglePlaceAPI> success, Action0 failure) {
+        IGooglePlaceAPI api = null;
 
         try {
-            api = _build().build().create(GooglePlaceAPI.class);
+            api = _build().build().create(IGooglePlaceAPI.class);
         } catch (Exception e) {
 
         } finally {

@@ -1,24 +1,23 @@
-package com.lyft.cityguide.models.bll.api;
+package com.lyft.cityguide.models.services.google.distancematrix.api;
 
 import com.lyft.cityguide.models.bll.structs.DistanceResult;
 
-import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
 /**
- * @class GoogleDistanceMatrixAPI
- * @brief https://developers.google.com/maps/documentation/distancematrix/intro
+ * IGoogleDistanceMatrixAPI
+ * <p>
+ * https://developers.google.com/maps/documentation/distancematrix/intro
  */
-public interface GoogleDistanceMatrixAPI {
+public interface IGoogleDistanceMatrixAPI {
     @GET("/json")
-    void getDistances(
+    DistanceResult getDistances(
         @Query("origins") String origins,
         @Query("destinations") String destinations,
         @Query("mode") String mode,
         @Query("language") String language,
         @Query("units") String units,
-        @Query("key") String apiKey,
-        Callback<DistanceResult> callback
+        @Query("key") String apiKey
     );
 }

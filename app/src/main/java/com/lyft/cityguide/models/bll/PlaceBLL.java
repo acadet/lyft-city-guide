@@ -14,7 +14,7 @@ import com.lyft.cityguide.models.beans.Distance;
 import com.lyft.cityguide.models.beans.Place;
 import com.lyft.cityguide.models.beans.RangeSetting;
 import com.lyft.cityguide.models.bll.api.APIOutletFactory;
-import com.lyft.cityguide.models.bll.api.GooglePlaceAPI;
+import com.lyft.cityguide.models.services.google.place.api.IGooglePlaceAPI;
 import com.lyft.cityguide.models.bll.interfaces.IDistanceBLL;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
 import com.lyft.cityguide.models.bll.interfaces.ISettingsBLL;
@@ -348,7 +348,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
         );
     }
 
-    void connectAPI(Action<GooglePlaceAPI> success, Action<String> failure) {
+    void connectAPI(Action<IGooglePlaceAPI> success, Action<String> failure) {
         APIOutletFactory
             .googlePlace(getContext())
             .connect(

@@ -8,7 +8,7 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.beans.Distance;
 import com.lyft.cityguide.models.beans.Place;
 import com.lyft.cityguide.models.bll.api.APIOutletFactory;
-import com.lyft.cityguide.models.bll.api.GoogleDistanceMatrixAPI;
+import com.lyft.cityguide.models.services.google.distancematrix.api.IGoogleDistanceMatrixAPI;
 import com.lyft.cityguide.models.bll.interfaces.IDistanceBLL;
 import com.lyft.cityguide.models.bll.structs.DistanceResult;
 import com.lyft.cityguide.utils.actions.Action;
@@ -30,7 +30,7 @@ class DistanceBLL extends BaseBLL implements IDistanceBLL {
         super(context);
     }
 
-    void connectAPI(Action<GoogleDistanceMatrixAPI> success, Action<String> failure) {
+    void connectAPI(Action<IGoogleDistanceMatrixAPI> success, Action<String> failure) {
         APIOutletFactory
             .googleDistanceMatrix(getContext())
             .connect(

@@ -2,10 +2,6 @@
     <string name="app_name">City Guide</string>
 
     <!-- Endpoints -->
-    <string name="google_place_api_endpoint">https://maps.googleapis.com/maps/api/place/</string>
-    <string name="google_distance_api_endpoint">
-        https://maps.googleapis.com/maps/api/distancematrix/
-    </string>
 
     <!-- Error messages -->
     <string name="error_location_disabled">

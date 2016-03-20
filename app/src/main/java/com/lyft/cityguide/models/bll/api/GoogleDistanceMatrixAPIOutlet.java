@@ -8,6 +8,7 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.bll.api.interfaces.IGoogleDistanceMatrixAPIOutlet;
 import com.lyft.cityguide.models.bll.serializers.DistanceResultSerializer;
 import com.lyft.cityguide.models.bll.structs.DistanceResult;
+import com.lyft.cityguide.models.services.google.distancematrix.api.IGoogleDistanceMatrixAPI;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
 
@@ -36,11 +37,11 @@ class GoogleDistanceMatrixAPIOutlet implements IGoogleDistanceMatrixAPIOutlet {
     }
 
     @Override
-    public void connect(Action<GoogleDistanceMatrixAPI> success, Action0 failure) {
-        GoogleDistanceMatrixAPI api = null;
+    public void connect(Action<IGoogleDistanceMatrixAPI> success, Action0 failure) {
+        IGoogleDistanceMatrixAPI api = null;
 
         try {
-            api = _build().build().create(GoogleDistanceMatrixAPI.class);
+            api = _build().build().create(IGoogleDistanceMatrixAPI.class);
         } catch (Exception e) {
 
         } finally {
