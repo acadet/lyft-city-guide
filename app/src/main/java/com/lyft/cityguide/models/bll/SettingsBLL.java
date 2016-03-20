@@ -2,7 +2,7 @@ package com.lyft.cityguide.models.bll;
 
 import com.lyft.cityguide.models.beans.RangeSetting;
 import com.lyft.cityguide.models.bll.interfaces.ISettingsBLL;
-import com.lyft.cityguide.models.dao.interfaces.ISettingsDAO;
+import com.lyft.cityguide.models.dao.ISettingsDAO;
 
 /**
  * @class SettingsBLL
@@ -18,11 +18,11 @@ class SettingsBLL implements ISettingsBLL {
 
     @Override
     public RangeSetting get() {
-        return _dao.get();
+        return _dao.getSearchRange();
     }
 
     @Override
     public void save(RangeSetting value) {
-        _dao.save(value);
+        _dao.saveSearchRange(value);
     }
 }
