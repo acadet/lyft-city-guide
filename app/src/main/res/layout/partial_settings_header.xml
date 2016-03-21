@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="horizontal"
-    style="@style/MainHeader"
+    style="@style/PartialSettingsHeader"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
     <ImageView
-        android:id="@+id/fragment_settings_header_back"
+        android:id="@+id/partial_settings_header_back"
         android:src="@drawable/ic_back"
-        style="@style/FragmentHeaderIcon"
+        style="@style/HeaderIcon"
         />
 
     <TextView
         android:text="@string/settings_label"
-        style="@style/FragmentHeaderTitle"
+        style="@style/HeaderTitle"
         />
 
 </LinearLayout>

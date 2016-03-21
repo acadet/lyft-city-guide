@@ -22,7 +22,7 @@ public class SettingsHeaderFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_settings_header, container, false);
+        fragment = inflater.inflate(R.layout.partial_settings_header, container, false);
         ButterKnife.bind(this, fragment);
 
         return fragment;

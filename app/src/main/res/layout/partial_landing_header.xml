@@ -13,12 +13,12 @@
         <ImageView
             android:id="@+id/partial_landing_header_menu_trigger"
             android:src="@drawable/ic_menu"
-            style="@style/FragmentHeaderIcon"
+            style="@style/HeaderIcon"
             />
 
         <TextView
             android:text="@string/app_name"
-            style="@style/FragmentHeaderTitle"
+            style="@style/HeaderTitle"
             />
 
     </LinearLayout>

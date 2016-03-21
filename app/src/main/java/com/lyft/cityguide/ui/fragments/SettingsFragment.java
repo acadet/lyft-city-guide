@@ -59,7 +59,7 @@ public class SettingsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_settings, container, false);
+        fragment = inflater.inflate(R.layout.partial_settings_body, container, false);
         ButterKnife.bind(this, fragment);
 
         // Set default content
