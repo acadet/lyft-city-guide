@@ -1,6 +1,6 @@
 # Lyft City Guide
 
-My implementation of the Lyft City Guide exercice. 
+My **revised** implementation of the Lyft City Guide exercice. 
 
 Supports:
 
@@ -16,22 +16,28 @@ Supports:
 * Activities
 * Adapters
 * Components: custom UI components. Here, includes a custom slider and rating bar.
-* Events: Any event raised by the event bus.
-* Fragments
+* Events: used by the different event buses.
+* No Fragment. Use Scoop from Lyft instead.
 
 ### Model
 
-* Beans: aka POJOs
-* BLL: the smartest part of the model. Handles any connection with the APIs and engines data if needed. Runs long operations in the background, whenever it is possible.
+* BLL - Business logic layer. Bridge between UI and other model layers.
 * DAO: data access layer. Only saves settings
+* Service layer: groups the different used services such as Google Places and Google Distance Matrix
 
 ## Libraries
 
 * [AndroidViewAnimations](https://github.com/daimajia/AndroidViewAnimations)
 * [ButterKnife](http://jakewharton.github.io/butterknife/)
 * [Crouton](https://github.com/keyboardsurfer/Crouton)
+* [Dagger 2.0](https://github.com/google/dagger)
 * [EventBus](https://github.com/greenrobot/EventBus)
 * [JodaTime](http://www.joda.org/joda-time/)
 * [RetroFit](http://square.github.io/retrofit/)
 * [RetroLambda](https://github.com/orfjackal/retrolambda)
+* [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* [RxJava](https://github.com/ReactiveX/RxJava)
+* [Scoop](https://github.com/lyft/scoop)
 * [SmoothProgressBar](https://github.com/castorflex/SmoothProgressBar)
+* [Stream](https://github.com/aNNiMON/Lightweight-Stream-API)
+* [Timber](https://github.com/JakeWharton/timber)
