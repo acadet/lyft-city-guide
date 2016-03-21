@@ -2,9 +2,11 @@ package com.lyft.cityguide.models.bll.jobs;
 
 import android.location.Location;
 
+import com.lyft.cityguide.models.bll.BLLErrors;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
 import com.lyft.cityguide.models.services.google.distancematrix.IGoogleDistanceMatrixService;
+import com.lyft.cityguide.models.services.google.place.GooglePlaceErrors;
 import com.lyft.cityguide.models.services.google.place.IGooglePlaceService;
 import com.lyft.cityguide.structs.PlaceType;
 
@@ -61,7 +63,11 @@ public class ListPointsOfInterestJob extends BLLJob {
 
                         @Override
                         public void onError(Throwable e) {
-                            handleError(e, subscriber);
+                            if (e instanceof GooglePlaceErrors.NoMoreResult) {
+                                subscriber.onError(new BLLErrors.NoMorePOI());
+                            } else {
+                                handleError(e, subscriber);
+                            }
                         }
 
                         @Override

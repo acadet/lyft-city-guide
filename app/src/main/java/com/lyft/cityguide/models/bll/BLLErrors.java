@@ -16,4 +16,8 @@ public class BLLErrors {
 
     public static class ServiceError extends Throwable {
     }
+
+    public static class NoMorePOI extends Throwable {
+
+    }
 }
