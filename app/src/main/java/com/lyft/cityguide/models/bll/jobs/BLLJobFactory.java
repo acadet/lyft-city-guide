@@ -1,5 +1,8 @@
 package com.lyft.cityguide.models.bll.jobs;
 
+import android.content.Context;
+
+import com.lyft.cityguide.ApplicationConfiguration;
 import com.lyft.cityguide.models.dao.ISettingsDAO;
 
 import javax.inject.Singleton;
@@ -23,5 +26,11 @@ public class BLLJobFactory {
     @Singleton
     public GetSearchRangeSettingJob provideGetSearchRangeSettingJob(ISettingsDAO settingsDAO) {
         return new GetSearchRangeSettingJob(settingsDAO);
+    }
+
+    @Provides
+    @Singleton
+    public GetCurrentLocationJob provideGetCurrentLocationJob(ApplicationConfiguration configuration, Context context) {
+        return new GetCurrentLocationJob(configuration, context);
     }
 }
