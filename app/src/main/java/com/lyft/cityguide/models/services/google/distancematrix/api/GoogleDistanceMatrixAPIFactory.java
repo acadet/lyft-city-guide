@@ -2,6 +2,7 @@ package com.lyft.cityguide.models.services.google.distancematrix.api;
 
 import com.google.gson.GsonBuilder;
 import com.lyft.cityguide.ApplicationConfiguration;
+import com.lyft.cityguide.models.services.google.distancematrix.dto.DistanceGoogleDistanceMatrixDTO;
 
 import javax.inject.Singleton;
 
@@ -23,7 +24,7 @@ public class GoogleDistanceMatrixAPIFactory {
             .setConverter(
                 new GsonConverter(
                     new GsonBuilder()
-                        .registerTypeAdapter(DistanceGoogleDistanceMatrixDTOSerializer.class, serializer)
+                        .registerTypeAdapter(DistanceGoogleDistanceMatrixDTO.class, serializer)
                         .create()
                 )
             )

@@ -16,7 +16,9 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/partial_result_list_wrapper"
+        android:visibility="gone"
         style="@style/MatchParentWrapContent"
+        tools:visibility="visible"
         >
 
         <ListView

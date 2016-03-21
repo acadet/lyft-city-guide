@@ -80,8 +80,8 @@ public class LandingController extends BaseController {
                         noContentLabelView.setVisibility(View.VISIBLE);
                         swipeRefreshLayout.setVisibility(View.GONE);
                     } else {
-                        pointOfInterestAdapter.setCurrentType(currentType);
-                        pointOfInterestAdapter.setItems(pointOfInterestBLLDTOs);
+                        pointOfInterestAdapter = new PointOfInterestAdapter(context, pointOfInterestBLLDTOs, currentType);
+                        resultListView.setAdapter(pointOfInterestAdapter);
                         noContentLabelView.setVisibility(View.GONE);
                         swipeRefreshLayout.setVisibility(View.VISIBLE);
                     }
@@ -131,8 +131,6 @@ public class LandingController extends BaseController {
         super.onAttach();
 
         currentType = PlaceType.BAR;
-        pointOfInterestAdapter = new PointOfInterestAdapter(context, currentType);
-        resultListView.setAdapter(pointOfInterestAdapter);
 
         listContent();
 
@@ -144,11 +142,17 @@ public class LandingController extends BaseController {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int latestIndex = pointOfInterestAdapter.getCount() - 1;
+                int latestIndexForAdapter, latestIndexForListView;
 
-                if (latestIndex >= 0
-                    && resultListView.getLastVisiblePosition() == latestIndex
-                    && resultListView.getChildAt(latestIndex).getBottom() <= resultListView.getHeight()) {
+                if (pointOfInterestAdapter == null) {
+                    return;
+                }
+
+                latestIndexForAdapter = pointOfInterestAdapter.getCount() - 1;
+                latestIndexForListView = resultListView.getChildCount() - 1;
+
+                if (resultListView.getLastVisiblePosition() == latestIndexForAdapter
+                    && resultListView.getChildAt(latestIndexForListView).getBottom() <= resultListView.getHeight()) {
                     // Display more content when reaching the bottom of the list
                     // Do not fetch if latest element is not at the bottom (no
                     // more element)

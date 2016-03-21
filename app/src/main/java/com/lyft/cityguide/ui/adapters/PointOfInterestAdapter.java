@@ -14,7 +14,7 @@ import com.lyft.cityguide.structs.PlaceType;
 import com.lyft.cityguide.ui.components.StarBar;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -26,8 +26,8 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
 
     private PlaceType currentType;
 
-    public PointOfInterestAdapter(Context context, PlaceType type) {
-        super(context, new ArrayList<>());
+    public PointOfInterestAdapter(Context context, List<PointOfInterestBLLDTO> items, PlaceType type) {
+        super(context, items);
         currentType = type;
     }
 
@@ -72,7 +72,9 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
 
         icon.setImageResource(getIcon());
         name.setText(currentPOI.getName());
-        setUserFriendlyDate(distance, currentPOI.getDistance().toMiles());
+        if (currentPOI.getDistance() != null) {
+            setUserFriendlyDate(distance, currentPOI.getDistance().toMiles());
+        }
         rating.setRating(Math.round(currentPOI.getRating()));
 
         YoYo.with(Techniques.FadeIn)
