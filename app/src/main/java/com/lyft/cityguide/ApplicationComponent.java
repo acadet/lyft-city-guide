@@ -8,6 +8,8 @@ import com.lyft.cityguide.models.services.google.distancematrix.jobs.GoogleDista
 import com.lyft.cityguide.models.services.google.place.api.GooglePlaceAPIFactory;
 import com.lyft.cityguide.models.services.google.place.jobs.GooglePlaceServiceJobFactory;
 import com.lyft.cityguide.ui.activities.BaseActivity;
+import com.lyft.cityguide.ui.components.MainUIContainer;
+import com.lyft.cityguide.ui.controllers.BaseController;
 import com.lyft.cityguide.ui.events.EventBusFactory;
 
 import javax.inject.Singleton;
@@ -32,4 +34,8 @@ import dagger.Component;
 })
 public interface ApplicationComponent {
     void inject(BaseActivity activity);
+
+    void inject(MainUIContainer container);
+
+    void inject(BaseController controller);
 }

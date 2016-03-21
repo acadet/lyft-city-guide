@@ -7,12 +7,8 @@
     <string name="error_location_disabled">
         The location feature is disabled. Please turn it on.
     </string>
-    <string name="error_no_network">
-        Aw :( It seems you have no connectivity.
-    </string>
-    <string name="error_unknown">
-        Whoops! Something wrong happened. Please try again.
-    </string>
+    <string name="no_connection_error">We are experiencing troubles with your connection</string>
+    <string name="internal_server_error">Our server is experiencing some troubles. Please try again.</string>
 
     <!-- Relative to the result list -->
     <string name="no_result">Nothing around :(</string>
