@@ -9,6 +9,7 @@ import com.lyft.cityguide.models.bll.IDataReadingBLL;
 import com.lyft.cityguide.models.bll.IDataWritingBLL;
 import com.lyft.cityguide.ui.events.PopupEvents;
 import com.lyft.cityguide.ui.events.SpinnerEvents;
+import com.lyft.cityguide.ui.routers.AppRouter;
 import com.lyft.scoop.ViewController;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,6 +41,9 @@ public abstract class BaseController extends ViewController {
 
     @Inject
     Context context;
+
+    @Inject
+    AppRouter appRouter;
 
     @Inject
     @Named("popup")

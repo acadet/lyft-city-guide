@@ -16,6 +16,7 @@ import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.structs.PlaceType;
 import com.lyft.cityguide.ui.adapters.PointOfInterestAdapter;
 import com.lyft.cityguide.ui.components.Slider;
+import com.lyft.cityguide.ui.screens.SettingsScreen;
 import com.nineoldandroids.animation.Animator;
 
 import java.util.List;
@@ -234,5 +235,10 @@ public class LandingController extends BaseController {
         }
 
         return true;
+    }
+
+    @OnClick(R.id.partial_menu_settings)
+    public void onMenuSettingsClick() {
+        appRouter.goTo(new SettingsScreen());
     }
 }

@@ -18,7 +18,7 @@
             />
 
         <TextView
-            android:id="@+id/fragment_menu_settings"
+            android:id="@+id/partial_menu_settings"
             android:text="@string/settings_label"
             style="@style/PartialMenuLabel"
             />
