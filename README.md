@@ -9,6 +9,16 @@ Supports:
 * Google Distance API
 * Pull to refresh
 
+## Installation
+
+Create a `SecretApplicationConfiguration` class in `com.lyft.cityguide` with the following body:
+
+```java
+public class SecretApplicationConfiguration {
+    public final String GOOGLE_API_KEY = "KEY";
+}
+```
+
 ## Architecture
 
 ### UI
