@@ -12,6 +12,7 @@ import com.annimon.stream.Stream;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.models.bll.BLLErrors;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.structs.PlaceType;
 import com.lyft.cityguide.ui.adapters.PointOfInterestAdapter;
@@ -54,24 +55,39 @@ public class LandingController extends BaseController {
     ListView resultListView;
 
     private void listContent() {
+        listContent(false);
+    }
+
+    private void listContent(boolean isRefreshing) {
         if (listPointOfInterestsAroundSubscription != null) {
             listPointOfInterestsAroundSubscription.unsubscribe();
         }
 
-        showSpinner();
+        if (!isRefreshing) {
+            showSpinner();
+        }
+
         listPointOfInterestsAroundSubscription = dataReadingBLL
             .listPointOfInterestsAround(currentType)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new BaseSubscriber<List<PointOfInterestBLLDTO>>() {
                 @Override
                 public void onCompleted() {
-                    hideSpinner();
+                    if (isRefreshing) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    } else {
+                        hideSpinner();
+                    }
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     super.onError(e);
-                    hideSpinner();
+                    if (isRefreshing) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    } else {
+                        hideSpinner();
+                    }
                 }
 
                 @Override
@@ -105,18 +121,18 @@ public class LandingController extends BaseController {
 
                 @Override
                 public void onError(Throwable e) {
-                    super.onError(e);
+                    if (e instanceof BLLErrors.NoMorePOI) {
+                        inform(context.getString(R.string.no_more_result));
+                    } else {
+                        super.onError(e);
+                    }
                     swipeRefreshLayout.setRefreshing(false);
                 }
 
                 @Override
                 public void onNext(List<PointOfInterestBLLDTO> pointOfInterestBLLDTOs) {
-                    if (pointOfInterestBLLDTOs.isEmpty()) {
-                        inform(context.getString(R.string.no_more_result));
-                    } else {
-                        Stream.of(pointOfInterestBLLDTOs).forEach(pointOfInterestAdapter::addItem);
-                        pointOfInterestAdapter.notifyDataSetChanged();
-                    }
+                    Stream.of(pointOfInterestBLLDTOs).forEach(pointOfInterestAdapter::addItem);
+                    pointOfInterestAdapter.notifyDataSetChanged();
                 }
             });
     }
@@ -162,7 +178,9 @@ public class LandingController extends BaseController {
             }
         });
 
-        swipeRefreshLayout.setOnRefreshListener(this::fetchMoreContent);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            this.listContent(true);
+        });
 
         headerSlider.observe((index, label) -> {
             switch (index) {

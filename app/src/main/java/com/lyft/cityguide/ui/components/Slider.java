@@ -62,9 +62,10 @@ public class Slider extends LinearLayout {
                         setFieldAsCurrent((TextView) labelWrapper.getChildAt(touchedIndex));
 
                         currentIndex = touchedIndex;
-                        if (observer != null) {
-                            observer.onSlide(touchedIndex, labels[touchedIndex]);
-                        }
+                    }
+
+                    if (observer != null && event.getAction() == MotionEvent.ACTION_UP) {
+                        observer.onSlide(currentIndex, labels[currentIndex]);
                     }
 
                     return true;
