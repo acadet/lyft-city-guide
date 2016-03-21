@@ -33,4 +33,11 @@ public class MainActivity extends BaseActivity {
 
         appRouter.goTo(new LandingScreen());
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!appRouter.goBack()) {
+            finish();
+        }
+    }
 }

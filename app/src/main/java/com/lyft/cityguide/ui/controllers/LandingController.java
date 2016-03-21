@@ -111,8 +111,12 @@ public class LandingController extends BaseController {
 
                 @Override
                 public void onNext(List<PointOfInterestBLLDTO> pointOfInterestBLLDTOs) {
-                    Stream.of(pointOfInterestBLLDTOs).forEach(pointOfInterestAdapter::addItem);
-                    pointOfInterestAdapter.notifyDataSetChanged();
+                    if (pointOfInterestBLLDTOs.isEmpty()) {
+                        inform(context.getString(R.string.no_more_result));
+                    } else {
+                        Stream.of(pointOfInterestBLLDTOs).forEach(pointOfInterestAdapter::addItem);
+                        pointOfInterestAdapter.notifyDataSetChanged();
+                    }
                 }
             });
     }

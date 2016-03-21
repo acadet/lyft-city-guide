@@ -10,31 +10,29 @@
         />
 
     <SeekBar
-        android:id="@+id/fragment_settings_range_seek_bar"
+        android:id="@+id/partial_settings_body_range_seek_bar"
         android:max="2"
         style="@style/PartialSettingsBodySeekBar"
         />
 
     <LinearLayout
+        android:id="@+id/partial_settings_body_label_wrapper"
         style="@style/MatchParentWrapContent.Horizontal"
         >
 
         <TextView
-            android:id="@+id/fragment_settings_range_1"
             android:gravity="left"
             android:text="@string/range_1_mi"
             style="@style/PartialSettingsBodySeekBarLabel"
             />
 
         <TextView
-            android:id="@+id/fragment_settings_range_2"
             android:gravity="center"
             android:text="@string/range_2_mi"
             style="@style/PartialSettingsBodySeekBarLabel"
             />
 
         <TextView
-            android:id="@+id/fragment_settings_range_5"
             android:gravity="right"
             android:text="@string/range_5_mi"
             style="@style/PartialSettingsBodySeekBarLabel"
