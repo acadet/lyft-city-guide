@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.structs.PlaceType;
+import com.lyft.cityguide.structs.PlaceType;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.ui.components.StarBar;
 

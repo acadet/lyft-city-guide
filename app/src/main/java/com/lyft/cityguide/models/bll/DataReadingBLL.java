@@ -13,16 +13,16 @@ import rx.Observable;
  * <p>
  */
 class DataReadingBLL implements IDataReadingBLL {
-
     private GetSearchRangeSettingJob getSearchRangeSettingJob;
 
-    DataReadingBLL(GetSearchRangeSettingJob getSearchRangeSettingJob) {
+    DataReadingBLL(
+        GetSearchRangeSettingJob getSearchRangeSettingJob) {
         this.getSearchRangeSettingJob = getSearchRangeSettingJob;
     }
 
     @Override
     public Observable<List<PointOfInterestBLLDTO>> listPointOfInterestsAround() {
-        return null;
+
     }
 
     @Override

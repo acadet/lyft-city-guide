@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.models.structs.PlaceType;
+import com.lyft.cityguide.structs.PlaceType;
 import com.lyft.cityguide.ui.adapters.ResultAdapter;
 import com.lyft.cityguide.ui.events.ShowBarsEvent;
 import com.lyft.cityguide.ui.events.ShowBistrosEvent;
