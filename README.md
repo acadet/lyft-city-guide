@@ -27,7 +27,7 @@ public class SecretApplicationConfiguration {
 * Adapters
 * Components: custom UI components. Here, includes a custom slider and rating bar.
 * Events: used by the different event buses.
-* No Fragment. Use Scoop from Lyft instead.
+* No Fragment. Using Scoop from Lyft instead.
 
 ### Model
 
