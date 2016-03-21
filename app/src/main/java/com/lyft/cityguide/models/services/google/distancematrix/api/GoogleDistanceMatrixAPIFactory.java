@@ -3,6 +3,8 @@ package com.lyft.cityguide.models.services.google.distancematrix.api;
 import com.google.gson.GsonBuilder;
 import com.lyft.cityguide.ApplicationConfiguration;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
@@ -15,11 +17,23 @@ import retrofit.converter.GsonConverter;
 @Module
 public class GoogleDistanceMatrixAPIFactory {
     @Provides
-    public IGoogleDistanceMatrixAPI provideJSONAPI(ApplicationConfiguration configuration) {
+    public IGoogleDistanceMatrixAPI provideJSONAPI(ApplicationConfiguration configuration, DistanceGoogleDistanceMatrixDTOSerializer serializer) {
         return new RestAdapter.Builder()
             .setEndpoint(configuration.GOOGLE_DISTANCE_MATRIX_API_ENDPOINT)
-            .setConverter(new GsonConverter(new GsonBuilder().create()))
+            .setConverter(
+                new GsonConverter(
+                    new GsonBuilder()
+                        .registerTypeAdapter(DistanceGoogleDistanceMatrixDTOSerializer.class, serializer)
+                        .create()
+                )
+            )
             .build()
             .create(IGoogleDistanceMatrixAPI.class);
+    }
+
+    @Provides
+    @Singleton
+    public DistanceGoogleDistanceMatrixDTOSerializer provideSerializer() {
+        return new DistanceGoogleDistanceMatrixDTOSerializer();
     }
 }

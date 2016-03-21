@@ -1,4 +1,4 @@
-package com.lyft.cityguide.models.bll.serializers;
+package com.lyft.cityguide.models.services.google.place.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -6,30 +6,30 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.lyft.cityguide.models.beans.Place;
-import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
+import com.lyft.cityguide.models.services.google.place.dto.PlaceGooglePlaceDTO;
+import com.lyft.cityguide.models.services.google.place.dto.SearchOutcomeGooglePlaceDTO;
 
 import java.lang.reflect.Type;
 
 /**
- * @class PlaceSearchResultSerializer
- * @brief Cf. documentation for schema
+ * SearchOutcomeGooglePlaceDTOSerializer
+ * <p>
  */
-public class PlaceSearchResultSerializer implements JsonDeserializer<PlaceSearchResult> {
+class SearchOutcomeGooglePlaceDTOSerializer implements JsonDeserializer<SearchOutcomeGooglePlaceDTO> {
     @Override
-    public PlaceSearchResult deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        PlaceSearchResult results = new PlaceSearchResult();
+    public SearchOutcomeGooglePlaceDTO deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        SearchOutcomeGooglePlaceDTO outcome = new SearchOutcomeGooglePlaceDTO();
         JsonArray resultNode;
 
         if (json.getAsJsonObject().has("next_page_token")) {
-            results.setPageToken(json.getAsJsonObject().get("next_page_token").getAsString());
+            outcome.setNextPageToken(json.getAsJsonObject().get("next_page_token").getAsString());
         }
 
         resultNode = json.getAsJsonObject().get("results").getAsJsonArray();
         for (JsonElement e : resultNode) {
             JsonObject o = e.getAsJsonObject();
             JsonObject locationNode;
-            Place p = new Place();
+            PlaceGooglePlaceDTO p = new PlaceGooglePlaceDTO();
 
             p.setId(o.get("id").getAsString());
             p.setName(o.get("name").getAsString());
@@ -39,9 +39,9 @@ public class PlaceSearchResultSerializer implements JsonDeserializer<PlaceSearch
             p.setLatitude(locationNode.get("lat").getAsFloat());
             p.setLongitude(locationNode.get("lng").getAsFloat());
 
-            results.addResult(p);
+            outcome.addPlace(p);
         }
 
-        return results;
+        return outcome;
     }
 }
