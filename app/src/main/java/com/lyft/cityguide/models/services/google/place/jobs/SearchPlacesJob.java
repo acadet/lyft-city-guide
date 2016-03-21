@@ -71,8 +71,8 @@ public class SearchPlacesJob extends RetrofitJob {
                         SearchOutcomeGooglePlaceDTO outcome;
 
                         outcome = api.more(
-                            configuration.GOOGLE_API_KEY,
-                            nextPageToken
+                            nextPageToken,
+                            configuration.GOOGLE_API_KEY
                         );
 
                         nextPageToken = outcome.getNextPageToken();
