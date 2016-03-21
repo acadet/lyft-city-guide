@@ -26,7 +26,7 @@ public class SettingsController extends BaseController {
     @BindColor(R.color.gray)
     int grayColor;
 
-    @Bind(R.id.fragment_settings_range_seek_bar)
+    @Bind(R.id.partial_settings_body_range_seek_bar)
     SeekBar seekBar;
 
     @Bind(R.id.partial_settings_body_label_wrapper)
