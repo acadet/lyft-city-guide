@@ -159,7 +159,7 @@ public class LandingController extends BaseController {
 
         swipeRefreshLayout.setOnRefreshListener(this::fetchMoreContent);
 
-        headerSlider.setOnSlideListener((index, label) -> {
+        headerSlider.observe((index, label) -> {
             switch (index) {
                 case 1:
                     currentType = PlaceType.BISTRO;

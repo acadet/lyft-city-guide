@@ -14,54 +14,56 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.ui.utils.MetricHelper;
 
 /**
- * @class Slider
- * @brief Custom slider component
+ * Slider
+ * <p>
+ * Custom slider component
  */
 public class Slider extends LinearLayout {
     /**
-     * @class SliderListener
-     * @brief Custom listener for this component. Triggered when a new value has been set
+     * Observer
+     * <p>
+     * Custom observer for this component. Triggered when a new value has been set
      */
-    public interface SliderListener {
+    public interface Observer {
         void onSlide(int index, CharSequence label);
     }
 
-    private LinearLayout _labelWrapper;
+    private LinearLayout labelWrapper;
 
     // For internal purpose only
-    private int            _currentIndex;
-    private SliderListener _listener;
+    private int      currentIndex;
+    private Observer observer;
 
     // Custom attributes
-    private CharSequence[] _labels;
-    private int            _selectedForeground;
-    private int            _defaultForeground;
-    private float          _fontSize;
+    private CharSequence[] labels;
+    private int            selectedForeground;
+    private int            defaultForeground;
+    private float          fontsize;
 
     public Slider(Context context, AttributeSet attributes) {
         super(context, attributes);
 
-        _currentIndex = 0;
+        currentIndex = 0;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.component_slider, this, true);
 
-        _labelWrapper = (LinearLayout) findViewById(R.id.component_slider_label_wrapper);
-        _labelWrapper.setOnTouchListener(
+        labelWrapper = (LinearLayout) findViewById(R.id.component_slider_label_wrapper);
+        labelWrapper.setOnTouchListener(
             new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    int width = _labelWrapper.getWidth();
-                    int n = _labels.length;
+                    int width = labelWrapper.getWidth();
+                    int n = labels.length;
                     int touchedIndex = Math.round(event.getX()) / (width / n);
 
-                    if (touchedIndex != _currentIndex) {
-                        _setFieldAsDefault((TextView) _labelWrapper.getChildAt(_currentIndex));
-                        _setFieldAsCurrent((TextView) _labelWrapper.getChildAt(touchedIndex));
+                    if (touchedIndex != currentIndex) {
+                        setFieldAsDefault((TextView) labelWrapper.getChildAt(currentIndex));
+                        setFieldAsCurrent((TextView) labelWrapper.getChildAt(touchedIndex));
 
-                        _currentIndex = touchedIndex;
-                        if (_listener != null) {
-                            _listener.onSlide(touchedIndex, _labels[touchedIndex]);
+                        currentIndex = touchedIndex;
+                        if (observer != null) {
+                            observer.onSlide(touchedIndex, labels[touchedIndex]);
                         }
                     }
 
@@ -72,13 +74,13 @@ public class Slider extends LinearLayout {
 
         // Collect custom attributes
         TypedArray styledAttributes = context.obtainStyledAttributes(attributes, R.styleable.Slider);
-        _selectedForeground = styledAttributes.getColor(
+        selectedForeground = styledAttributes.getColor(
             R.styleable.Slider_selectedForeground, getResources().getColor(android.R.color.black)
         );
-        _defaultForeground = styledAttributes.getColor(
+        defaultForeground = styledAttributes.getColor(
             R.styleable.Slider_defaultForeground, getResources().getColor(android.R.color.black)
         );
-        _fontSize = styledAttributes.getDimension(R.styleable.Slider_fontSize, 12f);
+        fontsize = styledAttributes.getDimension(R.styleable.Slider_fontSize, 12f);
 
         // Set content
         setLabels(styledAttributes.getTextArray(R.styleable.Slider_labels));
@@ -88,13 +90,13 @@ public class Slider extends LinearLayout {
         this(context, null);
     }
 
-    private void _setFieldAsCurrent(TextView field) {
-        field.setTextColor(_selectedForeground);
+    private void setFieldAsCurrent(TextView field) {
+        field.setTextColor(selectedForeground);
         field.setBackgroundResource(R.drawable.slider_thumb);
     }
 
-    private void _setFieldAsDefault(TextView field) {
-        field.setTextColor(_defaultForeground);
+    private void setFieldAsDefault(TextView field) {
+        field.setTextColor(defaultForeground);
         field.setBackgroundResource(0);
     }
 
@@ -114,56 +116,56 @@ public class Slider extends LinearLayout {
             1.0f
         );
 
-        _labelWrapper.removeAllViewsInLayout();
+        labelWrapper.removeAllViewsInLayout();
         for (CharSequence c : labels) {
             TextView t = new TextView(getContext());
 
             t.setLayoutParams(params);
-            t.setTextSize(_fontSize);
+            t.setTextSize(fontsize);
             t.setGravity(Gravity.CENTER);
             t.setPadding(padding, padding, padding, padding);
 
-            if (i == _currentIndex) {
-                _setFieldAsCurrent(t);
+            if (i == currentIndex) {
+                setFieldAsCurrent(t);
             } else {
-                _setFieldAsDefault(t);
+                setFieldAsDefault(t);
             }
 
             t.setText(c);
-            _labelWrapper.addView(t);
+            labelWrapper.addView(t);
             i++;
         }
 
-        _labels = labels;
+        this.labels = labels;
         invalidate();
     }
 
     public void setSelectedForeground(int color) {
-        _selectedForeground = color;
-        ((TextView) _labelWrapper.getChildAt(_currentIndex)).setTextColor(_selectedForeground);
+        selectedForeground = color;
+        ((TextView) labelWrapper.getChildAt(currentIndex)).setTextColor(selectedForeground);
     }
 
     public void setDefaultForeground(int color) {
-        _defaultForeground = color;
-        for (int i = 0, s = _labelWrapper.getChildCount(); i < s; i++) {
-            TextView t = (TextView) _labelWrapper.getChildAt(i);
+        defaultForeground = color;
+        for (int i = 0, s = labelWrapper.getChildCount(); i < s; i++) {
+            TextView t = (TextView) labelWrapper.getChildAt(i);
 
-            if (i != _currentIndex) {
-                t.setTextColor(_defaultForeground);
+            if (i != currentIndex) {
+                t.setTextColor(defaultForeground);
             }
         }
     }
 
     public void setFontSize(float size) {
-        _fontSize = size;
-        for (int i = 0, s = _labelWrapper.getChildCount(); i < s; i++) {
-            TextView t = (TextView) _labelWrapper.getChildAt(i);
+        fontsize = size;
+        for (int i = 0, s = labelWrapper.getChildCount(); i < s; i++) {
+            TextView t = (TextView) labelWrapper.getChildAt(i);
 
-            t.setTextSize(_fontSize);
+            t.setTextSize(fontsize);
         }
     }
 
-    public void setOnSlideListener(SliderListener listener) {
-        _listener = listener;
+    public void observe(Observer observer) {
+        this.observer = observer;
     }
 }

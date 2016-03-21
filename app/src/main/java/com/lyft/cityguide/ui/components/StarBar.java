@@ -12,25 +12,26 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.ui.utils.MetricHelper;
 
 /**
- * @class StarBar
- * @brief Custom star bar component (similar to a rating bar)
+ * StarBar
+ * <p>
+ * Custom star bar component (similar to a rating bar)
  */
 public class StarBar extends LinearLayout {
-    private LinearLayout _wrapper;
+    private LinearLayout wrapper;
 
-    private int _currentRating;
-    private int _total;
+    private int currentRating;
+    private int total;
 
     public StarBar(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        _currentRating = 0;
-        _total = 0;
+        currentRating = 0;
+        total = 0;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.component_star_bar, this, true);
 
-        _wrapper = (LinearLayout) findViewById(R.id.component_star_bar_wrapper);
+        wrapper = (LinearLayout) findViewById(R.id.component_star_bar_wrapper);
 
         // Collect custom attributes
         TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.Slider);
@@ -49,11 +50,11 @@ public class StarBar extends LinearLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             );
 
-        _wrapper.removeAllViewsInLayout();
+        wrapper.removeAllViewsInLayout();
         for (int i = 0; i < value; i++) {
             ImageView img = new ImageView(getContext());
 
-            if (i < _currentRating) {
+            if (i < currentRating) {
                 img.setImageResource(R.drawable.star_pink);
             } else {
                 img.setImageResource(R.drawable.star_grey);
@@ -64,14 +65,14 @@ public class StarBar extends LinearLayout {
             img.setMaxWidth(Math.round(MetricHelper.toPixels(getContext(), 20)));
             img.setMaxHeight(Math.round(MetricHelper.toPixels(getContext(), 20)));
 
-            _wrapper.addView(img);
+            wrapper.addView(img);
         }
-        _wrapper.invalidate();
-        _total = value;
+        wrapper.invalidate();
+        total = value;
     }
 
     public void setRating(int value) {
-        _currentRating = value;
-        setNumbers(_total);
+        currentRating = value;
+        setNumbers(total);
     }
 }
