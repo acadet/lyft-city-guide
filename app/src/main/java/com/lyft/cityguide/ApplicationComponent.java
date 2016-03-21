@@ -8,6 +8,7 @@ import com.lyft.cityguide.models.services.google.distancematrix.jobs.GoogleDista
 import com.lyft.cityguide.models.services.google.place.api.GooglePlaceAPIFactory;
 import com.lyft.cityguide.models.services.google.place.jobs.GooglePlaceServiceJobFactory;
 import com.lyft.cityguide.ui.activities.BaseActivity;
+import com.lyft.cityguide.ui.events.EventBusFactory;
 
 import javax.inject.Singleton;
 
@@ -26,7 +27,8 @@ import dagger.Component;
     GoogleDistanceMatrixServiceJobFactory.class,
     GooglePlaceServiceJobFactory.class,
     BLLJobFactory.class,
-    BLLFactory.class
+    BLLFactory.class,
+    EventBusFactory.class
 })
 public interface ApplicationComponent {
     void inject(BaseActivity activity);
