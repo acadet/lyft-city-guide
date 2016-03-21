@@ -2,8 +2,8 @@ package com.lyft.cityguide.models.bll.interfaces;
 
 import android.location.Location;
 
-import com.lyft.cityguide.models.beans.Distance;
-import com.lyft.cityguide.models.beans.Place;
+import com.lyft.cityguide.models.bll.dto.DistanceBLLDTO;
+import com.lyft.cityguide.models.beans.PlaceBLLDTO;
 import com.lyft.cityguide.utils.actions.Action;
 
 import java.util.List;
@@ -21,6 +21,6 @@ public interface IDistanceBLL extends IBLL {
      * @param success
      * @param failure
      */
-    void getDistances(Location currentLocation, List<Place> places,
-                      Action<List<Distance>> success, Action<String> failure);
+    void getDistances(Location currentLocation, List<PlaceBLLDTO> places,
+                      Action<List<DistanceBLLDTO>> success, Action<String> failure);
 }

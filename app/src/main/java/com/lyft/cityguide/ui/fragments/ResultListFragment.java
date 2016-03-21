@@ -11,8 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.models.structs.PlaceType;
-import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.ui.adapters.ResultAdapter;
 import com.lyft.cityguide.ui.events.ShowBarsEvent;
 import com.lyft.cityguide.ui.events.ShowBistrosEvent;
@@ -57,7 +57,7 @@ public class ResultListFragment extends BaseFragment {
      * @param pois
      * @param customDone
      */
-    private void _fetchPOIsCallback(List<PointOfInterest> pois, Action0 customDone) {
+    private void _fetchPOIsCallback(List<PointOfInterestBLLDTO> pois, Action0 customDone) {
         if (pois.size() == 0) {
             _setNoContentMessage();
         } else {
@@ -198,7 +198,7 @@ public class ResultListFragment extends BaseFragment {
     }
 
     public void onMore() {
-        Action<List<PointOfInterest>> successCallback;
+        Action<List<PointOfInterestBLLDTO>> successCallback;
         Action<String> errorCallback;
 
         if (_currentAdapter == null || _isFetchingMore) {

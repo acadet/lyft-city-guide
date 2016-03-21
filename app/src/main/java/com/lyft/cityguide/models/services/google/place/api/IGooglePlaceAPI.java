@@ -1,6 +1,6 @@
 package com.lyft.cityguide.models.services.google.place.api;
 
-import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
+import com.lyft.cityguide.models.services.google.place.dto.SearchOutcomeGooglePlaceDTO;
 
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -12,7 +12,7 @@ import retrofit.http.Query;
  */
 public interface IGooglePlaceAPI {
     @GET("/nearbysearch/json")
-    PlaceSearchResult search(
+    SearchOutcomeGooglePlaceDTO search(
         @Query("location") String location,
         @Query("radius") float radius,
         @Query("types") String types,
@@ -20,7 +20,7 @@ public interface IGooglePlaceAPI {
     );
 
     @GET("/nearbysearch/json")
-    PlaceSearchResult more(
+    SearchOutcomeGooglePlaceDTO more(
         @Query("pagetoken") String pageToken,
         @Query("key") String apiKey
     );

@@ -10,8 +10,9 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.beans.Distance;
-import com.lyft.cityguide.models.beans.Place;
+import com.lyft.cityguide.models.bll.dto.DistanceBLLDTO;
+import com.lyft.cityguide.models.beans.PlaceBLLDTO;
+import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.models.beans.RangeSetting;
 import com.lyft.cityguide.models.bll.api.APIOutletFactory;
 import com.lyft.cityguide.models.services.google.place.api.IGooglePlaceAPI;
@@ -19,7 +20,6 @@ import com.lyft.cityguide.models.bll.interfaces.IDistanceBLL;
 import com.lyft.cityguide.models.bll.interfaces.IPlaceBLL;
 import com.lyft.cityguide.models.bll.interfaces.ISettingsBLL;
 import com.lyft.cityguide.models.bll.structs.PlaceSearchResult;
-import com.lyft.cityguide.models.structs.PointOfInterest;
 import com.lyft.cityguide.utils.DeviceHelper;
 import com.lyft.cityguide.utils.actions.Action;
 import com.lyft.cityguide.utils.actions.Action0;
@@ -76,21 +76,21 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
      * @param distances
      * @return
      */
-    private List<PointOfInterest> _toPOIs(List<Place> places, List<Distance> distances) {
-        List<PointOfInterest> outcome = new ArrayList<>();
+    private List<PointOfInterestBLLDTO> _toPOIs(List<PlaceBLLDTO> places, List<DistanceBLLDTO> distances) {
+        List<PointOfInterestBLLDTO> outcome = new ArrayList<>();
         int s2 = distances.size();
 
         for (int i = 0, s1 = places.size(); i < s1; i++) {
-            Distance d;
+            DistanceBLLDTO d;
 
             if (i < s2) {
                 d = distances.get(i);
             } else { // No distance found, prevent index overflows
-                d = new Distance();
+                d = new DistanceBLLDTO();
                 d.setDistance(0);
             }
 
-            outcome.add(new PointOfInterest(places.get(i), d));
+            outcome.add(new PointOfInterestBLLDTO(places.get(i), d));
         }
 
         return outcome;
@@ -107,7 +107,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
      * @param resetTaskPointer Action resetting pointer
      */
     private void _getPOIsAround(
-        Action<List<PointOfInterest>> success, Action<String> failure,
+        Action<List<PointOfInterestBLLDTO>> success, Action<String> failure,
         String type, final AsyncTask taskPointer, Action<AsyncTask> setTaskPointer,
         Action0 resetTaskPointer) {
 
@@ -160,7 +160,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                     new BLLCallback<PlaceSearchResult>(customFailure) {
                                         @Override
                                         public void success(PlaceSearchResult placeSearchResult, Response response) {
-                                            List<Place> places = placeSearchResult.getResults();
+                                            List<PlaceBLLDTO> places = placeSearchResult.getResults();
 
                                             _latestNextPageToken = placeSearchResult.getPageToken();
 
@@ -169,7 +169,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                                     _latestLocation,
                                                     places,
                                                     (distances) -> {
-                                                        List<PointOfInterest> outcome
+                                                        List<PointOfInterestBLLDTO> outcome
                                                             = _toPOIs(places, distances);
 
                                                         customWhenDone.run();
@@ -178,7 +178,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                                     customFailure
                                                 );
                                             } else { // No matching place. Return an empty list
-                                                List<PointOfInterest> outcome = new ArrayList<>();
+                                                List<PointOfInterestBLLDTO> outcome = new ArrayList<>();
 
                                                 customWhenDone.run();
                                                 runOnMainThread(() -> success.run(outcome));
@@ -272,7 +272,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
      * @param resetTaskPointer
      */
     private void _morePOIsAround(
-        Action<List<PointOfInterest>> success, Action<String> failure,
+        Action<List<PointOfInterestBLLDTO>> success, Action<String> failure,
         final AsyncTask taskPointer, Action<AsyncTask> setTaskPointer,
         Action0 resetTaskPointer) {
 
@@ -308,7 +308,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                 new BLLCallback<PlaceSearchResult>(customFailure) {
                                     @Override
                                     public void success(PlaceSearchResult placeSearchResult, Response response) {
-                                        List<Place> places = placeSearchResult.getResults();
+                                        List<PlaceBLLDTO> places = placeSearchResult.getResults();
 
                                         _latestNextPageToken = placeSearchResult.getPageToken();
 
@@ -317,7 +317,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                                 _latestLocation,
                                                 places,
                                                 (distances) -> {
-                                                    List<PointOfInterest> outcome
+                                                    List<PointOfInterestBLLDTO> outcome
                                                         = _toPOIs(places, distances);
 
                                                     synchronized (_asyncTaskLock) {
@@ -329,7 +329,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
                                                 customFailure
                                             );
                                         } else {
-                                            List<PointOfInterest> outcome = new ArrayList<>();
+                                            List<PointOfInterestBLLDTO> outcome = new ArrayList<>();
 
                                             synchronized (_asyncTaskLock) {
                                                 whenDone(taskPointer);
@@ -358,7 +358,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     }
 
     @Override
-    public void getBarsAround(Action<List<PointOfInterest>> success, Action<String> failure) {
+    public void getBarsAround(Action<List<PointOfInterestBLLDTO>> success, Action<String> failure) {
         _getPOIsAround(
             success,
             failure,
@@ -370,7 +370,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     }
 
     @Override
-    public void moreBarsAround(Action<List<PointOfInterest>> success, Action<String> failure) {
+    public void moreBarsAround(Action<List<PointOfInterestBLLDTO>> success, Action<String> failure) {
         _morePOIsAround(
             success,
             failure,
@@ -381,7 +381,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     }
 
     @Override
-    public void getBistrosAround(Action<List<PointOfInterest>> success, Action<String> failure) {
+    public void getBistrosAround(Action<List<PointOfInterestBLLDTO>> success, Action<String> failure) {
         _getPOIsAround(
             success,
             failure,
@@ -393,7 +393,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     }
 
     @Override
-    public void moreBistrosAround(Action<List<PointOfInterest>> success, Action<String> failure) {
+    public void moreBistrosAround(Action<List<PointOfInterestBLLDTO>> success, Action<String> failure) {
         _morePOIsAround(
             success,
             failure,
@@ -404,7 +404,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     }
 
     @Override
-    public void getCafesAround(Action<List<PointOfInterest>> success, Action<String> failure) {
+    public void getCafesAround(Action<List<PointOfInterestBLLDTO>> success, Action<String> failure) {
         _getPOIsAround(
             success,
             failure,
@@ -416,7 +416,7 @@ class PlaceBLL extends BaseBLL implements IPlaceBLL {
     }
 
     @Override
-    public void moreCafesAround(Action<List<PointOfInterest>> success, Action<String> failure) {
+    public void moreCafesAround(Action<List<PointOfInterestBLLDTO>> success, Action<String> failure) {
         _morePOIsAround(
             success,
             failure,

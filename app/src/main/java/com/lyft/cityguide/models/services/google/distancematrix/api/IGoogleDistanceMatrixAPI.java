@@ -1,6 +1,6 @@
 package com.lyft.cityguide.models.services.google.distancematrix.api;
 
-import com.lyft.cityguide.models.bll.structs.DistanceResult;
+import com.lyft.cityguide.models.services.google.distancematrix.dto.DistanceGoogleDistanceMatrixDTO;
 
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -12,12 +12,11 @@ import retrofit.http.Query;
  */
 public interface IGoogleDistanceMatrixAPI {
     @GET("/json")
-    DistanceResult getDistances(
+    DistanceGoogleDistanceMatrixDTO getDistances(
         @Query("origins") String origins,
         @Query("destinations") String destinations,
         @Query("mode") String mode,
         @Query("language") String language,
-        @Query("units") String units,
         @Query("key") String apiKey
     );
 }

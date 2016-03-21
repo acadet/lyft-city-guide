@@ -5,8 +5,8 @@ import android.location.Location;
 import android.os.AsyncTask;
 
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.beans.Distance;
-import com.lyft.cityguide.models.beans.Place;
+import com.lyft.cityguide.models.bll.dto.DistanceBLLDTO;
+import com.lyft.cityguide.models.beans.PlaceBLLDTO;
 import com.lyft.cityguide.models.bll.api.APIOutletFactory;
 import com.lyft.cityguide.models.services.google.distancematrix.api.IGoogleDistanceMatrixAPI;
 import com.lyft.cityguide.models.bll.interfaces.IDistanceBLL;
@@ -40,7 +40,7 @@ class DistanceBLL extends BaseBLL implements IDistanceBLL {
     }
 
     @Override
-    public void getDistances(Location currentLocation, List<Place> places, Action<List<Distance>> success, Action<String> failure) {
+    public void getDistances(Location currentLocation, List<PlaceBLLDTO> places, Action<List<DistanceBLLDTO>> success, Action<String> failure) {
         if (_getDistancesTask != null) { // Cancel same task if any
             synchronized (_asyncTaskLock) {
                 if (_getDistancesTask != null) {
@@ -62,7 +62,7 @@ class DistanceBLL extends BaseBLL implements IDistanceBLL {
 
                 // Format data for the API
                 for (int i = 0, s = places.size(); i < s; i++) {
-                    Place p = places.get(i);
+                    PlaceBLLDTO p = places.get(i);
 
                     destinations
                         .append(p.getLatitude())

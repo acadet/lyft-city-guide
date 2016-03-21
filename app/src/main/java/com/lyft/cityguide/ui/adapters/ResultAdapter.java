@@ -10,7 +10,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.structs.PlaceType;
-import com.lyft.cityguide.models.structs.PointOfInterest;
+import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.ui.components.StarBar;
 
 import java.util.List;
@@ -21,11 +21,11 @@ import butterknife.ButterKnife;
  * @class ResultAdapter
  * @brief
  */
-public class ResultAdapter extends BaseAdapter<PointOfInterest> {
+public class ResultAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
 
     private PlaceType _currentType;
 
-    public ResultAdapter(List<PointOfInterest> items, Context context, PlaceType type) {
+    public ResultAdapter(List<PointOfInterestBLLDTO> items, Context context, PlaceType type) {
         super(items, context);
         _currentType = type;
     }
@@ -74,7 +74,7 @@ public class ResultAdapter extends BaseAdapter<PointOfInterest> {
         ImageView icon;
         TextView name, distance;
         StarBar rating;
-        PointOfInterest currentPOI;
+        PointOfInterestBLLDTO currentPOI;
 
         adapter = recycle(convertView, R.layout.adapter_result, parent);
         icon = ButterKnife.findById(adapter, R.id.adapter_result_icon);
