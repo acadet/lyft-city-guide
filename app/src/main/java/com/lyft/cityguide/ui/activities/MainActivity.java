@@ -1,76 +1,36 @@
 package com.lyft.cityguide.ui.activities;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.ui.events.ShowResultList;
-import com.lyft.cityguide.ui.events.ShowSettings;
-import com.lyft.cityguide.ui.fragments.BaseFragment;
-import com.lyft.cityguide.ui.fragments.MenuFragment;
-import com.lyft.cityguide.ui.fragments.ResultListFragment;
-import com.lyft.cityguide.ui.fragments.ResultListHeaderFragment;
-import com.lyft.cityguide.ui.fragments.SettingsFragment;
-import com.lyft.cityguide.ui.fragments.SettingsHeaderFragment;
+import com.lyft.cityguide.ui.components.MainUIContainer;
+import com.lyft.cityguide.ui.screens.LandingScreen;
+import com.lyft.scoop.Scoop;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import butterknife.ButterKnife;
+import butterknife.Bind;
 
 /**
- * @class MainActivity
- * @brief Handles main layout (header + body + aside menu)
+ * MainActivity
  */
 public class MainActivity extends BaseActivity {
-    private void _setDefaultContent() {
-        Map<Integer, Fragment> fragments = new HashMap<>();
+    @Bind(R.id.main_layout)
+    ViewGroup mainLayout;
 
-        fragments.put(R.id.main_header, new ResultListHeaderFragment());
-        fragments.put(R.id.main_body, new ResultListFragment());
-        fragments.put(R.id.main_menu, new MenuFragment());
+    @Bind(R.id.main_ui_container)
+    MainUIContainer container;
 
-        setFragments(fragments);
-    }
+    private Scoop rootScoop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
-        _setDefaultContent();
-    }
+        rootScoop = new Scoop.Builder("root").build();
+        rootScoop.inflate(R.layout.root_layout, mainLayout, true);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        BaseFragment.getMenuBus().register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        BaseFragment.getMenuBus().unregister(this);
-    }
-
-    public void onEventMainThread(ShowSettings e) {
-        Map<Integer, Fragment> fragments = new HashMap<>();
-
-        fragments.put(R.id.main_header, new SettingsHeaderFragment());
-        fragments.put(R.id.main_body, new SettingsFragment());
-
-        setFragments(fragments);
-    }
-
-    public void onEventMainThread(ShowResultList e) {
-        Map<Integer, Fragment> fragments = new HashMap<>();
-
-        fragments.put(R.id.main_header, new ResultListHeaderFragment());
-        fragments.put(R.id.main_body, new ResultListFragment());
-
-        setFragments(fragments);
+        appRouter.goTo(new LandingScreen());
     }
 }

@@ -8,6 +8,7 @@ import com.lyft.cityguide.CityGuideApplication;
 import com.lyft.cityguide.ui.components.Spinner;
 import com.lyft.cityguide.ui.events.PopupEvents;
 import com.lyft.cityguide.ui.events.SpinnerEvents;
+import com.lyft.cityguide.ui.routers.AppRouter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -25,6 +26,9 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  */
 public abstract class BaseActivity extends Activity {
     private Spinner spinner;
+
+    @Inject
+    AppRouter appRouter;
 
     @Inject
     @Named("popup")

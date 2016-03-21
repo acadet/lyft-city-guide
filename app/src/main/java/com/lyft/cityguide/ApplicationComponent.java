@@ -11,6 +11,7 @@ import com.lyft.cityguide.ui.activities.BaseActivity;
 import com.lyft.cityguide.ui.components.MainUIContainer;
 import com.lyft.cityguide.ui.controllers.BaseController;
 import com.lyft.cityguide.ui.events.EventBusFactory;
+import com.lyft.cityguide.ui.routers.RouterFactory;
 
 import javax.inject.Singleton;
 
@@ -30,7 +31,8 @@ import dagger.Component;
     GooglePlaceServiceJobFactory.class,
     BLLJobFactory.class,
     BLLFactory.class,
-    EventBusFactory.class
+    EventBusFactory.class,
+    RouterFactory.class
 })
 public interface ApplicationComponent {
     void inject(BaseActivity activity);
