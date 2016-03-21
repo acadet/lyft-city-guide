@@ -1,5 +1,7 @@
 package com.lyft.cityguide;
 
+import com.lyft.cityguide.models.bll.BLLFactory;
+import com.lyft.cityguide.models.bll.jobs.BLLJobFactory;
 import com.lyft.cityguide.models.dao.DAOFactory;
 import com.lyft.cityguide.models.services.google.distancematrix.api.GoogleDistanceMatrixAPIFactory;
 import com.lyft.cityguide.models.services.google.distancematrix.jobs.GoogleDistanceMatrixServiceJobFactory;
@@ -22,7 +24,9 @@ import dagger.Component;
     GoogleDistanceMatrixAPIFactory.class,
     GooglePlaceAPIFactory.class,
     GoogleDistanceMatrixServiceJobFactory.class,
-    GooglePlaceServiceJobFactory.class
+    GooglePlaceServiceJobFactory.class,
+    BLLJobFactory.class,
+    BLLFactory.class
 })
 public interface ApplicationComponent {
     void inject(BaseActivity activity);
