@@ -18,4 +18,10 @@ public class BLLJobFactory {
     public UpdateSearchRangeSettingJob provideUpdateSearchRangeSettingJob(ISettingsDAO settingsDAO) {
         return new UpdateSearchRangeSettingJob(settingsDAO);
     }
+
+    @Provides
+    @Singleton
+    public GetSearchRangeSettingJob provideGetSearchRangeSettingJob(ISettingsDAO settingsDAO) {
+        return new GetSearchRangeSettingJob(settingsDAO);
+    }
 }

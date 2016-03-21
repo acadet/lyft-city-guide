@@ -1,6 +1,5 @@
 package com.lyft.cityguide.models.bll;
 
-import com.lyft.cityguide.models.bll.interfaces.IDataWritingBLL;
 import com.lyft.cityguide.models.bll.jobs.UpdateSearchRangeSettingJob;
 
 import javax.inject.Singleton;

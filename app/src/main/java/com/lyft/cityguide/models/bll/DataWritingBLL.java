@@ -1,7 +1,6 @@
 package com.lyft.cityguide.models.bll;
 
 import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
-import com.lyft.cityguide.models.bll.interfaces.IDataWritingBLL;
 import com.lyft.cityguide.models.bll.jobs.UpdateSearchRangeSettingJob;
 
 import rx.Observable;
