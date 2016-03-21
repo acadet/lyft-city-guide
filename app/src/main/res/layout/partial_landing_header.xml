@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    style="@style/MainHeader"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    >
+
+    <LinearLayout
+        style="@style/PartialLandingHeaderMenuWrapper"
+        >
+
+        <ImageView
+            android:id="@+id/partial_landing_header_menu_trigger"
+            android:src="@drawable/ic_menu"
+            style="@style/HeaderIcon"
+            />
+
+        <TextView
+            android:text="@string/app_name"
+            style="@style/HeaderTitle"
+            />
+
+    </LinearLayout>
+
+    <com.lyft.cityguide.ui.components.Slider
+        android:id="@+id/partial_landing_header_menu_trigger_slider"
+        style="@style/PartialLandingHeaderSlider"
+        custom:labels="@array/place_categories"
+        />
+
+</LinearLayout>

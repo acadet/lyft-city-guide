@@ -5,31 +5,47 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.annimon.stream.Stream;
+
 import java.util.List;
 
 /**
- * @class BaseAdapter
- * @brief Generic base adapter
+ * BaseAdapter
+ * <p>
  */
-public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
-    private List<T>        _items;
-    private Context        _context;
-    private LayoutInflater _inflater;
+abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
+    private Context context;
+    private List<T> items;
 
-    public BaseAdapter(List<T> items, Context context) {
-        this._items = items;
-        this._context = context;
-        this._inflater = LayoutInflater.from(this._context);
+    BaseAdapter(Context context, List<T> items) {
+        this.context = context;
+        this.items = items;
+    }
+
+    Context getContext() {
+        return context;
+    }
+
+    T itemAt(int position) {
+        return items.get(position);
+    }
+
+    <U> U recycle(int layoutID, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            return (U) LayoutInflater.from(context).inflate(layoutID, parent, false);
+        } else {
+            return (U) convertView;
+        }
     }
 
     @Override
     public int getCount() {
-        return _items.size();
+        return items.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return _items.get(position);
+        return itemAt(position);
     }
 
     @Override
@@ -37,42 +53,13 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
         return position;
     }
 
-    public List<T> getItems() {
-        return _items;
+    public void setItems(List<T> items) {
+        items.clear();
+        Stream.of(items).forEach(items::add);
+        notifyDataSetChanged();
     }
 
-    public T itemAt(int position) {
-        return _items.get(position);
-    }
-
-    public Context getContext() {
-        return _context;
-    }
-
-    public LayoutInflater getLayoutInflater() {
-        return _inflater;
-    }
-
-    /**
-     * Recycles view if possible, else instanciante a new one
-     *
-     * @param convertView
-     * @param layoutId
-     * @param parent
-     * @param <U>
-     * @return
-     */
-    public <U extends View> U recycle(View convertView, int layoutId, ViewGroup parent) {
-        if (convertView == null) {
-            return (U) getLayoutInflater().inflate(layoutId, parent, false);
-        } else {
-            return (U) convertView;
-        }
-    }
-
-    public void appendItems(List<T> items) {
-        for (T i : items) {
-            _items.add(i);
-        }
+    public void addItem(T item) {
+        items.add(item);
     }
 }

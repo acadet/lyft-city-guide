@@ -31,3 +31,5 @@ captures/
 DS_Store
 .idea/
 app/src/main/res/values/secret_strings.xml
+
+app/src/main/java/com/lyft/cityguide/SecretApplicationConfiguration.java

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/PartialSettingsBody"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <TextView
+        android:text="@string/fragment_settings_range"
+        style="@style/PartialSettingsBodyTitle"
+        />
+
+    <SeekBar
+        android:id="@+id/partial_settings_body_range_seek_bar"
+        android:max="2"
+        style="@style/PartialSettingsBodySeekBar"
+        />
+
+    <LinearLayout
+        android:id="@+id/partial_settings_body_label_wrapper"
+        style="@style/MatchParentWrapContent.Horizontal"
+        >
+
+        <TextView
+            android:gravity="left"
+            android:text="@string/range_1_mi"
+            style="@style/PartialSettingsBodySeekBarLabel"
+            />
+
+        <TextView
+            android:gravity="center"
+            android:text="@string/range_2_mi"
+            style="@style/PartialSettingsBodySeekBarLabel"
+            />
+
+        <TextView
+            android:gravity="right"
+            android:text="@string/range_5_mi"
+            style="@style/PartialSettingsBodySeekBarLabel"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
