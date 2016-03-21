@@ -146,7 +146,8 @@ public class LandingController extends BaseController {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 int latestIndex = pointOfInterestAdapter.getCount() - 1;
 
-                if (resultListView.getLastVisiblePosition() == latestIndex
+                if (latestIndex >= 0
+                    && resultListView.getLastVisiblePosition() == latestIndex
                     && resultListView.getChildAt(latestIndex).getBottom() <= resultListView.getHeight()) {
                     // Display more content when reaching the bottom of the list
                     // Do not fetch if latest element is not at the bottom (no

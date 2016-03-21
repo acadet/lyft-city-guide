@@ -2,7 +2,6 @@ package com.lyft.cityguide.ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 
 import com.lyft.cityguide.CityGuideApplication;
 import com.lyft.cityguide.ui.components.Spinner;
@@ -17,7 +16,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.ButterKnife;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -63,12 +61,6 @@ public abstract class BaseActivity extends Activity {
         spinnerBus.unregister(this);
 
         Crouton.cancelAllCroutons();
-    }
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-        ButterKnife.bind(this);
     }
 
     @Override

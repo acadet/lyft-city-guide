@@ -9,14 +9,12 @@ import com.lyft.cityguide.ui.screens.LandingScreen;
 import com.lyft.scoop.Scoop;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * MainActivity
  */
 public class MainActivity extends BaseActivity {
-    @Bind(R.id.main_layout)
-    ViewGroup mainLayout;
-
     @Bind(R.id.main_ui_container)
     MainUIContainer container;
 
@@ -29,7 +27,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         rootScoop = new Scoop.Builder("root").build();
-        rootScoop.inflate(R.layout.root_layout, mainLayout, true);
+        rootScoop.inflate(R.layout.root_layout, (ViewGroup) findViewById(R.id.main_layout), true);
+        ButterKnife.bind(this);
 
         appRouter.goTo(new LandingScreen());
     }
