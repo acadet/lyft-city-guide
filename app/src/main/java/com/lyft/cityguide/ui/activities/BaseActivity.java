@@ -21,8 +21,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
- * @class BaseActivity
- * @brief
+ * BaseActivity
  */
 public abstract class BaseActivity extends Activity {
     private Spinner spinner;
@@ -40,6 +39,8 @@ public abstract class BaseActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         CityGuideApplication.getApplicationComponent().inject(this);
+
+        spinner = new Spinner(this);
     }
 
     @Override

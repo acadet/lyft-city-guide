@@ -54,8 +54,12 @@ abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
     }
 
     public void setItems(List<T> items) {
-        this.items.clear();
-        Stream.of(items).forEach(this.items::add);
+        items.clear();
+        Stream.of(items).forEach(items::add);
         notifyDataSetChanged();
+    }
+
+    public void addItem(T item) {
+        items.add(item);
     }
 }

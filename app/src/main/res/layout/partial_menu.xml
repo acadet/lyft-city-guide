@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/fragment_menu"
+    android:id="@+id/partial_menu"
     android:visibility="gone"
     style="@style/PartialMenu"
     xmlns:android="http://schemas.android.com/apk/res/android"

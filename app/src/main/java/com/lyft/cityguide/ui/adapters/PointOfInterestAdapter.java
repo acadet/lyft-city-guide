@@ -9,11 +9,12 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.structs.PlaceType;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
+import com.lyft.cityguide.structs.PlaceType;
 import com.lyft.cityguide.ui.components.StarBar;
 
-import java.util.List;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
@@ -23,40 +24,25 @@ import butterknife.ButterKnife;
  */
 public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
 
-    private PlaceType _currentType;
+    private PlaceType currentType;
 
-    public PointOfInterestAdapter(List<PointOfInterestBLLDTO> items, Context context, PlaceType type) {
-        super(items, context);
-        _currentType = type;
+    public PointOfInterestAdapter(Context context, PlaceType type) {
+        super(context, new ArrayList<>());
+        currentType = type;
     }
 
-    /**
-     * Fills distance field with a user-friendly value
-     *
-     * @param field
-     * @param value
-     */
-    private void _setDistance(TextView field, double value) {
+    private void setUserFriendlyDate(TextView field, double value) {
         String text;
+        DecimalFormat format = new DecimalFormat("#.##");
 
-        if (value < 0.001) { // No value or too small
-            field.setText("");
-            return;
-        }
-        if (value < 1) {
-            text = "0." + ((int) Math.floor(value * 100));
-        } else {
-            text = ((int) Math.floor(value)) + ".";
-            text += ((int) (Math.floor(value * 100) - Math.floor(value) * 100));
-        }
-
+        text = format.format(value);
         text += " mi";
 
         field.setText(text);
     }
 
-    private int _getIcon() {
-        switch (_currentType) {
+    private int getIcon() {
+        switch (currentType) {
             case BAR:
                 return R.drawable.ic_bar;
             case BISTRO:
@@ -76,7 +62,7 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
         StarBar rating;
         PointOfInterestBLLDTO currentPOI;
 
-        adapter = recycle(convertView, R.layout.adapter_point_of_interest, parent);
+        adapter = recycle(R.layout.adapter_point_of_interest, convertView, parent);
         icon = ButterKnife.findById(adapter, R.id.adapter_result_icon);
         name = ButterKnife.findById(adapter, R.id.adapter_result_name);
         distance = ButterKnife.findById(adapter, R.id.adapter_result_distance);
@@ -84,15 +70,19 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
 
         currentPOI = itemAt(position);
 
-        icon.setImageResource(_getIcon());
-        name.setText(currentPOI.getPlace().getName());
-        _setDistance(distance, currentPOI.getDistance().toMiles());
-        rating.setRating(Math.round(currentPOI.getPlace().getRating()));
+        icon.setImageResource(getIcon());
+        name.setText(currentPOI.getName());
+        setUserFriendlyDate(distance, currentPOI.getDistance().toMiles());
+        rating.setRating(Math.round(currentPOI.getRating()));
 
         YoYo.with(Techniques.FadeIn)
             .duration(500)
             .playOn(adapter);
 
         return adapter;
+    }
+
+    public void setCurrentType(PlaceType type) {
+        currentType = type;
     }
 }
