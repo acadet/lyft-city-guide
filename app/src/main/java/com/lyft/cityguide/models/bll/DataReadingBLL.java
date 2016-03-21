@@ -3,6 +3,8 @@ package com.lyft.cityguide.models.bll;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
 import com.lyft.cityguide.models.bll.jobs.GetSearchRangeSettingJob;
+import com.lyft.cityguide.models.bll.jobs.ListPointsOfInterestAroundJob;
+import com.lyft.cityguide.structs.PlaceType;
 
 import java.util.List;
 
@@ -13,21 +15,27 @@ import rx.Observable;
  * <p>
  */
 class DataReadingBLL implements IDataReadingBLL {
-    private GetSearchRangeSettingJob getSearchRangeSettingJob;
+    private ListPointsOfInterestAroundJob listPointsOfInterestAroundJob;
+    private GetSearchRangeSettingJob      getSearchRangeSettingJob;
+
+    private PlaceType latestPlaceType;
 
     DataReadingBLL(
+        ListPointsOfInterestAroundJob listPointsOfInterestAroundJob,
         GetSearchRangeSettingJob getSearchRangeSettingJob) {
+        this.listPointsOfInterestAroundJob = listPointsOfInterestAroundJob;
         this.getSearchRangeSettingJob = getSearchRangeSettingJob;
     }
 
     @Override
-    public Observable<List<PointOfInterestBLLDTO>> listPointOfInterestsAround() {
-
+    public Observable<List<PointOfInterestBLLDTO>> listPointOfInterestsAround(PlaceType placeType) {
+        latestPlaceType = placeType;
+        return listPointsOfInterestAroundJob.get(false, latestPlaceType);
     }
 
     @Override
     public Observable<List<PointOfInterestBLLDTO>> listMore() {
-        return null;
+        return listPointsOfInterestAroundJob.get(true, latestPlaceType);
     }
 
     @Override

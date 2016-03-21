@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.lyft.cityguide.ApplicationConfiguration;
 import com.lyft.cityguide.models.dao.ISettingsDAO;
+import com.lyft.cityguide.models.services.google.distancematrix.IGoogleDistanceMatrixService;
+import com.lyft.cityguide.models.services.google.place.IGooglePlaceService;
 
 import javax.inject.Singleton;
 
@@ -32,5 +34,21 @@ public class BLLJobFactory {
     @Singleton
     public GetCurrentLocationJob provideGetCurrentLocationJob(ApplicationConfiguration configuration, Context context) {
         return new GetCurrentLocationJob(configuration, context);
+    }
+
+    @Provides
+    @Singleton
+    public ListPointsOfInterestJob provideListPointsOfInterestJob(IGooglePlaceService googlePlaceService, IGoogleDistanceMatrixService distanceMatrixService) {
+        return new ListPointsOfInterestJob(googlePlaceService, distanceMatrixService);
+    }
+
+    @Provides
+    @Singleton
+    public ListPointsOfInterestAroundJob provideListPointsOfInterestAroundJob(
+        GetCurrentLocationJob getCurrentLocationJob,
+        ListPointsOfInterestJob listPointsOfInterestJob,
+        GetSearchRangeSettingJob getSearchRangeSettingJob
+    ) {
+        return new ListPointsOfInterestAroundJob(getCurrentLocationJob, listPointsOfInterestJob, getSearchRangeSettingJob);
     }
 }
