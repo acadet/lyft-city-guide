@@ -30,7 +30,7 @@ public class ResultListHeaderFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_result_list_header, container, false);
+        fragment = inflater.inflate(R.layout.partial_landing_header, container, false);
         ButterKnife.bind(this, fragment);
 
         _slider.setOnSlideListener(

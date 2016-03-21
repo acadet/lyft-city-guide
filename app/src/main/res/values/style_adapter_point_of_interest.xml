@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AdapterResult" parent="MatchParentWrapContent.Horizontal">
+    <style name="AdapterPointOfInterest" parent="MatchParentWrapContent.Horizontal">
         <item name="android:padding">@dimen/layout_margin</item>
     </style>
 
-    <style name="AdapterResultIcon">
+    <style name="AdapterPointOfInterestIcon">
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
 
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="AdapterResultNameWrapper" parent="HorizontalStretchable">
+    <style name="AdapterPointOfInterestNameWrapper" parent="HorizontalStretchable">
         <item name="android:orientation">vertical</item>
 
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
     </style>
 
-    <style name="AdapterResultName" parent="WrapContent">
+    <style name="AdapterPointOfInterestName" parent="WrapContent">
         <item name="android:layout_marginBottom">5dp</item>
 
         <item name="android:textSize">@dimen/title</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="AdapterResultDistance" parent="WrapContent">
+    <style name="AdapterPointOfInterestDistance" parent="WrapContent">
         <item name="android:textSize">@dimen/subhead</item>
         <item name="android:textColor">@color/gray</item>
     </style>

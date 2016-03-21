@@ -1,33 +1,9 @@
 <RelativeLayout
+    android:id="@+id/main_layout"
     style="@style/MatchParent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity"
+    tools:context=".ui.activities.MainActivity"
     >
-
-    <LinearLayout
-        style="@style/MatchParent.Vertical"
-        >
-
-        <FrameLayout
-            android:id="@+id/main_header"
-            style="@style/MainHeader"
-            />
-
-        <FrameLayout
-            android:id="@+id/main_body"
-            style="@style/MainBody"
-            />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/main_menu"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        style="@style/MainMenu"
-        >
-
-    </FrameLayout>
 
 </RelativeLayout>

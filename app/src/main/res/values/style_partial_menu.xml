@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="MainMenuInnerWrapper" parent="MatchParent.Vertical">
+    <style name="PartialMenuInnerWrapper" parent="MatchParent.Vertical">
         <item name="android:background">@color/menu_background</item>
     </style>
 
-    <style name="FragmentMenuTitle" parent="WrapContent">
+    <style name="PartialMenuTitle" parent="WrapContent">
         <item name="android:padding">@dimen/layout_margin</item>
 
         <item name="android:textSize">@dimen/title</item>
         <item name="android:textColor">@color/pink</item>
     </style>
 
-    <style name="FragmentMenuLabel" parent="MatchParentWrapContent">
+    <style name="PartialMenuLabel" parent="MatchParentWrapContent">
         <item name="android:padding">@dimen/layout_margin</item>
 
         <item name="android:textSize">@dimen/subhead</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="FragmentMenuSeparator">
+    <style name="PartialMenuSeparator">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">3dp</item>
 

@@ -18,14 +18,14 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 /**
- * @class ResultAdapter
+ * @class PointOfInterestAdapter
  * @brief
  */
-public class ResultAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
+public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
 
     private PlaceType _currentType;
 
-    public ResultAdapter(List<PointOfInterestBLLDTO> items, Context context, PlaceType type) {
+    public PointOfInterestAdapter(List<PointOfInterestBLLDTO> items, Context context, PlaceType type) {
         super(items, context);
         _currentType = type;
     }
@@ -76,7 +76,7 @@ public class ResultAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
         StarBar rating;
         PointOfInterestBLLDTO currentPOI;
 
-        adapter = recycle(convertView, R.layout.adapter_result, parent);
+        adapter = recycle(convertView, R.layout.adapter_point_of_interest, parent);
         icon = ButterKnife.findById(adapter, R.id.adapter_result_icon);
         name = ButterKnife.findById(adapter, R.id.adapter_result_name);
         distance = ButterKnife.findById(adapter, R.id.adapter_result_distance);

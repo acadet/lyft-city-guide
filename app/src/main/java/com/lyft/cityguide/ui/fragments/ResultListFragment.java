@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.structs.PlaceType;
-import com.lyft.cityguide.ui.adapters.ResultAdapter;
+import com.lyft.cityguide.ui.adapters.PointOfInterestAdapter;
 import com.lyft.cityguide.ui.events.ShowBarsEvent;
 import com.lyft.cityguide.ui.events.ShowBistrosEvent;
 import com.lyft.cityguide.ui.events.ShowCafesEvent;
@@ -30,9 +30,9 @@ import butterknife.ButterKnife;
  * @brief
  */
 public class ResultListFragment extends BaseFragment {
-    private PlaceType     _currentType;
-    private boolean       _isFetchingMore;
-    private ResultAdapter _currentAdapter;
+    private PlaceType              _currentType;
+    private boolean                _isFetchingMore;
+    private PointOfInterestAdapter _currentAdapter;
 
     @Bind(R.id.fragment_result_list_no_content)
     TextView _noContent;
@@ -63,7 +63,7 @@ public class ResultListFragment extends BaseFragment {
         } else {
             _noContent.setVisibility(View.GONE);
             _list.setVisibility(View.VISIBLE);
-            _currentAdapter = new ResultAdapter(pois, getActivity(), _currentType);
+            _currentAdapter = new PointOfInterestAdapter(pois, getActivity(), _currentType);
             _list.setAdapter(_currentAdapter);
         }
 
@@ -132,7 +132,7 @@ public class ResultListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_result_list, container, false);
+        fragment = inflater.inflate(R.layout.partial_result_list, container, false);
         ButterKnife.bind(this, fragment);
 
         _list.setOnScrollListener(

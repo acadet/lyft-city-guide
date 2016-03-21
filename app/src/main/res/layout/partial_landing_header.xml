@@ -7,11 +7,11 @@
     >
 
     <LinearLayout
-        style="@style/FragmentResultListHeaderMenuWrapper"
+        style="@style/PartialLandingHeaderMenuWrapper"
         >
 
         <ImageView
-            android:id="@+id/fragment_result_list_header_menu"
+            android:id="@+id/partial_landing_header_menu_trigger"
             android:src="@drawable/ic_menu"
             style="@style/FragmentHeaderIcon"
             />
@@ -24,8 +24,8 @@
     </LinearLayout>
 
     <com.lyft.cityguide.ui.components.Slider
-        android:id="@+id/fragment_result_list_header_slider"
-        style="@style/FragmentResultListHeaderSlider"
+        android:id="@+id/partial_landing_header_menu_trigger_slider"
+        style="@style/PartialLandingHeaderSlider"
         custom:labels="@array/place_categories"
         />
 

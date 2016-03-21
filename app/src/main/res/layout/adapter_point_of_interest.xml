@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    style="@style/AdapterResult"
+    style="@style/AdapterPointOfInterest"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,16 +9,16 @@
     <ImageView
         android:id="@+id/adapter_result_icon"
         android:src="@drawable/ic_unknown"
-        style="@style/AdapterResultIcon"
+        style="@style/AdapterPointOfInterestIcon"
         />
 
     <LinearLayout
-        style="@style/AdapterResultNameWrapper"
+        style="@style/AdapterPointOfInterestNameWrapper"
         >
 
         <TextView
             android:id="@+id/adapter_result_name"
-            style="@style/AdapterResultName"
+            style="@style/AdapterPointOfInterestName"
             tools:text="My bar"
             />
 
@@ -32,7 +32,7 @@
 
     <TextView
         android:id="@+id/adapter_result_distance"
-        style="@style/AdapterResultDistance"
+        style="@style/AdapterPointOfInterestDistance"
         tools:text="0.4 mi"
         />
 

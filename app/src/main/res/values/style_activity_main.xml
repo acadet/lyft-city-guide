@@ -9,7 +9,7 @@
 
     <style name="MainBody" parent="FullVerticalStretchable"></style>
 
-    <style name="MainMenu" parent="MatchParent">
+    <style name="PartialMenu" parent="MatchParent">
         <item name="android:paddingRight">20dp</item>
     </style>
 </resources>
