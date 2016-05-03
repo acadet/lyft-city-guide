@@ -46,6 +46,12 @@ public class GooglePlaceServiceFactory {
 
     @Provides
     @Singleton
+    IPointOfInterestMapper providePointOfInterestMapper() {
+        return new PointOfInterestMapper();
+    }
+
+    @Provides
+    @Singleton
     SearchPlacesJob provideSearchPlacesJob(Configuration configuration, IGooglePlaceAPI api, IPointOfInterestMapper mapper) {
         return new SearchPlacesJob(configuration, api, mapper);
     }

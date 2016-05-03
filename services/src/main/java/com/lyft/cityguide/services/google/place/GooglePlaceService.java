@@ -8,7 +8,6 @@ import com.lyft.cityguide.domain.SearchRangeSetting;
 import java.util.List;
 
 import rx.Observable;
-import timber.log.Timber;
 
 /**
  * GooglePlaceService
@@ -23,44 +22,7 @@ class GooglePlaceService implements IGooglePlaceService {
 
     @Override
     public Observable<List<PointOfInterest>> search(Location currentLocation, SearchRangeSetting searchRangeSetting, PointOfInterest.Kind kind) {
-        float radiusInMeters;
-        String stringifyType;
-
-        switch (searchRangeSetting) {
-            case ONE_MILE:
-                radiusInMeters = 1;
-                break;
-            case TWO_MILE:
-                radiusInMeters = 2;
-                break;
-            case FIVE_MILE:
-                radiusInMeters = 5;
-                break;
-            default:
-                radiusInMeters = 1;
-                Timber.e("Unexpected search range setting");
-                break;
-        }
-
-        radiusInMeters *= 1609;
-
-        switch (kind) {
-            case BAR:
-                stringifyType = "bar";
-                break;
-            case BISTRO:
-                stringifyType = "restaurant";
-                break;
-            case CAFE:
-                stringifyType = "cafe";
-                break;
-            default:
-                stringifyType = "bar";
-                Timber.e("Unexpected type");
-                break;
-        }
-
-        return searchPlacesJob.search(currentLocation, radiusInMeters, stringifyType);
+        return searchPlacesJob.search(currentLocation, searchRangeSetting, kind);
     }
 
     @Override

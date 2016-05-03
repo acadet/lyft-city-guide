@@ -10,13 +10,13 @@ public class PointOfInterest {
         BAR, BISTRO, CAFE
     }
 
-    private String id;
-    private float  latitude;
-    private float  longitude;
-    private String name;
-    private float  rating;
+    private String   id;
+    private float    latitude;
+    private float    longitude;
+    private String   name;
+    private float    rating;
     private Distance distance;
-    private Kind kind;
+    private Kind     kind;
 
     public String getId() {
         return id;
@@ -76,7 +76,8 @@ public class PointOfInterest {
         return kind;
     }
 
-    public void setKind(Kind kind) {
+    public PointOfInterest setKind(Kind kind) {
         this.kind = kind;
+        return this;
     }
 }

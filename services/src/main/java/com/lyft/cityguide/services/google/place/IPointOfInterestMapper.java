@@ -9,7 +9,11 @@ import java.util.List;
  * <p>
  */
 interface IPointOfInterestMapper {
-    PointOfInterest map(PlaceDTO source);
+    PointOfInterest.Kind map(String source);
 
-    List<PointOfInterest> map(List<PlaceDTO> source);
+    String map(PointOfInterest.Kind source);
+
+    PointOfInterest map(PlaceDTO source, PointOfInterest.Kind kind);
+
+    List<PointOfInterest> map(List<PlaceDTO> source, PointOfInterest.Kind kind);
 }
