@@ -6,13 +6,17 @@ package com.lyft.cityguide.domain;
  * Wraps place + distance for the UI layer
  */
 public class PointOfInterest {
+    public enum Kind {
+        BAR, BISTRO, CAFE
+    }
+
     private String id;
     private float  latitude;
     private float  longitude;
     private String name;
     private float  rating;
-
     private Distance distance;
+    private Kind kind;
 
     public String getId() {
         return id;
@@ -66,5 +70,13 @@ public class PointOfInterest {
     public PointOfInterest setDistance(Distance distance) {
         this.distance = distance;
         return this;
+    }
+
+    public Kind getKind() {
+        return kind;
+    }
+
+    public void setKind(Kind kind) {
+        this.kind = kind;
     }
 }
