@@ -1,6 +1,4 @@
-package com.lyft.cityguide.services.google.place.api;
-
-import com.lyft.cityguide.services.google.place.dto.SearchOutcomeGooglePlaceDTO;
+package com.lyft.cityguide.services.google.place;
 
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -10,7 +8,7 @@ import retrofit.http.Query;
  * <p>
  * https://developers.google.com/places/webservice/intro
  */
-public interface IGooglePlaceAPI {
+interface IGooglePlaceAPI {
     @GET("/nearbysearch/json")
     SearchOutcomeGooglePlaceDTO search(
         @Query("location") String location,

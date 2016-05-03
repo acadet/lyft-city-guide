@@ -3,7 +3,7 @@ package com.lyft.cityguide.models.bll.serializers;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.services.google.place.dto.PlaceGooglePlaceDTO;
+import com.lyft.cityguide.services.google.place.PlaceGooglePlaceDTO;
 
 import java.util.List;
 

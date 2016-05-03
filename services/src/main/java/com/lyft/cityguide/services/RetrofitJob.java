@@ -17,6 +17,6 @@ public abstract class RetrofitJob {
             subscriber.onError(new ServiceErrors.ServerError());
         }
 
-        Timber.e(e, "RetrofitError");
+        Timber.e(e, "Unhandled Retrofit error");
     }
 }

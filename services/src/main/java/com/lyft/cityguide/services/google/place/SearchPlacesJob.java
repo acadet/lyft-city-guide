@@ -1,4 +1,4 @@
-package com.lyft.cityguide.services.google.place.jobs;
+package com.lyft.cityguide.services.google.place;
 
 import android.location.Location;
 
@@ -6,9 +6,6 @@ import com.lyft.cityguide.SecretApplicationConfiguration;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.models.bll.serializers.PointOfInterestBLLDTOSerializer;
 import com.lyft.cityguide.services.RetrofitJob;
-import com.lyft.cityguide.services.google.place.GooglePlaceErrors;
-import com.lyft.cityguide.services.google.place.api.IGooglePlaceAPI;
-import com.lyft.cityguide.services.google.place.dto.SearchOutcomeGooglePlaceDTO;
 
 import java.util.List;
 
@@ -21,7 +18,7 @@ import rx.schedulers.Schedulers;
  * SearchPlacesJob
  * <p>
  */
-public class SearchPlacesJob extends RetrofitJob {
+class SearchPlacesJob extends RetrofitJob {
     private Observable<List<PointOfInterestBLLDTO>> searchObservable;
 
     private float    radiusInMeters;

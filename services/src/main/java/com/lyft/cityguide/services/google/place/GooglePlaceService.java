@@ -4,7 +4,6 @@ import android.location.Location;
 
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
-import com.lyft.cityguide.services.google.place.jobs.SearchPlacesJob;
 import com.lyft.cityguide.structs.PlaceType;
 
 import java.util.List;

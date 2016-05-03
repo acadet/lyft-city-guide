@@ -8,8 +8,8 @@ import com.lyft.cityguide.services.google.distancematrix.GoogleDistanceMatrixSer
 import com.lyft.cityguide.services.google.distancematrix.api.GoogleDistanceMatrixAPIFactory;
 import com.lyft.cityguide.services.google.distancematrix.jobs.GoogleDistanceMatrixServiceJobFactory;
 import com.lyft.cityguide.services.google.place.GooglePlaceServiceFactory;
-import com.lyft.cityguide.services.google.place.api.GooglePlaceAPIFactory;
-import com.lyft.cityguide.services.google.place.jobs.GooglePlaceServiceJobFactory;
+import com.lyft.cityguide.services.google.place.GooglePlaceAPIFactory;
+import com.lyft.cityguide.services.google.place.GooglePlaceServiceJobFactory;
 import com.lyft.cityguide.ui.activities.BaseActivity;
 import com.lyft.cityguide.ui.components.MainUIContainer;
 import com.lyft.cityguide.ui.controllers.BaseController;

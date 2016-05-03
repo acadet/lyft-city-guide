@@ -1,4 +1,4 @@
-package com.lyft.cityguide.services.google.place.dto;
+package com.lyft.cityguide.services.google.place;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.List;
  * SearchOutcomeGooglePlaceDTO
  * <p>
  */
-public class SearchOutcomeGooglePlaceDTO {
+class SearchOutcomeGooglePlaceDTO {
     private String                    nextPageToken;
     private List<PlaceGooglePlaceDTO> places;
 
