@@ -2,9 +2,8 @@ package com.lyft.cityguide.services.google.place;
 
 import android.location.Location;
 
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
-import com.lyft.cityguide.structs.PlaceType;
+import com.lyft.cityguide.domain.PointOfInterest;
+import com.lyft.cityguide.domain.SearchRangeSetting;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import rx.Observable;
  * <p>
  */
 public interface IGooglePlaceService {
-    Observable<List<PointOfInterestBLLDTO>> search(Location currentLocation, SearchRangeSettingBLLDTO searchRangeSetting, PlaceType type);
+    Observable<List<PointOfInterest>> search(Location currentLocation, SearchRangeSetting searchRangeSetting, PointOfInterest.Kind kind);
 
-    Observable<List<PointOfInterestBLLDTO>> more();
+    Observable<List<PointOfInterest>> more();
 }

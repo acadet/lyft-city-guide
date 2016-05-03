@@ -1,10 +1,10 @@
 package com.lyft.cityguide.services.google.place;
 
 /**
- * PlaceGooglePlaceDTO
+ * PlaceDTO
  * <p>
  */
-class PlaceGooglePlaceDTO {
+class PlaceDTO {
     private String id;
     private float  latitude;
     private float  longitude;

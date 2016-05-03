@@ -10,7 +10,7 @@ import retrofit.http.Query;
  */
 interface IGooglePlaceAPI {
     @GET("/nearbysearch/json")
-    SearchOutcomeGooglePlaceDTO search(
+    SearchOutcomeDTO search(
         @Query("location") String location,
         @Query("radius") float radius,
         @Query("types") String types,
@@ -18,7 +18,7 @@ interface IGooglePlaceAPI {
     );
 
     @GET("/nearbysearch/json")
-    SearchOutcomeGooglePlaceDTO more(
+    SearchOutcomeDTO more(
         @Query("pagetoken") String pageToken,
         @Query("key") String apiKey
     );

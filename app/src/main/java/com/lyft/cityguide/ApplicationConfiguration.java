@@ -5,8 +5,6 @@ package com.lyft.cityguide;
  * <p>
  */
 public class ApplicationConfiguration {
-    public final String GOOGLE_DISTANCE_MATRIX_API_ENDPOINT = "https://maps.googleapis.com/maps/api/distancematrix/";
-    public final String GOOGLE_PLACE_API_ENDPOINT           = "https://maps.googleapis.com/maps/api/place/";
 
     public final int LOCATION_FETCHING_COOLDOWN_IN_SECONDS = 20;
 }

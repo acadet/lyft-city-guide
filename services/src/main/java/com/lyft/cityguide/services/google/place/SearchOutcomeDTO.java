@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * SearchOutcomeGooglePlaceDTO
+ * SearchOutcomeDTO
  * <p>
  */
-class SearchOutcomeGooglePlaceDTO {
-    private String                    nextPageToken;
-    private List<PlaceGooglePlaceDTO> places;
+class SearchOutcomeDTO {
+    private String         nextPageToken;
+    private List<PlaceDTO> places;
 
-    public SearchOutcomeGooglePlaceDTO() {
+    public SearchOutcomeDTO() {
         this.places = new ArrayList<>();
     }
 
@@ -27,11 +27,11 @@ class SearchOutcomeGooglePlaceDTO {
         return nextPageToken != null;
     }
 
-    public List<PlaceGooglePlaceDTO> getPlaces() {
+    public List<PlaceDTO> getPlaces() {
         return places;
     }
 
-    public SearchOutcomeGooglePlaceDTO addPlace(PlaceGooglePlaceDTO place) {
+    public SearchOutcomeDTO addPlace(PlaceDTO place) {
         places.add(place);
         return this;
     }

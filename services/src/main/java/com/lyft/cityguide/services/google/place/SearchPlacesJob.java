@@ -2,9 +2,7 @@ package com.lyft.cityguide.services.google.place;
 
 import android.location.Location;
 
-import com.lyft.cityguide.SecretApplicationConfiguration;
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.models.bll.serializers.PointOfInterestBLLDTOSerializer;
+import com.lyft.cityguide.domain.PointOfInterest;
 import com.lyft.cityguide.services.RetrofitJob;
 
 import java.util.List;
@@ -19,34 +17,36 @@ import rx.schedulers.Schedulers;
  * <p>
  */
 class SearchPlacesJob extends RetrofitJob {
-    private Observable<List<PointOfInterestBLLDTO>> searchObservable;
-
-    private float    radiusInMeters;
-    private String   type;
-    private Location currentLocation;
-
-    private Observable<List<PointOfInterestBLLDTO>> searchMoreObservable;
+    private final Configuration          configuration;
+    private final IGooglePlaceAPI        api;
+    private final IPointOfInterestMapper mapper;
 
     private String nextPageToken;
 
-    SearchPlacesJob(SecretApplicationConfiguration configuration, IGooglePlaceAPI api, PointOfInterestBLLDTOSerializer serializer) {
-        searchObservable = Observable
-            .create(new Observable.OnSubscribe<List<PointOfInterestBLLDTO>>() {
+    SearchPlacesJob(Configuration configuration, IGooglePlaceAPI api, IPointOfInterestMapper mapper) {
+        this.configuration = configuration;
+        this.api = api;
+        this.mapper = mapper;
+    }
+
+    Observable<List<PointOfInterest>> search(Location currentLocation, float radiusInMeters, String type) {
+        return Observable
+            .create(new Observable.OnSubscribe<List<PointOfInterest>>() {
                 @Override
-                public void call(Subscriber<? super List<PointOfInterestBLLDTO>> subscriber) {
+                public void call(Subscriber<? super List<PointOfInterest>> subscriber) {
                     try {
-                        SearchOutcomeGooglePlaceDTO outcome;
+                        SearchOutcomeDTO outcome;
 
                         outcome = api.search(
                             currentLocation.getLatitude() + "," + currentLocation.getLongitude(),
                             radiusInMeters,
                             type,
-                            configuration.GOOGLE_API_KEY
+                            configuration.API_KEY
                         );
 
                         nextPageToken = outcome.getNextPageToken();
 
-                        subscriber.onNext(serializer.fromPlaceGooglePlaceDTO(outcome.getPlaces()));
+                        subscriber.onNext(mapper.map(outcome.getPlaces()));
                         subscriber.onCompleted();
                     } catch (RetrofitError e) {
                         handleError(e, subscriber);
@@ -54,27 +54,32 @@ class SearchPlacesJob extends RetrofitJob {
                 }
             })
             .subscribeOn(Schedulers.newThread());
+    }
 
-        searchMoreObservable = Observable
-            .create(new Observable.OnSubscribe<List<PointOfInterestBLLDTO>>() {
+    Observable<List<PointOfInterest>> more() {
+        return Observable
+            .create(new Observable.OnSubscribe<List<PointOfInterest>>() {
                 @Override
-                public void call(Subscriber<? super List<PointOfInterestBLLDTO>> subscriber) {
+                public void call(Subscriber<? super List<PointOfInterest>> subscriber) {
                     if (nextPageToken == null) {
                         subscriber.onError(new GooglePlaceErrors.NoMoreResult());
                         return;
                     }
 
                     try {
-                        SearchOutcomeGooglePlaceDTO outcome;
+                        SearchOutcomeDTO outcome;
 
                         outcome = api.more(
                             nextPageToken,
-                            configuration.GOOGLE_API_KEY
+                            configuration.API_KEY
                         );
 
-                        nextPageToken = outcome.getNextPageToken();
+                        if (!subscriber.isUnsubscribed()) {
+                            // If request is cancelled or restarted, do not save new token
+                            nextPageToken = outcome.getNextPageToken();
+                        }
 
-                        subscriber.onNext(serializer.fromPlaceGooglePlaceDTO(outcome.getPlaces()));
+                        subscriber.onNext(mapper.map(outcome.getPlaces()));
                         subscriber.onCompleted();
                     } catch (RetrofitError e) {
                         handleError(e, subscriber);
@@ -82,17 +87,5 @@ class SearchPlacesJob extends RetrofitJob {
                 }
             })
             .subscribeOn(Schedulers.newThread());
-    }
-
-    public Observable<List<PointOfInterestBLLDTO>> search(Location currentLocation, float radiusInMeters, String type) {
-        this.currentLocation = currentLocation;
-        this.radiusInMeters = radiusInMeters;
-        this.type = type;
-
-        return searchObservable;
-    }
-
-    public Observable<List<PointOfInterestBLLDTO>> more() {
-        return searchMoreObservable;
     }
 }

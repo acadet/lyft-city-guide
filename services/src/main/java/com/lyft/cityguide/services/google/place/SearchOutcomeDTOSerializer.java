@@ -10,13 +10,13 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 /**
- * SearchOutcomeGooglePlaceDTOSerializer
+ * SearchOutcomeDTOSerializer
  * <p>
  */
-class SearchOutcomeGooglePlaceDTOSerializer implements JsonDeserializer<SearchOutcomeGooglePlaceDTO> {
+class SearchOutcomeDTOSerializer implements JsonDeserializer<SearchOutcomeDTO> {
     @Override
-    public SearchOutcomeGooglePlaceDTO deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        SearchOutcomeGooglePlaceDTO outcome = new SearchOutcomeGooglePlaceDTO();
+    public SearchOutcomeDTO deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        SearchOutcomeDTO outcome = new SearchOutcomeDTO();
         JsonArray resultNode;
 
         if (json.getAsJsonObject().has("next_page_token")) {
@@ -27,7 +27,7 @@ class SearchOutcomeGooglePlaceDTOSerializer implements JsonDeserializer<SearchOu
         for (JsonElement e : resultNode) {
             JsonObject o = e.getAsJsonObject();
             JsonObject locationNode;
-            PlaceGooglePlaceDTO p = new PlaceGooglePlaceDTO();
+            PlaceDTO p = new PlaceDTO();
 
             p.setId(o.get("id").getAsString());
             p.setName(o.get("name").getAsString());

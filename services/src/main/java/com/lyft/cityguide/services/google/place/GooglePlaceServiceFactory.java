@@ -15,15 +15,14 @@ import retrofit.converter.GsonConverter;
  */
 @Module
 public class GooglePlaceServiceFactory {
-
     @Provides
-    IGooglePlaceAPI provideJSONAPI(ApplicationConfiguration configuration, SearchOutcomeGooglePlaceDTOSerializer serializer) {
+    IGooglePlaceAPI provideAPI(Configuration configuration, SearchOutcomeDTOSerializer serializer) {
         return new RestAdapter.Builder()
-            .setEndpoint(configuration.GOOGLE_PLACE_API_ENDPOINT)
+            .setEndpoint(configuration.API_ENDPOINT)
             .setConverter(
                 new GsonConverter(
                     new GsonBuilder()
-                        .registerTypeAdapter(SearchOutcomeGooglePlaceDTO.class, serializer)
+                        .registerTypeAdapter(SearchOutcomeDTO.class, serializer)
                         .create()
                 )
             )
@@ -33,14 +32,14 @@ public class GooglePlaceServiceFactory {
 
     @Provides
     @Singleton
-    SearchOutcomeGooglePlaceDTOSerializer provideSerializer() {
-        return new SearchOutcomeGooglePlaceDTOSerializer();
+    SearchOutcomeDTOSerializer provideSearchOutcomeDTOSerializer() {
+        return new SearchOutcomeDTOSerializer();
     }
 
     @Provides
     @Singleton
-    SearchPlacesJob provideJob(SecretApplicationConfiguration configuration, IGooglePlaceAPI api, PointOfInterestBLLDTOSerializer serializer) {
-        return new SearchPlacesJob(configuration, api, serializer);
+    SearchPlacesJob provideSearchPlacesJob(Configuration configuration, IGooglePlaceAPI api, IPointOfInterestMapper mapper) {
+        return new SearchPlacesJob(configuration, api, mapper);
     }
 
     @Provides

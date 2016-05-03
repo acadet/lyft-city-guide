@@ -2,9 +2,8 @@ package com.lyft.cityguide.services.google.place;
 
 import android.location.Location;
 
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
-import com.lyft.cityguide.structs.PlaceType;
+import com.lyft.cityguide.domain.PointOfInterest;
+import com.lyft.cityguide.domain.SearchRangeSetting;
 
 import java.util.List;
 
@@ -16,14 +15,14 @@ import timber.log.Timber;
  * <p>
  */
 class GooglePlaceService implements IGooglePlaceService {
-    private SearchPlacesJob searchPlacesJob;
+    private final SearchPlacesJob searchPlacesJob;
 
     GooglePlaceService(SearchPlacesJob searchPlacesJob) {
         this.searchPlacesJob = searchPlacesJob;
     }
 
     @Override
-    public Observable<List<PointOfInterestBLLDTO>> search(Location currentLocation, SearchRangeSettingBLLDTO searchRangeSetting, PlaceType type) {
+    public Observable<List<PointOfInterest>> search(Location currentLocation, SearchRangeSetting searchRangeSetting, PointOfInterest.Kind kind) {
         float radiusInMeters;
         String stringifyType;
 
@@ -45,7 +44,7 @@ class GooglePlaceService implements IGooglePlaceService {
 
         radiusInMeters *= 1609;
 
-        switch (type) {
+        switch (kind) {
             case BAR:
                 stringifyType = "bar";
                 break;
@@ -65,7 +64,7 @@ class GooglePlaceService implements IGooglePlaceService {
     }
 
     @Override
-    public Observable<List<PointOfInterestBLLDTO>> more() {
+    public Observable<List<PointOfInterest>> more() {
         return searchPlacesJob.more();
     }
 }
