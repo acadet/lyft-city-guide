@@ -1,19 +1,19 @@
-package com.lyft.cityguide.models.bll.dto;
+package com.lyft.cityguide.domain;
 
 import timber.log.Timber;
 
 /**
- * SearchRangeSettingBLLDTO
+ * SearchRangeSetting
  * <p>
  */
-public enum SearchRangeSettingBLLDTO {
+public enum SearchRangeSetting {
     ONE_MILE(0),
     TWO_MILE(1),
     FIVE_MILE(2);
 
     private int value;
 
-    SearchRangeSettingBLLDTO(int value) {
+    SearchRangeSetting(int value) {
         this.value = value;
     }
 
@@ -21,7 +21,7 @@ public enum SearchRangeSettingBLLDTO {
         return value;
     }
 
-    public static SearchRangeSettingBLLDTO fromInt(int value) {
+    public static SearchRangeSetting fromInt(int value) {
         switch (value) {
             case 0:
                 return ONE_MILE;

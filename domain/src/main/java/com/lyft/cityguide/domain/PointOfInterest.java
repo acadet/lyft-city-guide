@@ -1,24 +1,24 @@
-package com.lyft.cityguide.models.bll.dto;
+package com.lyft.cityguide.domain;
 
 /**
- * PointOfInterestBLLDTO
+ * PointOfInterest
  * <p>
  * Wraps place + distance for the UI layer
  */
-public class PointOfInterestBLLDTO {
+public class PointOfInterest {
     private String id;
     private float  latitude;
     private float  longitude;
     private String name;
     private float  rating;
 
-    private DistanceBLLDTO distance;
+    private Distance distance;
 
     public String getId() {
         return id;
     }
 
-    public PointOfInterestBLLDTO setId(String id) {
+    public PointOfInterest setId(String id) {
         this.id = id;
         return this;
     }
@@ -27,7 +27,7 @@ public class PointOfInterestBLLDTO {
         return latitude;
     }
 
-    public PointOfInterestBLLDTO setLatitude(float latitude) {
+    public PointOfInterest setLatitude(float latitude) {
         this.latitude = latitude;
         return this;
     }
@@ -36,7 +36,7 @@ public class PointOfInterestBLLDTO {
         return longitude;
     }
 
-    public PointOfInterestBLLDTO setLongitude(float longitude) {
+    public PointOfInterest setLongitude(float longitude) {
         this.longitude = longitude;
         return this;
     }
@@ -45,7 +45,7 @@ public class PointOfInterestBLLDTO {
         return name;
     }
 
-    public PointOfInterestBLLDTO setName(String name) {
+    public PointOfInterest setName(String name) {
         this.name = name;
         return this;
     }
@@ -54,16 +54,16 @@ public class PointOfInterestBLLDTO {
         return rating;
     }
 
-    public PointOfInterestBLLDTO setRating(float rating) {
+    public PointOfInterest setRating(float rating) {
         this.rating = rating;
         return this;
     }
 
-    public DistanceBLLDTO getDistance() {
+    public Distance getDistance() {
         return distance;
     }
 
-    public PointOfInterestBLLDTO setDistance(DistanceBLLDTO distance) {
+    public PointOfInterest setDistance(Distance distance) {
         this.distance = distance;
         return this;
     }

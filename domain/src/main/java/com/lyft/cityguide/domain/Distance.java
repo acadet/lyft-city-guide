@@ -1,12 +1,12 @@
-package com.lyft.cityguide.models.bll.dto;
+package com.lyft.cityguide.domain;
 
 /**
- * DistanceBLLDTO
+ * Distance
  */
-public class DistanceBLLDTO {
+public class Distance {
     private float valueInMeters;
 
-    private DistanceBLLDTO(float valueInMeters) {
+    private Distance(float valueInMeters) {
         this.valueInMeters = valueInMeters;
     }
 
@@ -18,7 +18,7 @@ public class DistanceBLLDTO {
         return valueInMeters / 1609;
     }
 
-    public static DistanceBLLDTO fromMeters(float value) {
-        return new DistanceBLLDTO(value);
+    public static Distance fromMeters(float value) {
+        return new Distance(value);
     }
 }
