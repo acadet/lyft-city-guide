@@ -5,9 +5,9 @@ import android.location.Location;
 import com.lyft.cityguide.models.bll.BLLErrors;
 import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
 import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
-import com.lyft.cityguide.models.services.google.distancematrix.IGoogleDistanceMatrixService;
-import com.lyft.cityguide.models.services.google.place.GooglePlaceErrors;
-import com.lyft.cityguide.models.services.google.place.IGooglePlaceService;
+import com.lyft.cityguide.services.google.distancematrix.IGoogleDistanceMatrixService;
+import com.lyft.cityguide.services.google.place.GooglePlaceErrors;
+import com.lyft.cityguide.services.google.place.IGooglePlaceService;
 import com.lyft.cityguide.structs.PlaceType;
 
 import java.util.List;

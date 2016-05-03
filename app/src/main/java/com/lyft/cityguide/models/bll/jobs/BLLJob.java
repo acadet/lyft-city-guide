@@ -1,7 +1,7 @@
 package com.lyft.cityguide.models.bll.jobs;
 
 import com.lyft.cityguide.models.bll.BLLErrors;
-import com.lyft.cityguide.models.services.ServiceErrors;
+import com.lyft.cityguide.services.ServiceErrors;
 
 import rx.Subscriber;
 

@@ -2,6 +2,8 @@ package com.lyft.cityguide;
 
 import android.app.Application;
 
+import timber.log.Timber;
+
 /**
  * CityGuideApplication
  * <p>
@@ -15,6 +17,8 @@ public class CityGuideApplication extends Application {
         super.onCreate();
 
         instance = this;
+
+        Timber.plant(new Timber.DebugTree());
 
         applicationComponent = DaggerApplicationComponent
             .builder()

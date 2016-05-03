@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.lyft.cityguide.ApplicationConfiguration;
 import com.lyft.cityguide.models.dao.ISettingsDAO;
-import com.lyft.cityguide.models.services.google.distancematrix.IGoogleDistanceMatrixService;
-import com.lyft.cityguide.models.services.google.place.IGooglePlaceService;
+import com.lyft.cityguide.services.google.distancematrix.IGoogleDistanceMatrixService;
+import com.lyft.cityguide.services.google.place.IGooglePlaceService;
 
 import javax.inject.Singleton;
 
