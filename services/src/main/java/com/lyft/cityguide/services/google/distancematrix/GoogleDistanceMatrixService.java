@@ -2,8 +2,7 @@ package com.lyft.cityguide.services.google.distancematrix;
 
 import android.location.Location;
 
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.services.google.distancematrix.jobs.FetchDistancesJob;
+import com.lyft.cityguide.domain.PointOfInterest;
 
 import java.util.List;
 
@@ -15,14 +14,14 @@ import rx.Observable;
  */
 class GoogleDistanceMatrixService implements IGoogleDistanceMatrixService {
 
-    private FetchDistancesJob fetchDistancesJob;
+    private final FetchDistancesJob fetchDistancesJob;
 
     GoogleDistanceMatrixService(FetchDistancesJob fetchDistancesJob) {
         this.fetchDistancesJob = fetchDistancesJob;
     }
 
     @Override
-    public Observable<Void> fetchDistances(Location currentLocation, List<PointOfInterestBLLDTO> pointOfInterests) {
-        return fetchDistancesJob.get(currentLocation, pointOfInterests);
+    public Observable<Void> fetchDistances(Location currentLocation, List<PointOfInterest> pointOfInterests) {
+        return fetchDistancesJob.create(currentLocation, pointOfInterests);
     }
 }

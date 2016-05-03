@@ -1,13 +1,9 @@
-package com.lyft.cityguide.services.google.distancematrix.jobs;
+package com.lyft.cityguide.services.google.distancematrix;
 
 import android.location.Location;
 
-import com.lyft.cityguide.SecretApplicationConfiguration;
-import com.lyft.cityguide.models.bll.dto.DistanceBLLDTO;
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
+import com.lyft.cityguide.domain.PointOfInterest;
 import com.lyft.cityguide.services.RetrofitJob;
-import com.lyft.cityguide.services.google.distancematrix.api.IGoogleDistanceMatrixAPI;
-import com.lyft.cityguide.services.google.distancematrix.dto.DistanceGoogleDistanceMatrixDTO;
 
 import java.util.List;
 
@@ -20,23 +16,29 @@ import rx.schedulers.Schedulers;
  * FetchDistancesJob
  * <p>
  */
-public class FetchDistancesJob extends RetrofitJob {
-    private Observable<Void>            observable;
-    private Location                    currentLocation;
-    private List<PointOfInterestBLLDTO> pointOfInterests;
+class FetchDistancesJob extends RetrofitJob {
+    private final Configuration            configuration;
+    private final IGoogleDistanceMatrixAPI api;
+    private final IDistanceMapper          distanceMapper;
 
-    FetchDistancesJob(SecretApplicationConfiguration configuration, IGoogleDistanceMatrixAPI api) {
-        observable = Observable
+    FetchDistancesJob(Configuration configuration, IGoogleDistanceMatrixAPI api, IDistanceMapper distanceMapper) {
+        this.configuration = configuration;
+        this.api = api;
+        this.distanceMapper = distanceMapper;
+    }
+
+    public Observable<Void> create(Location currentLocation, List<PointOfInterest> pointOfInterests) {
+        return Observable
             .create(new Observable.OnSubscribe<Void>() {
                 @Override
                 public void call(Subscriber<? super Void> subscriber) {
                     try {
                         StringBuffer destinations = new StringBuffer();
                         int i = 0, size = pointOfInterests.size();
-                        DistanceGoogleDistanceMatrixDTO outcome;
+                        DistanceDTO outcome;
 
                         // Format data for the API
-                        for (PointOfInterestBLLDTO p : pointOfInterests) {
+                        for (PointOfInterest p : pointOfInterests) {
                             destinations
                                 .append(p.getLatitude())
                                 .append(",")
@@ -53,12 +55,12 @@ public class FetchDistancesJob extends RetrofitJob {
                             destinations.toString(),
                             "walking",
                             "en",
-                            configuration.GOOGLE_API_KEY
+                            configuration.API_KEY
                         );
 
                         size = Math.min(size, outcome.getDistances().size());
                         for (i = 0; i < size; i++) {
-                            pointOfInterests.get(i).setDistance(DistanceBLLDTO.fromMeters(outcome.getDistances().get(i)));
+                            pointOfInterests.get(i).setDistance(distanceMapper.map(outcome.getDistances().get(i)));
                         }
 
                         subscriber.onCompleted();
@@ -68,11 +70,5 @@ public class FetchDistancesJob extends RetrofitJob {
                 }
             })
             .subscribeOn(Schedulers.newThread());
-    }
-
-    public Observable<Void> get(Location currentLocation, List<PointOfInterestBLLDTO> pointOfInterests) {
-        this.currentLocation = currentLocation;
-        this.pointOfInterests = pointOfInterests;
-        return observable;
     }
 }

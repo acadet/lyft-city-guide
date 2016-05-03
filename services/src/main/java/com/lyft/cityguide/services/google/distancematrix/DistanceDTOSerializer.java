@@ -1,23 +1,22 @@
-package com.lyft.cityguide.services.google.distancematrix.api;
+package com.lyft.cityguide.services.google.distancematrix;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.lyft.cityguide.services.google.distancematrix.dto.DistanceGoogleDistanceMatrixDTO;
 
 import java.lang.reflect.Type;
 
 /**
- * DistanceGoogleDistanceMatrixDTOSerializer
+ * DistanceDTOSerializer
  * <p>
  * Cf. documentation for schema
  */
-class DistanceGoogleDistanceMatrixDTOSerializer implements JsonDeserializer<DistanceGoogleDistanceMatrixDTO> {
+class DistanceDTOSerializer implements JsonDeserializer<DistanceDTO> {
     @Override
-    public DistanceGoogleDistanceMatrixDTO deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        DistanceGoogleDistanceMatrixDTO result = new DistanceGoogleDistanceMatrixDTO();
+    public DistanceDTO deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        DistanceDTO result = new DistanceDTO();
         JsonArray rowNode, elementNode;
 
         rowNode = json.getAsJsonObject()

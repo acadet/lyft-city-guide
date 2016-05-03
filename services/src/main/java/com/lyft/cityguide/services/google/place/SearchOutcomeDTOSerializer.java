@@ -14,6 +14,7 @@ import java.lang.reflect.Type;
  * <p>
  */
 class SearchOutcomeDTOSerializer implements JsonDeserializer<SearchOutcomeDTO> {
+
     @Override
     public SearchOutcomeDTO deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         SearchOutcomeDTO outcome = new SearchOutcomeDTO();

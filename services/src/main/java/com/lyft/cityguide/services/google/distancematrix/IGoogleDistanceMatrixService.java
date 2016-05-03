@@ -2,7 +2,7 @@ package com.lyft.cityguide.services.google.distancematrix;
 
 import android.location.Location;
 
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
+import com.lyft.cityguide.domain.PointOfInterest;
 
 import java.util.List;
 
@@ -20,5 +20,5 @@ public interface IGoogleDistanceMatrixService {
      * @param pointOfInterests
      * @return
      */
-    Observable<Void> fetchDistances(Location currentLocation, List<PointOfInterestBLLDTO> pointOfInterests);
+    Observable<Void> fetchDistances(Location currentLocation, List<PointOfInterest> pointOfInterests);
 }

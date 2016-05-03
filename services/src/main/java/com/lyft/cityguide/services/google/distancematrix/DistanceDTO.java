@@ -1,16 +1,16 @@
-package com.lyft.cityguide.services.google.distancematrix.dto;
+package com.lyft.cityguide.services.google.distancematrix;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DistanceGoogleDistanceMatrixDTO
+ * DistanceDTO
  * <p>
  */
-public class DistanceGoogleDistanceMatrixDTO {
+class DistanceDTO {
     private List<Float> distances;
 
-    public DistanceGoogleDistanceMatrixDTO() {
+    public DistanceDTO() {
         this.distances = new ArrayList<>();
     }
 
@@ -22,7 +22,7 @@ public class DistanceGoogleDistanceMatrixDTO {
         return distances;
     }
 
-    public DistanceGoogleDistanceMatrixDTO addDistance(Float distance) {
+    public DistanceDTO addDistance(Float distance) {
         distances.add(distance);
         return this;
     }

@@ -1,5 +1,7 @@
 package com.lyft.cityguide.services.google.place;
 
+import android.content.Context;
+
 import com.google.gson.GsonBuilder;
 
 import javax.inject.Singleton;
@@ -15,6 +17,12 @@ import retrofit.converter.GsonConverter;
  */
 @Module
 public class GooglePlaceServiceFactory {
+    @Provides
+    @Singleton
+    Configuration provideConfiguration(Context context) {
+        return new Configuration(context);
+    }
+
     @Provides
     IGooglePlaceAPI provideAPI(Configuration configuration, SearchOutcomeDTOSerializer serializer) {
         return new RestAdapter.Builder()

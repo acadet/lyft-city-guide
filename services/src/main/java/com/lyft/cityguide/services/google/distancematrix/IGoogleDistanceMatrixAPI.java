@@ -1,6 +1,4 @@
-package com.lyft.cityguide.services.google.distancematrix.api;
-
-import com.lyft.cityguide.services.google.distancematrix.dto.DistanceGoogleDistanceMatrixDTO;
+package com.lyft.cityguide.services.google.distancematrix;
 
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -10,9 +8,9 @@ import retrofit.http.Query;
  * <p>
  * https://developers.google.com/maps/documentation/distancematrix/intro
  */
-public interface IGoogleDistanceMatrixAPI {
+interface IGoogleDistanceMatrixAPI {
     @GET("/json")
-    DistanceGoogleDistanceMatrixDTO getDistances(
+    DistanceDTO getDistances(
         @Query("origins") String origins,
         @Query("destinations") String destinations,
         @Query("mode") String mode,
