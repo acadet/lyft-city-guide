@@ -8,9 +8,11 @@ import com.lyft.cityguide.ui.UIComponent;
 import com.lyft.cityguide.ui.UIModule;
 import com.lyft.cityguide.ui.activities.BaseActivity;
 import com.lyft.cityguide.ui.containers.MainUIContainer;
+import com.lyft.cityguide.ui.containers.MenuUIContainer;
 import com.lyft.cityguide.ui.containers.SpinnerUIContainer;
 import com.lyft.cityguide.ui.containers.ToastUIContainer;
 import com.lyft.cityguide.ui.controllers.BaseController;
+import com.lyft.cityguide.ui.controllers.menu.MenuController;
 import com.lyft.cityguide.ui.controllers.toast.ToastController;
 import com.lyft.cityguide.ui.routers.RouterFactory;
 
@@ -42,7 +44,11 @@ public interface ApplicationComponent {
 
     void inject(SpinnerUIContainer spinnerUIContainer);
 
+    void inject(MenuUIContainer menuUIContainer);
+
     void inject(BaseController baseController);
 
     void inject(ToastController toastController);
+
+    void inject(MenuController menuController);
 }

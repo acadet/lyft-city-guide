@@ -35,4 +35,11 @@ public class RouterFactory {
     public IRouter provideSpinnerRouter() {
         return new SpinnerRouter(new ScreenScooper());
     }
+
+    @Provides
+    @Singleton
+    @Named("menu")
+    public IRouter provideMenuRouter() {
+        return new MenuRouter(new ScreenScooper());
+    }
 }

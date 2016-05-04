@@ -8,6 +8,10 @@
         style="@style/MatchParent"
         />
 
+    <com.lyft.cityguide.ui.containers.MenuUIContainer
+        style="@style/MatchParent"
+        />
+
     <com.lyft.cityguide.ui.containers.ToastUIContainer
         style="@style/MatchParentWrapContent"
         />

@@ -26,7 +26,7 @@ import timber.log.Timber;
  */
 public abstract class BaseController extends ViewController {
 
-    public abstract class BaseSubscriber<T> extends Subscriber<T> {
+    abstract class BaseSubscriber<T> extends Subscriber<T> {
         @Override
         public void onError(Throwable e) {
             if (e instanceof BLLErrors.NoConnection) {
@@ -54,6 +54,10 @@ public abstract class BaseController extends ViewController {
     @Inject
     @Named("spinner")
     IRouter spinnerRouter;
+
+    @Inject
+    @Named("menu")
+    IRouter menuRouter;
 
     @Inject
     IPointOfInterestBLL pointOfInterestBLL;

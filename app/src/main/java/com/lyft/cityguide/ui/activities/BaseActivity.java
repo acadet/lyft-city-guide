@@ -32,6 +32,10 @@ public abstract class BaseActivity extends Activity {
     @Named("spinner")
     IRouter spinnerRouter;
 
+    @Inject
+    @Named("menu")
+    IRouter menuRouter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
