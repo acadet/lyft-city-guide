@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    style="@style/MatchParent"
+    >
+
+    <com.lyft.cityguide.ui.containers.MainUIContainer
+        style="@style/MatchParent"
+        />
+
+    <com.lyft.cityguide.ui.containers.ToastUIContainer
+        style="@style/MatchParentWrapContent"
+        />
+
+</RelativeLayout>

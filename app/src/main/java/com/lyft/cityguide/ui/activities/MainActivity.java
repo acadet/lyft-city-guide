@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.ui.components.MainUIContainer;
+import com.lyft.cityguide.ui.containers.MainUIContainer;
 import com.lyft.cityguide.ui.screens.LandingScreen;
 import com.lyft.scoop.Scoop;
 
