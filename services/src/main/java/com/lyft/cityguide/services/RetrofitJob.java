@@ -15,8 +15,7 @@ public abstract class RetrofitJob {
             subscriber.onError(new ServiceErrors.NoConnection());
         } else {
             subscriber.onError(new ServiceErrors.ServerError());
+            Timber.e(e, "Unhandled Retrofit error");
         }
-
-        Timber.e(e, "Unhandled Retrofit error");
     }
 }
