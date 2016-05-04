@@ -6,5 +6,5 @@ package com.lyft.cityguide;
  */
 public class ApplicationConfiguration {
 
-    public final int LOCATION_FETCHING_COOLDOWN_IN_SECONDS = 20;
+    public final int  = 20;
 }

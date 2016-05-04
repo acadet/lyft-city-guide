@@ -1,4 +1,4 @@
-package com.lyft.cityguide.models.bll;
+package com.lyft.cityguide.bll;
 
 /**
  * BLLErrors

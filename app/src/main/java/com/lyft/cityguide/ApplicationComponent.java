@@ -1,8 +1,8 @@
 package com.lyft.cityguide;
 
-import com.lyft.cityguide.models.bll.BLLFactory;
-import com.lyft.cityguide.models.bll.jobs.BLLJobFactory;
-import com.lyft.cityguide.models.bll.serializers.BLLSerializerFactory;
+import com.lyft.cityguide.bll.BLLFactory;
+import com.lyft.cityguide.bll.BLLJobFactory;
+import com.lyft.cityguide.bll.BLLSerializerFactory;
 import com.lyft.cityguide.dao.DAOFactory;
 import com.lyft.cityguide.services.google.distancematrix.GoogleDistanceMatrixServiceFactory;
 import com.lyft.cityguide.services.google.distancematrix.GoogleDistanceMatrixAPIFactory;

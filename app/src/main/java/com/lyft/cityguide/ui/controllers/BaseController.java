@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.lyft.cityguide.CityGuideApplication;
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.bll.BLLErrors;
-import com.lyft.cityguide.models.bll.IDataReadingBLL;
-import com.lyft.cityguide.models.bll.IDataWritingBLL;
+import com.lyft.cityguide.bll.BLLErrors;
+import com.lyft.cityguide.bll.IPointOfInterestBLL;
+import com.lyft.cityguide.bll.ISearchSettingBLL;
 import com.lyft.cityguide.ui.events.PopupEvents;
 import com.lyft.cityguide.ui.events.SpinnerEvents;
 import com.lyft.cityguide.ui.routers.AppRouter;
@@ -54,10 +54,10 @@ public abstract class BaseController extends ViewController {
     EventBus spinnerBus;
 
     @Inject
-    IDataReadingBLL dataReadingBLL;
+    IPointOfInterestBLL dataReadingBLL;
 
     @Inject
-    IDataWritingBLL dataWritingBLL;
+    ISearchSettingBLL dataWritingBLL;
 
     @Override
     public void onAttach() {

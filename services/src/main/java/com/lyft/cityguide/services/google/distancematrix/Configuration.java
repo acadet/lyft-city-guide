@@ -8,9 +8,9 @@ import com.lyft.cityguide.services.R;
  * <p>
  */
 class Configuration {
-    public final String API_ENDPOINT;
+    final String API_ENDPOINT;
 
-    public final String API_KEY;
+    final String API_KEY;
 
     Configuration(Context context) {
         API_ENDPOINT = context.getString(R.string.google_distance_matrix_api_endpoint);
