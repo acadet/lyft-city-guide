@@ -9,6 +9,7 @@ import com.lyft.cityguide.ui.containers.MainUIContainer;
 import com.lyft.cityguide.ui.containers.SpinnerUIContainer;
 import com.lyft.cityguide.ui.containers.ToastUIContainer;
 import com.lyft.cityguide.ui.controllers.BaseController;
+import com.lyft.cityguide.ui.controllers.spinner.SpinnerController;
 import com.lyft.cityguide.ui.routers.RouterFactory;
 
 import javax.inject.Singleton;
@@ -37,5 +38,7 @@ public interface ApplicationComponent {
 
     void inject(SpinnerUIContainer spinnerUIContainer);
 
-    void inject(BaseController controller);
+    void inject(BaseController baseController);
+
+    void inject(SpinnerController spinnerController);
 }
