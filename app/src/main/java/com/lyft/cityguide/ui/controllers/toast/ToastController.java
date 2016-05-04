@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 /**
@@ -73,5 +74,10 @@ public class ToastController extends ViewController {
         if (autoHidingHandler != null) {
             autoHidingHandler.removeCallbacksAndMessages(null);
         }
+    }
+
+    @OnClick(R.id.toast)
+    public void onToastClicked() {
+        router.goBack();
     }
 }
