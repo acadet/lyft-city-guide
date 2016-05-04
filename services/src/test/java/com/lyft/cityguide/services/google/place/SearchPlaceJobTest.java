@@ -175,12 +175,43 @@ public class SearchPlaceJobTest {
 
     @Test
     public void moreShouldKeepReturningResultsIfAny() {
+        List<PlaceDTO> placesFromAPI = new ArrayList<>();
+        List<PointOfInterest> expectedPOIs = new ArrayList<>();
+        Location currentLocation = mock(Location.class);
+        SearchOutcomeDTO s1 = mock(SearchOutcomeDTO.class);
 
-    }
+        when(currentLocation.getLatitude()).thenReturn(12.0);
+        when(currentLocation.getLongitude()).thenReturn(-87.4);
 
-    @Test
-    public void moreShouldKeepSameTokenIfNoSubscriber() {
+        when(s1.getNextPageToken()).thenReturn("token");
+        when(s1.getPlaces()).thenReturn(placesFromAPI);
 
+        when(pointOfInterestMapper.map(PointOfInterest.Kind.CAFE)).thenReturn("pools");
+        when(pointOfInterestMapper.map(placesFromAPI, PointOfInterest.Kind.CAFE)).thenReturn(expectedPOIs);
+
+        when(googlePlaceAPI.search("12.0,-87.4", 1609, "pools", null)).thenReturn(s1);
+        when(googlePlaceAPI.more("token", null)).thenReturn(s1);
+
+        // Act
+        searchPlacesJob
+            .search(currentLocation, SearchRangeSetting.ONE_MILE, PointOfInterest.Kind.CAFE)
+            .toBlocking()
+            .subscribe();
+        searchPlacesJob.more().toBlocking().subscribe();
+        searchPlacesJob.more().toBlocking().subscribe();
+        Observable<List<PointOfInterest>> outcome = searchPlacesJob.more();
+
+        TestSubscriber<List<PointOfInterest>> subscriber = new TestSubscriber<>();
+        outcome.toBlocking().subscribe(subscriber);
+
+        verify(googlePlaceAPI, times(3)).more("token", null);
+        verify(s1, times(1 + 3)).getNextPageToken();
+        verify(pointOfInterestMapper, times(1 + 3)).map(placesFromAPI, PointOfInterest.Kind.CAFE);
+
+        subscriber.assertNoErrors();
+        subscriber.assertCompleted();
+        subscriber.assertValueCount(1);
+        subscriber.assertValue(expectedPOIs);
     }
 
     @Test
