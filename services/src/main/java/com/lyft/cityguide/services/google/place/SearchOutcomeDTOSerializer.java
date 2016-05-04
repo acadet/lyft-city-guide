@@ -30,9 +30,15 @@ class SearchOutcomeDTOSerializer implements JsonDeserializer<SearchOutcomeDTO> {
             JsonObject locationNode;
             PlaceDTO p = new PlaceDTO();
 
-            p.setId(o.get("id").getAsString());
+            if (o.has("id")) {
+                p.setId(o.get("id").getAsString());
+            } else if (o.has("place_id")) {
+                p.setId(o.get("place_id").getAsString());
+            }
             p.setName(o.get("name").getAsString());
-            p.setRating(o.get("rating").getAsFloat());
+            if (o.has("rating")) {
+                p.setRating(o.get("rating").getAsFloat());
+            }
 
             locationNode = o.get("geometry").getAsJsonObject().get("location").getAsJsonObject();
             p.setLatitude(locationNode.get("lat").getAsFloat());
