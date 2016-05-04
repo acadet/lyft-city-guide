@@ -9,8 +9,7 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.structs.PlaceType;
+import com.lyft.cityguide.domain.PointOfInterest;
 import com.lyft.cityguide.ui.components.StarBar;
 
 import java.text.DecimalFormat;
@@ -22,13 +21,13 @@ import butterknife.ButterKnife;
  * @class PointOfInterestAdapter
  * @brief
  */
-public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
+public class PointOfInterestAdapter extends BaseAdapter<PointOfInterest> {
 
-    private PlaceType currentType;
+    private PointOfInterest.Kind kind;
 
-    public PointOfInterestAdapter(Context context, List<PointOfInterestBLLDTO> items, PlaceType type) {
+    public PointOfInterestAdapter(Context context, List<PointOfInterest> items, PointOfInterest.Kind kind) {
         super(context, items);
-        currentType = type;
+        this.kind = kind;
     }
 
     private void setUserFriendlyDate(TextView field, double value) {
@@ -42,7 +41,7 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
     }
 
     private int getIcon() {
-        switch (currentType) {
+        switch (kind) {
             case BAR:
                 return R.drawable.ic_bar;
             case BISTRO:
@@ -60,7 +59,7 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
         ImageView icon;
         TextView name, distance;
         StarBar rating;
-        PointOfInterestBLLDTO currentPOI;
+        PointOfInterest currentPOI;
 
         adapter = recycle(R.layout.adapter_point_of_interest, convertView, parent);
         icon = ButterKnife.findById(adapter, R.id.adapter_result_icon);
@@ -82,9 +81,5 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
             .playOn(adapter);
 
         return adapter;
-    }
-
-    public void setCurrentType(PlaceType type) {
-        currentType = type;
     }
 }

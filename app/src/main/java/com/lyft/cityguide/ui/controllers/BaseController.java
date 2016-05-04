@@ -7,17 +7,16 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.bll.BLLErrors;
 import com.lyft.cityguide.bll.IPointOfInterestBLL;
 import com.lyft.cityguide.bll.ISearchSettingBLL;
-import com.lyft.cityguide.ui.events.PopupEvents;
-import com.lyft.cityguide.ui.events.SpinnerEvents;
-import com.lyft.cityguide.ui.routers.AppRouter;
+import com.lyft.cityguide.ui.routers.IRouter;
+import com.lyft.cityguide.ui.screens.spinner.ShowSpinnerScreen;
+import com.lyft.cityguide.ui.screens.toast.AlertScreen;
+import com.lyft.cityguide.ui.screens.toast.ConfirmScreen;
+import com.lyft.cityguide.ui.screens.toast.InformScreen;
 import com.lyft.scoop.ViewController;
-
-import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.ButterKnife;
 import rx.Subscriber;
 
 /**
@@ -43,50 +42,50 @@ public abstract class BaseController extends ViewController {
     Context context;
 
     @Inject
-    AppRouter appRouter;
+    @Named("app")
+    IRouter appRouter;
 
     @Inject
-    @Named("popup")
-    EventBus popupBus;
+    @Named("toast")
+    IRouter toastRouter;
 
     @Inject
     @Named("spinner")
-    EventBus spinnerBus;
+    IRouter spinnerRouter;
 
     @Inject
-    IPointOfInterestBLL dataReadingBLL;
+    IPointOfInterestBLL pointOfInterestBLL;
 
     @Inject
-    ISearchSettingBLL dataWritingBLL;
+    ISearchSettingBLL searchSettingBLL;
 
     @Override
     public void onAttach() {
         super.onAttach();
         CityGuideApplication.getApplicationComponent().inject(this);
-        ButterKnife.bind(this, getView());
     }
 
     public void inform(String message) {
-        popupBus.post(new PopupEvents.Info(message));
+        toastRouter.goTo(new InformScreen(message));
     }
 
     public void confirm(String message) {
-        popupBus.post(new PopupEvents.Confirm(message));
+        toastRouter.goTo(new ConfirmScreen(message));
     }
 
     public void alert(String message) {
-        popupBus.post(new PopupEvents.Alert(message));
-    }
-
-    public void hideNotification() {
-        popupBus.post(new PopupEvents.Hide());
+        toastRouter.goTo(new AlertScreen(message));
     }
 
     public void showSpinner() {
-        spinnerBus.post(new SpinnerEvents.Show());
+        spinnerRouter.goTo(new ShowSpinnerScreen());
+    }
+
+    public void showSpinnerImmediately() {
+        spinnerRouter.goTo(new ShowSpinnerScreen(true));
     }
 
     public void hideSpinner() {
-        spinnerBus.post(new SpinnerEvents.Hide());
+        spinnerRouter.goBack();
     }
 }

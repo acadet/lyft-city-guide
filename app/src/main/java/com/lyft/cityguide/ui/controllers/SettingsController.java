@@ -5,20 +5,22 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
+import com.lyft.cityguide.domain.SearchRangeSetting;
 
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.OnClick;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 /**
  * SettingsController
  * <p>
  */
 public class SettingsController extends BaseController {
-    private Subscription getSearchRangeSettingSubscription;
+    private Subscription getSubscription;
+    private Subscription updateSubscription;
 
     @BindColor(R.color.black)
     int blackColor;
@@ -41,6 +43,48 @@ public class SettingsController extends BaseController {
         }
     }
 
+    private void toggleLabels(SearchRangeSetting setting) {
+        int value;
+
+        switch (setting) {
+            case ONE_MILE:
+                value = 0;
+                break;
+            case TWO_MILE:
+                value = 1;
+                break;
+            case FIVE_MILE:
+                value = 2;
+                break;
+            default:
+                value = -1;
+                Timber.e("Unexpected value for search range setting");
+        }
+
+        toggleLabels(value);
+    }
+
+    private SearchRangeSetting settingFromProgress(int value) {
+        SearchRangeSetting outcome;
+
+        switch (value) {
+            case 0:
+                outcome = SearchRangeSetting.ONE_MILE;
+                break;
+            case 1:
+                outcome = SearchRangeSetting.TWO_MILE;
+                break;
+            case 2:
+                outcome = SearchRangeSetting.FIVE_MILE;
+                break;
+            default:
+                outcome = null;
+                Timber.e("Unexpected progress");
+        }
+
+        return outcome;
+    }
+
     @Override
     protected int layoutId() {
         return R.layout.settings_layout;
@@ -50,27 +94,44 @@ public class SettingsController extends BaseController {
     public void onAttach() {
         super.onAttach();
 
-        getSearchRangeSettingSubscription = dataReadingBLL
-            .getSearchRangeSetting()
+        getSubscription = searchSettingBLL
+            .get()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new BaseSubscriber<SearchRangeSettingBLLDTO>() {
+            .subscribe(new BaseSubscriber<SearchRangeSetting>() {
                 @Override
                 public void onCompleted() {
 
                 }
 
                 @Override
-                public void onNext(SearchRangeSettingBLLDTO searchRangeSettingBLLDTO) {
-                    toggleLabels(searchRangeSettingBLLDTO.toInt());
+                public void onNext(SearchRangeSetting setting) {
+                    toggleLabels(setting);
                 }
             });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                dataWritingBLL.updateSearchRangeSetting(SearchRangeSettingBLLDTO.fromInt(progress));
                 toggleLabels(progress);
-                confirm(context.getString(R.string.settings_save_confirmation));
+
+                if (updateSubscription != null) {
+                    updateSubscription.unsubscribe();
+                }
+
+                updateSubscription = searchSettingBLL
+                    .update(settingFromProgress(progress))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new BaseSubscriber<Void>() {
+                        @Override
+                        public void onCompleted() {
+                            confirm(context.getString(R.string.settings_save_confirmation));
+                        }
+
+                        @Override
+                        public void onNext(Void aVoid) {
+
+                        }
+                    });
             }
 
             @Override
@@ -89,8 +150,12 @@ public class SettingsController extends BaseController {
     public void onDetach() {
         super.onDetach();
 
-        if (getSearchRangeSettingSubscription != null) {
-            getSearchRangeSettingSubscription.unsubscribe();
+        if (getSubscription != null) {
+            getSubscription.unsubscribe();
+        }
+
+        if (updateSubscription != null) {
+            updateSubscription.unsubscribe();
         }
     }
 
