@@ -62,7 +62,9 @@ class GetCurrentLocationJob {
                                         if (latestLocation != null) { // Use latest location if no connectivity
                                             subscriber.onNext(latestLocation);
                                             subscriber.onCompleted();
+                                            return;
                                         }
+                                        subscriber.onError(new BLLErrors.NoConnection());
                                     }
                                 }
 

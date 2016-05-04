@@ -25,6 +25,7 @@ class ListPointsOfInterestJob extends BLLJob {
 
     private final IGooglePlaceService          googlePlaceService;
     private final IGoogleDistanceMatrixService googleDistanceMatrixService;
+    private       Location                     latestKnownLocation;
 
     ListPointsOfInterestJob(IGooglePlaceService googlePlaceService, IGoogleDistanceMatrixService googleDistanceMatrixService) {
         this.googlePlaceService = googlePlaceService;
@@ -98,10 +99,11 @@ class ListPointsOfInterestJob extends BLLJob {
     Observable<List<PointOfInterest>> list(Location currentLocation,
                                            SearchRangeSetting searchRangeSetting,
                                            PointOfInterest.Kind placeType) {
+        latestKnownLocation = currentLocation;
         return create(false, currentLocation, searchRangeSetting, placeType);
     }
 
     Observable<List<PointOfInterest>> more() {
-        return create(true, null, null, null);
+        return create(true, latestKnownLocation, null, null);
     }
 }
