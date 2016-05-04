@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     style="@style/MatchParent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
     <com.lyft.cityguide.ui.containers.MainUIContainer
@@ -9,6 +10,11 @@
 
     <com.lyft.cityguide.ui.containers.ToastUIContainer
         style="@style/MatchParentWrapContent"
+        />
+
+    <com.lyft.cityguide.ui.containers.SpinnerUIContainer
+        android:visibility="gone"
+        style="@style/WrapContent"
         />
 
 </RelativeLayout>

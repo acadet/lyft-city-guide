@@ -6,6 +6,7 @@ import com.lyft.cityguide.services.google.distancematrix.GoogleDistanceMatrixSer
 import com.lyft.cityguide.services.google.place.GooglePlaceServiceFactory;
 import com.lyft.cityguide.ui.activities.BaseActivity;
 import com.lyft.cityguide.ui.containers.MainUIContainer;
+import com.lyft.cityguide.ui.containers.SpinnerUIContainer;
 import com.lyft.cityguide.ui.containers.ToastUIContainer;
 import com.lyft.cityguide.ui.controllers.BaseController;
 import com.lyft.cityguide.ui.routers.RouterFactory;
@@ -33,6 +34,8 @@ public interface ApplicationComponent {
     void inject(MainUIContainer mainUIContainer);
 
     void inject(ToastUIContainer toastUIContainer);
+
+    void inject(SpinnerUIContainer spinnerUIContainer);
 
     void inject(BaseController controller);
 }

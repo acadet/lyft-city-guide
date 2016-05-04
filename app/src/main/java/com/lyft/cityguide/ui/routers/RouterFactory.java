@@ -28,4 +28,11 @@ public class RouterFactory {
     public IRouter provideToastRouter() {
         return new ToastRouter(new ScreenScooper());
     }
+
+    @Provides
+    @Singleton
+    @Named("spinner")
+    public IRouter provideSpinnerRouter() {
+        return new SpinnerRouter(new ScreenScooper());
+    }
 }
