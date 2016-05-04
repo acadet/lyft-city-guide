@@ -43,7 +43,7 @@ public class SettingsController extends BaseController {
         }
     }
 
-    private void toggleLabels(SearchRangeSetting setting) {
+    private void toggleLabelsAndSetProgress(SearchRangeSetting setting) {
         int value;
 
         switch (setting) {
@@ -60,6 +60,8 @@ public class SettingsController extends BaseController {
                 value = -1;
                 Timber.e("Unexpected value for search range setting");
         }
+
+        seekBar.setProgress(value);
 
         toggleLabels(value);
     }
@@ -100,50 +102,48 @@ public class SettingsController extends BaseController {
             .subscribe(new BaseSubscriber<SearchRangeSetting>() {
                 @Override
                 public void onCompleted() {
+                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                            toggleLabels(progress);
 
+                            if (updateSubscription != null) {
+                                updateSubscription.unsubscribe();
+                            }
+
+                            updateSubscription = searchSettingBLL
+                                .update(settingFromProgress(progress))
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new BaseSubscriber<Void>() {
+                                    @Override
+                                    public void onCompleted() {
+                                        confirm(context.getString(R.string.settings_save_confirmation));
+                                    }
+
+                                    @Override
+                                    public void onNext(Void aVoid) {
+
+                                    }
+                                });
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+                            // Nothing to do
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+                            // Nothing to do
+                        }
+                    });
                 }
 
                 @Override
                 public void onNext(SearchRangeSetting setting) {
-                    toggleLabels(setting);
+                    toggleLabelsAndSetProgress(setting);
                 }
             });
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                toggleLabels(progress);
-
-                if (updateSubscription != null) {
-                    updateSubscription.unsubscribe();
-                }
-
-                updateSubscription = searchSettingBLL
-                    .update(settingFromProgress(progress))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new BaseSubscriber<Void>() {
-                        @Override
-                        public void onCompleted() {
-                            confirm(context.getString(R.string.settings_save_confirmation));
-                        }
-
-                        @Override
-                        public void onNext(Void aVoid) {
-
-                        }
-                    });
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Nothing to do
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Nothing to do
-            }
-        });
     }
 
     @Override
