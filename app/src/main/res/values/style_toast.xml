@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Toast" parent="MatchParentWrapContent">
+        <item name="android:padding">10dp</item>
+
+        <item name="android:textSize">@dimen/subhead</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

@@ -17,6 +17,13 @@ import dagger.Provides;
  */
 @Module
 public class BLLFactory {
+
+    @Provides
+    @Singleton
+    Configuration provideConfiguration(Context context) {
+        return new Configuration(context);
+    }
+
     @Provides
     @Singleton
     LocationManager provideLocationManager(Context context) {

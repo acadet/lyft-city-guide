@@ -8,4 +8,8 @@
 
     <color name="menu_background">#1c1c1c</color>
     <color name="menu_separator">#000</color>
+
+    <color name="alert">#f44336</color>
+    <color name="confirm">#4CAF50</color>
+    <color name="inform">#03A9F4</color>
 </resources>
