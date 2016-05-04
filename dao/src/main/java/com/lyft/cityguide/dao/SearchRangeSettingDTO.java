@@ -1,19 +1,19 @@
-package com.lyft.cityguide.models.dao.dto;
+package com.lyft.cityguide.dao;
 
 import timber.log.Timber;
 
 /**
- * SearchRangeSettingDAODTO
+ * SearchRangeSettingDTO
  * <p>
  */
-public enum SearchRangeSettingDAODTO {
+enum SearchRangeSettingDTO {
     ONE_MILE(0),
     TWO_MILE(1),
     FIVE_MILE(2);
 
     private int value;
 
-    SearchRangeSettingDAODTO(int value) {
+    SearchRangeSettingDTO(int value) {
         this.value = value;
     }
 
@@ -21,7 +21,7 @@ public enum SearchRangeSettingDAODTO {
         return value;
     }
 
-    public static SearchRangeSettingDAODTO fromInt(int value) {
+    public static SearchRangeSettingDTO fromInt(int value) {
         switch (value) {
             case 0:
                 return ONE_MILE;
@@ -30,7 +30,7 @@ public enum SearchRangeSettingDAODTO {
             case 2:
                 return FIVE_MILE;
             default:
-                Timber.e("Unexpected value for SearchRangeSettingDAODTO");
+                Timber.e("Unexpected value for SearchRangeSettingDTO");
                 return null;
         }
     }

@@ -1,7 +1,7 @@
 package com.lyft.cityguide.models.bll.jobs;
 
 import com.lyft.cityguide.models.bll.dto.SearchRangeSettingBLLDTO;
-import com.lyft.cityguide.models.dao.ISettingsDAO;
+import com.lyft.cityguide.dao.ISettingsDAO;
 
 import rx.Observable;
 import rx.Subscriber;
