@@ -20,7 +20,7 @@ class ListPointsOfInterestAroundJob {
 
     private static class Holder {
         final Object instructionLock = new Object();
-        boolean            hasOtherThreadCompleted;
+        boolean hasOtherThreadCompleted = false;
         SearchRangeSetting searchRangeSetting;
         Location           currentLocation;
     }

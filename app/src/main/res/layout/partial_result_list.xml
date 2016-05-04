@@ -23,6 +23,7 @@
 
         <ListView
             android:id="@+id/partial_result_list_listview"
+            android:listSelector="@android:color/transparent"
             style="@style/MatchParentWrapContent"
             />
 
