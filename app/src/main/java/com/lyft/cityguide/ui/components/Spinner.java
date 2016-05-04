@@ -50,7 +50,7 @@ public class Spinner {
 
         if (withDelay) {
             delayedShowingHandler = new Handler(Looper.getMainLooper());
-            delayedShowingHandler.postDelayed(runnable, 500);
+            delayedShowingHandler.postDelayed(runnable, 350);
         } else {
             new Handler().post(() -> runnable.run());
         }
