@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.lyft.cityguide.domain.PointOfInterest;
 import com.lyft.cityguide.domain.SearchRangeSetting;
+import com.lyft.cityguide.services.ServiceErrors;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit.RetrofitError;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
@@ -50,10 +52,9 @@ public class SearchPlaceJobTest {
     }
 
     @Test
-    public void shouldSearchValidPlaces() {
+    public void searchShouldReturnValidPlaces() {
         Observable<List<PointOfInterest>> outcome;
         Location currentLocation = mock(Location.class);
-        TestSubscriber<List<PointOfInterest>> subscriber = new TestSubscriber<>();
         SearchOutcomeDTO searchOutcomeDTO;
         PlaceDTO p;
         PointOfInterest poi;
@@ -86,11 +87,12 @@ public class SearchPlaceJobTest {
         when(currentLocation.getLongitude()).thenReturn(-45.67);
         when(pointOfInterestMapper.map(PointOfInterest.Kind.BISTRO)).thenReturn("bistro");
         when(pointOfInterestMapper.map(searchOutcomeDTO.getPlaces(), PointOfInterest.Kind.BISTRO)).thenReturn(expectedPois);
-        when(googlePlaceAPI.search("45.0,-45.67", 2 * 1609, "bistro", null)).thenReturn(searchOutcomeDTO);
+        when(googlePlaceAPI.search("45.0,-45.67", 3218, "bistro", null)).thenReturn(searchOutcomeDTO);
 
         // Act
         outcome = searchPlacesJob.search(currentLocation, SearchRangeSetting.TWO_MILE, PointOfInterest.Kind.BISTRO);
 
+        TestSubscriber<List<PointOfInterest>> subscriber = new TestSubscriber<>();
         outcome.toBlocking().subscribe(subscriber);
 
         verify(googlePlaceAPI, times(1)).search("45.0,-45.67", 2 * 1609, "bistro", null);
@@ -102,4 +104,35 @@ public class SearchPlaceJobTest {
         subscriber.assertValue(expectedPois);
         subscriber.assertCompleted();
     }
+
+    @Test
+    public void searchShouldReturnErrorIfAnyRetrofitErrorIsRaised() {
+        Observable<List<PointOfInterest>> outcome;
+        Location currentLocation = mock(Location.class);
+        RetrofitError raisedError = mock(RetrofitError.class);
+
+        when(raisedError.getKind()).thenReturn(RetrofitError.Kind.NETWORK);
+        when(raisedError.getResponse()).thenReturn(null);
+
+        when(currentLocation.getLatitude()).thenReturn(-23.4);
+        when(currentLocation.getLongitude()).thenReturn(-45.95);
+
+        when(pointOfInterestMapper.map(PointOfInterest.Kind.CAFE)).thenReturn("cafe");
+        when(googlePlaceAPI.search("-23.4,-45.95", 8045, "cafe", null)).thenThrow(raisedError);
+
+        // Act
+        outcome = searchPlacesJob.search(currentLocation, SearchRangeSetting.FIVE_MILE, PointOfInterest.Kind.CAFE);
+
+        TestSubscriber<List<PointOfInterest>> subscriber = new TestSubscriber<>();
+        outcome.toBlocking().subscribe(subscriber);
+
+        verify(pointOfInterestMapper, times(1)).map(PointOfInterest.Kind.CAFE);
+        verify(googlePlaceAPI, times(1)).search("-23.4,-45.95", 8045, "cafe", null);
+
+        subscriber.assertError(ServiceErrors.NoConnection.class);
+        subscriber.assertNotCompleted();
+        subscriber.assertNoValues();
+    }
+
+    
 }
