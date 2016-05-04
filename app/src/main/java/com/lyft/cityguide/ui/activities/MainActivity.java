@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 
 import com.lyft.cityguide.R;
 import com.lyft.cityguide.ui.screens.LandingScreen;
+import com.lyft.cityguide.ui.screens.spinner.InitSpinnerScreen;
+import com.lyft.cityguide.ui.screens.toast.InitToastScreen;
 import com.lyft.scoop.Scoop;
 
 /**
@@ -31,6 +33,9 @@ public class MainActivity extends BaseActivity {
         if (!appRouter.hasActiveScreen()) {
             appRouter.goTo(new LandingScreen());
         }
+
+        toastRouter.resetTo(new InitToastScreen());
+        spinnerRouter.resetTo(new InitSpinnerScreen());
     }
 
     @Override

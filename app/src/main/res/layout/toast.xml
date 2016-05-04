@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
+    style="@style/MatchParentWrapContent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MatchParentWrapContent"
     >
 
     <TextView
         android:id="@+id/toast"
         style="@style/Toast"
+        tools:background="@color/pink"
         tools:text="Attention"
         />
 

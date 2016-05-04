@@ -1,6 +1,5 @@
 package com.lyft.cityguide.ui.routers;
 
-import com.lyft.cityguide.ui.screens.spinner.InitSpinnerScreen;
 import com.lyft.scoop.ScreenScooper;
 
 /**
@@ -10,6 +9,5 @@ import com.lyft.scoop.ScreenScooper;
 class SpinnerRouter extends BaseRouter {
     SpinnerRouter(ScreenScooper screenScooper) {
         super(screenScooper);
-        resetTo(new InitSpinnerScreen());
     }
 }

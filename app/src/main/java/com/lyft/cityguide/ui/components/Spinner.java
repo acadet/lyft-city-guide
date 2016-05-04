@@ -1,7 +1,7 @@
 package com.lyft.cityguide.ui.components;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -22,8 +22,8 @@ public class Spinner {
     private       boolean        isShowing;
     private       Action0        onTimeoutObserver;
 
-    public Spinner(Context context) {
-        progressDialog = new ProgressDialog(context, R.style.ProgressBar);
+    public Spinner(Activity activity) {
+        progressDialog = new ProgressDialog(activity, R.style.ProgressBar);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
     }

@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import rx.Subscriber;
+import timber.log.Timber;
 
 /**
  * BaseController
@@ -33,6 +34,7 @@ public abstract class BaseController extends ViewController {
             } else if (e instanceof BLLErrors.ServiceError) {
                 inform(context.getString(R.string.internal_server_error));
             } else {
+                Timber.e(e, "Unhandled throwable in BaseSubscriber");
                 alert(e.getMessage());
             }
         }

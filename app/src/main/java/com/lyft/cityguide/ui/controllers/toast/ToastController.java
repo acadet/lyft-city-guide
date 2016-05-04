@@ -63,7 +63,7 @@ public class ToastController extends ViewController {
         autoHidingHandler = new Handler(Looper.getMainLooper());
         autoHidingHandler.postDelayed(() -> {
             router.goBack();
-        }, 3 * 1000);
+        }, 5 * 1000);
     }
 
     @Override

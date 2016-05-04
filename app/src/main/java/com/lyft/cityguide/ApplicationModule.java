@@ -3,8 +3,6 @@ package com.lyft.cityguide;
 import android.app.Application;
 import android.content.Context;
 
-import com.lyft.cityguide.ui.components.Spinner;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -26,11 +24,5 @@ public class ApplicationModule {
     @Singleton
     public Context provideContext() {
         return application.getApplicationContext();
-    }
-
-    @Provides
-    @Singleton
-    public Spinner provideSpinner(Context context) {
-        return new Spinner(context);
     }
 }

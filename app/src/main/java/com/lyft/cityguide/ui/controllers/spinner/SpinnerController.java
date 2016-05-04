@@ -1,7 +1,7 @@
 package com.lyft.cityguide.ui.controllers.spinner;
 
-import com.lyft.cityguide.CityGuideApplication;
 import com.lyft.cityguide.R;
+import com.lyft.cityguide.ui.activities.BaseActivity;
 import com.lyft.cityguide.ui.components.Spinner;
 import com.lyft.cityguide.ui.routers.IRouter;
 import com.lyft.cityguide.ui.screens.spinner.ShowSpinnerScreen;
@@ -32,7 +32,7 @@ public class SpinnerController extends ViewController {
     @Override
     public void onAttach() {
         super.onAttach();
-        CityGuideApplication.getApplicationComponent().inject(this);
+        BaseActivity.getUIComponent().inject(this);
 
         spinner.setOnTimeoutObserver(() -> router.goBack());
 
