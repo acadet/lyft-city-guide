@@ -12,13 +12,9 @@ import rx.Observable;
  */
 class PointOfInterestBLL implements IPointOfInterestBLL {
     private final ListPointsOfInterestAroundJob listPointsOfInterestAroundJob;
-    private final GetSearchRangeSettingJob      getSearchRangeSettingJob;
 
-    PointOfInterestBLL(
-        ListPointsOfInterestAroundJob listPointsOfInterestAroundJob,
-        GetSearchRangeSettingJob getSearchRangeSettingJob) {
+    PointOfInterestBLL(ListPointsOfInterestAroundJob listPointsOfInterestAroundJob) {
         this.listPointsOfInterestAroundJob = listPointsOfInterestAroundJob;
-        this.getSearchRangeSettingJob = getSearchRangeSettingJob;
     }
 
     @Override

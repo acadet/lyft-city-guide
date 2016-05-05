@@ -66,10 +66,8 @@ public class BLLFactory {
 
     @Provides
     @Singleton
-    public IPointOfInterestBLL providePointOfInterestBLL(
-        ListPointsOfInterestAroundJob listPointsOfInterestAroundJob,
-        GetSearchRangeSettingJob getSearchRangeSettingJob) {
-        return new PointOfInterestBLL(listPointsOfInterestAroundJob, getSearchRangeSettingJob);
+    public IPointOfInterestBLL providePointOfInterestBLL(ListPointsOfInterestAroundJob listPointsOfInterestAroundJob) {
+        return new PointOfInterestBLL(listPointsOfInterestAroundJob);
     }
 
     @Provides
