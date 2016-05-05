@@ -8,7 +8,6 @@ import com.lyft.cityguide.R;
 import com.lyft.cityguide.domain.SearchRangeSetting;
 
 import butterknife.Bind;
-import butterknife.BindColor;
 import butterknife.OnClick;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -22,12 +21,6 @@ public class SettingsController extends BaseController {
     private Subscription getSubscription;
     private Subscription updateSubscription;
 
-    @BindColor(R.color.black)
-    int blackColor;
-
-    @BindColor(R.color.gray)
-    int grayColor;
-
     @Bind(R.id.partial_settings_body_range_seek_bar)
     SeekBar seekBar;
 
@@ -37,9 +30,9 @@ public class SettingsController extends BaseController {
     private void toggleLabels(int progress) {
         for (int i = 0, s = labelWrapper.getChildCount(); i < s; i++) {
             TextView t = (TextView) labelWrapper.getChildAt(i);
-            int color = (i == progress) ? blackColor : grayColor;
+            int colorID = (i == progress) ? R.color.black : R.color.gray;
 
-            t.setTextColor(color);
+            t.setTextColor(context.getResources().getColor(colorID));
         }
     }
 
