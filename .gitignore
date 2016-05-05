@@ -33,3 +33,5 @@ DS_Store
 app/src/main/res/values/secret_strings.xml
 
 app/src/main/java/com/lyft/cityguide/SecretApplicationConfiguration.java
+
+services/src/main/res/values/secrets.xml

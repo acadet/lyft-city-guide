@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/menu"
+    style="@style/Menu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <LinearLayout
+        style="@style/MenuInnerWrapper"
+        >
+
+        <TextView
+            android:text="@string/app_name"
+            style="@style/MenuTitle"
+            />
+
+        <TextView
+            android:id="@+id/partial_menu_settings"
+            android:text="@string/settings_label"
+            style="@style/MenuLabel"
+            />
+
+        <ImageView
+            style="@style/MenuSeparator"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

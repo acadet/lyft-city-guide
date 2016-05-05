@@ -1,31 +1,41 @@
 package com.lyft.cityguide.ui.components;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.lyft.cityguide.R;
+
+import rx.functions.Action0;
 
 /**
  * Spinner
  * <p>
  */
 public class Spinner {
-    private ProgressDialog progressDialog;
-    private Handler        delayedShowingHandler;
-    private boolean        delayedShowingHasBeenCancelled;
-    private Handler        timeoutHandler;
-    private boolean        timeoutHasBeenCancelled;
+    private final ProgressDialog progressDialog;
+    private       Handler        delayedShowingHandler;
+    private       boolean        delayedShowingHasBeenCancelled;
+    private       Handler        timeoutHandler;
+    private       boolean        timeoutHasBeenCancelled;
+    private       boolean        isShowing;
+    private       Action0        onTimeoutObserver;
 
-    public Spinner(Context context) {
-        progressDialog = new ProgressDialog(context, R.style.ProgressBar);
+    public Spinner(Activity activity) {
+        progressDialog = new ProgressDialog(activity, R.style.ProgressBar);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
     }
 
     public void show(boolean withDelay) {
-        Runnable runnable = () -> {
+        Runnable runnable;
+
+        if (isShowing) {
+            return;
+        }
+
+        runnable = () -> {
             if (delayedShowingHasBeenCancelled) {
                 return;
             }
@@ -36,10 +46,11 @@ public class Spinner {
 
         delayedShowingHasBeenCancelled = false;
         timeoutHasBeenCancelled = false;
+        isShowing = true;
 
         if (withDelay) {
             delayedShowingHandler = new Handler(Looper.getMainLooper());
-            delayedShowingHandler.postDelayed(runnable, 350);
+            delayedShowingHandler.postDelayed(runnable, 500);
         } else {
             new Handler().post(() -> runnable.run());
         }
@@ -51,6 +62,9 @@ public class Spinner {
                     return;
                 } else {
                     progressDialog.dismiss();
+                    if (onTimeoutObserver != null) {
+                        onTimeoutObserver.call();
+                    }
                 }
             },
             10 * 1000
@@ -69,11 +83,20 @@ public class Spinner {
         }
 
         progressDialog.dismiss();
+        isShowing = false;
 
         if (timeoutHandler != null) {
             timeoutHandler.removeCallbacks(null);
             timeoutHasBeenCancelled = true;
             timeoutHandler = null;
         }
+    }
+
+    public void setOnTimeoutObserver(Action0 action) {
+        onTimeoutObserver = action;
+    }
+
+    public void removeOnTimeoutObserver() {
+        onTimeoutObserver = null;
     }
 }

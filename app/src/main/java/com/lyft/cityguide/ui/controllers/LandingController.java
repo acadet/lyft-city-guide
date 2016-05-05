@@ -1,30 +1,22 @@
 package com.lyft.cityguide.ui.controllers;
 
-import android.graphics.Point;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.annimon.stream.Stream;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.bll.BLLErrors;
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.structs.PlaceType;
+import com.lyft.cityguide.bll.BLLErrors;
+import com.lyft.cityguide.domain.PointOfInterest;
 import com.lyft.cityguide.ui.adapters.PointOfInterestAdapter;
 import com.lyft.cityguide.ui.components.Slider;
-import com.lyft.cityguide.ui.screens.SettingsScreen;
-import com.nineoldandroids.animation.Animator;
+import com.lyft.cityguide.ui.screens.menu.ShowMenuScreen;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import butterknife.OnTouch;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -33,14 +25,10 @@ import rx.android.schedulers.AndroidSchedulers;
  * <p>
  */
 public class LandingController extends BaseController {
-    private PlaceType              currentType;
+    private PointOfInterest.Kind   currentKind;
     private PointOfInterestAdapter pointOfInterestAdapter;
     private Subscription           listPointOfInterestsAroundSubscription;
     private Subscription           listMoreSubscription;
-    private Point                  menuStartTouchPoint;
-
-    @Bind(R.id.partial_menu)
-    View menuView;
 
     @Bind(R.id.partial_landing_header_menu_trigger_slider)
     Slider headerSlider;
@@ -67,42 +55,48 @@ public class LandingController extends BaseController {
             showSpinner();
         }
 
-        listPointOfInterestsAroundSubscription = dataReadingBLL
-            .listPointOfInterestsAround(currentType)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new BaseSubscriber<List<PointOfInterestBLLDTO>>() {
-                @Override
-                public void onCompleted() {
-                    if (isRefreshing) {
-                        swipeRefreshLayout.setRefreshing(false);
-                    } else {
-                        hideSpinner();
+        listPointOfInterestsAroundSubscription =
+            pointOfInterestBLL
+                .listAround(currentKind)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<List<PointOfInterest>>() {
+                    @Override
+                    public void onCompleted() {
+                        if (isRefreshing) {
+                            swipeRefreshLayout.setRefreshing(false);
+                        } else {
+                            hideSpinner();
+                        }
                     }
-                }
 
-                @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
-                    if (isRefreshing) {
-                        swipeRefreshLayout.setRefreshing(false);
-                    } else {
-                        hideSpinner();
-                    }
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof BLLErrors.DisabledLocation) {
+                            alert(context.getString(R.string.error_location_disabled));
+                        } else {
+                            super.onError(e);
+                        }
 
-                @Override
-                public void onNext(List<PointOfInterestBLLDTO> pointOfInterestBLLDTOs) {
-                    if (pointOfInterestBLLDTOs.isEmpty()) {
-                        noContentLabelView.setVisibility(View.VISIBLE);
-                        swipeRefreshLayout.setVisibility(View.GONE);
-                    } else {
-                        pointOfInterestAdapter = new PointOfInterestAdapter(context, pointOfInterestBLLDTOs, currentType);
-                        resultListView.setAdapter(pointOfInterestAdapter);
-                        noContentLabelView.setVisibility(View.GONE);
-                        swipeRefreshLayout.setVisibility(View.VISIBLE);
+                        if (isRefreshing) {
+                            swipeRefreshLayout.setRefreshing(false);
+                        } else {
+                            hideSpinner();
+                        }
                     }
-                }
-            });
+
+                    @Override
+                    public void onNext(List<PointOfInterest> pointOfInterestBLLDTOs) {
+                        if (pointOfInterestBLLDTOs.isEmpty()) {
+                            noContentLabelView.setVisibility(View.VISIBLE);
+                            swipeRefreshLayout.setVisibility(View.GONE);
+                        } else {
+                            pointOfInterestAdapter = new PointOfInterestAdapter(context, pointOfInterestBLLDTOs, currentKind);
+                            resultListView.setAdapter(pointOfInterestAdapter);
+                            noContentLabelView.setVisibility(View.GONE);
+                            swipeRefreshLayout.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     private void fetchMoreContent() {
@@ -110,10 +104,10 @@ public class LandingController extends BaseController {
             listMoreSubscription.unsubscribe();
         }
 
-        listMoreSubscription = dataReadingBLL
+        listMoreSubscription = pointOfInterestBLL
             .listMore()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new BaseSubscriber<List<PointOfInterestBLLDTO>>() {
+            .subscribe(new BaseSubscriber<List<PointOfInterest>>() {
                 @Override
                 public void onCompleted() {
                     swipeRefreshLayout.setRefreshing(false);
@@ -130,9 +124,8 @@ public class LandingController extends BaseController {
                 }
 
                 @Override
-                public void onNext(List<PointOfInterestBLLDTO> pointOfInterestBLLDTOs) {
-                    Stream.of(pointOfInterestBLLDTOs).forEach(pointOfInterestAdapter::addItem);
-                    pointOfInterestAdapter.notifyDataSetChanged();
+                public void onNext(List<PointOfInterest> newPOIs) {
+                    pointOfInterestAdapter.addItems(newPOIs);
                 }
             });
     }
@@ -146,8 +139,7 @@ public class LandingController extends BaseController {
     public void onAttach() {
         super.onAttach();
 
-        currentType = PlaceType.BAR;
-
+        currentKind = PointOfInterest.Kind.BAR;
         listContent();
 
         resultListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -183,19 +175,23 @@ public class LandingController extends BaseController {
         });
 
         headerSlider.observe((index, label) -> {
+            final PointOfInterest.Kind formerKind = currentKind;
+
             switch (index) {
                 case 1:
-                    currentType = PlaceType.BISTRO;
+                    currentKind = PointOfInterest.Kind.BISTRO;
                     break;
                 case 2:
-                    currentType = PlaceType.CAFE;
+                    currentKind = PointOfInterest.Kind.CAFE;
                     break;
                 default:
-                    currentType = PlaceType.BAR;
+                    currentKind = PointOfInterest.Kind.BAR;
                     break;
             }
 
-            listContent();
+            if (currentKind != formerKind) {
+                listContent();
+            }
         });
     }
 
@@ -214,58 +210,6 @@ public class LandingController extends BaseController {
 
     @OnClick(R.id.partial_landing_header_menu_trigger)
     public void onMenuTriggerClick() {
-        menuView.setVisibility(View.VISIBLE);
-        YoYo
-            .with(Techniques.SlideInLeft)
-            .duration(300)
-            .playOn(menuView);
-    }
-
-    @OnTouch(R.id.partial_menu)
-    public boolean onMenuViewTouch(View view, MotionEvent e) {
-        // Hide if slightly touched
-        if (e.getAction() == MotionEvent.ACTION_DOWN) {
-            menuStartTouchPoint = new Point(Math.round(e.getX()), Math.round(e.getY()));
-        } else if (e.getAction() == MotionEvent.ACTION_MOVE && menuStartTouchPoint != null) {
-            int distance = Math.abs(menuStartTouchPoint.x - Math.round(e.getX()));
-
-            if (distance > 100) {
-                menuStartTouchPoint = null; // Prevent any extra call to hide
-                YoYo
-                    .with(Techniques.SlideOutLeft)
-                    .duration(300)
-                    .withListener(
-                        new Animator.AnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                menuView.setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void onAnimationCancel(Animator animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animation) {
-
-                            }
-                        }
-                    )
-                    .playOn(menuView);
-            }
-        }
-
-        return true;
-    }
-
-    @OnClick(R.id.partial_menu_settings)
-    public void onMenuSettingsClick() {
-        appRouter.goTo(new SettingsScreen());
+        menuRouter.goTo(new ShowMenuScreen());
     }
 }

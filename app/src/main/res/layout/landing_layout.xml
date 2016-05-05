@@ -1,33 +1,19 @@
-<RelativeLayout
-    style="@style/MatchParent"
+<LinearLayout
+    style="@style/MatchParent.Vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <LinearLayout
-        style="@style/MatchParent.Vertical"
-        >
-
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/partial_landing_header"
-            />
-
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            layout="@layout/partial_result_list"
-            />
-
-    </LinearLayout>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/partial_landing_header"
+        />
 
     <include
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        layout="@layout/partial_menu"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        layout="@layout/partial_result_list"
         />
 
-</RelativeLayout>
+</LinearLayout>

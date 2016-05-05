@@ -9,26 +9,44 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.models.bll.dto.PointOfInterestBLLDTO;
-import com.lyft.cityguide.structs.PlaceType;
+import com.lyft.cityguide.domain.PointOfInterest;
 import com.lyft.cityguide.ui.components.StarBar;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * @class PointOfInterestAdapter
  * @brief
  */
-public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
+public class PointOfInterestAdapter extends BaseAdapter<PointOfInterest> {
 
-    private PlaceType currentType;
+    static class Holder {
+        @Bind(R.id.adapter_result_icon)
+        ImageView icon;
 
-    public PointOfInterestAdapter(Context context, List<PointOfInterestBLLDTO> items, PlaceType type) {
+        @Bind(R.id.adapter_result_name)
+        TextView name;
+
+        @Bind(R.id.adapter_result_distance)
+        TextView distance;
+
+        @Bind(R.id.adapter_result_rating)
+        StarBar rating;
+
+        Holder(View source) {
+            ButterKnife.bind(this, source);
+        }
+    }
+
+    private PointOfInterest.Kind kind;
+
+    public PointOfInterestAdapter(Context context, List<PointOfInterest> items, PointOfInterest.Kind kind) {
         super(context, items);
-        currentType = type;
+        this.kind = kind;
     }
 
     private void setUserFriendlyDate(TextView field, double value) {
@@ -42,7 +60,7 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
     }
 
     private int getIcon() {
-        switch (currentType) {
+        switch (kind) {
             case BAR:
                 return R.drawable.ic_bar;
             case BISTRO:
@@ -56,35 +74,37 @@ public class PointOfInterestAdapter extends BaseAdapter<PointOfInterestBLLDTO> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View adapter;
-        ImageView icon;
-        TextView name, distance;
-        StarBar rating;
-        PointOfInterestBLLDTO currentPOI;
+        View view;
+        Holder holder;
+        PointOfInterest currentPOI;
 
-        adapter = recycle(R.layout.adapter_point_of_interest, convertView, parent);
-        icon = ButterKnife.findById(adapter, R.id.adapter_result_icon);
-        name = ButterKnife.findById(adapter, R.id.adapter_result_name);
-        distance = ButterKnife.findById(adapter, R.id.adapter_result_distance);
-        rating = ButterKnife.findById(adapter, R.id.adapter_result_rating);
+        view = recycle(R.layout.adapter_point_of_interest, convertView, parent);
+
+        if (convertView == null) {
+            holder = new Holder(view);
+            view.setTag(holder);
+        } else {
+            holder = (Holder) view.getTag();
+        }
 
         currentPOI = itemAt(position);
 
-        icon.setImageResource(getIcon());
-        name.setText(currentPOI.getName());
+        holder.icon.setImageResource(getIcon());
+        holder.name.setText(currentPOI.getName());
+
         if (currentPOI.getDistance() != null) {
-            setUserFriendlyDate(distance, currentPOI.getDistance().toMiles());
+            holder.distance.setVisibility(View.VISIBLE);
+            setUserFriendlyDate(holder.distance, currentPOI.getDistance().toMiles());
+        } else {
+            holder.distance.setVisibility(View.INVISIBLE);
         }
-        rating.setRating(Math.round(currentPOI.getRating()));
+
+        holder.rating.setRating(Math.round(currentPOI.getRating()));
 
         YoYo.with(Techniques.FadeIn)
             .duration(500)
-            .playOn(adapter);
+            .playOn(view);
 
-        return adapter;
-    }
-
-    public void setCurrentType(PlaceType type) {
-        currentType = type;
+        return view;
     }
 }

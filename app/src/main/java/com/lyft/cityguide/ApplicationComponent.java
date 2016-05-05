@@ -1,19 +1,19 @@
 package com.lyft.cityguide;
 
-import com.lyft.cityguide.models.bll.BLLFactory;
-import com.lyft.cityguide.models.bll.jobs.BLLJobFactory;
-import com.lyft.cityguide.models.bll.serializers.BLLSerializerFactory;
-import com.lyft.cityguide.models.dao.DAOFactory;
-import com.lyft.cityguide.models.services.google.distancematrix.GoogleDistanceMatrixServiceFactory;
-import com.lyft.cityguide.models.services.google.distancematrix.api.GoogleDistanceMatrixAPIFactory;
-import com.lyft.cityguide.models.services.google.distancematrix.jobs.GoogleDistanceMatrixServiceJobFactory;
-import com.lyft.cityguide.models.services.google.place.GooglePlaceServiceFactory;
-import com.lyft.cityguide.models.services.google.place.api.GooglePlaceAPIFactory;
-import com.lyft.cityguide.models.services.google.place.jobs.GooglePlaceServiceJobFactory;
+import com.lyft.cityguide.bll.BLLFactory;
+import com.lyft.cityguide.dao.DAOFactory;
+import com.lyft.cityguide.services.google.distancematrix.GoogleDistanceMatrixServiceFactory;
+import com.lyft.cityguide.services.google.place.GooglePlaceServiceFactory;
+import com.lyft.cityguide.ui.UIComponent;
+import com.lyft.cityguide.ui.UIModule;
 import com.lyft.cityguide.ui.activities.BaseActivity;
-import com.lyft.cityguide.ui.components.MainUIContainer;
+import com.lyft.cityguide.ui.containers.MainUIContainer;
+import com.lyft.cityguide.ui.containers.MenuUIContainer;
+import com.lyft.cityguide.ui.containers.SpinnerUIContainer;
+import com.lyft.cityguide.ui.containers.ToastUIContainer;
 import com.lyft.cityguide.ui.controllers.BaseController;
-import com.lyft.cityguide.ui.events.EventBusFactory;
+import com.lyft.cityguide.ui.controllers.menu.MenuController;
+import com.lyft.cityguide.ui.controllers.toast.ToastController;
 import com.lyft.cityguide.ui.routers.RouterFactory;
 
 import javax.inject.Singleton;
@@ -28,22 +28,27 @@ import dagger.Component;
 @Component(modules = {
     ApplicationModule.class,
     DAOFactory.class,
-    GoogleDistanceMatrixAPIFactory.class,
-    GoogleDistanceMatrixServiceJobFactory.class,
     GoogleDistanceMatrixServiceFactory.class,
-    GooglePlaceAPIFactory.class,
-    GooglePlaceServiceJobFactory.class,
     GooglePlaceServiceFactory.class,
-    BLLSerializerFactory.class,
-    BLLJobFactory.class,
     BLLFactory.class,
-    EventBusFactory.class,
     RouterFactory.class
 })
 public interface ApplicationComponent {
+    UIComponent uiComponent(UIModule uiModule);
+
     void inject(BaseActivity activity);
 
-    void inject(MainUIContainer container);
+    void inject(MainUIContainer mainUIContainer);
 
-    void inject(BaseController controller);
+    void inject(ToastUIContainer toastUIContainer);
+
+    void inject(SpinnerUIContainer spinnerUIContainer);
+
+    void inject(MenuUIContainer menuUIContainer);
+
+    void inject(BaseController baseController);
+
+    void inject(ToastController toastController);
+
+    void inject(MenuController menuController);
 }

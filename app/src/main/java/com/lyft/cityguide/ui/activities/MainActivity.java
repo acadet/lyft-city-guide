@@ -4,19 +4,16 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.lyft.cityguide.R;
-import com.lyft.cityguide.ui.components.MainUIContainer;
 import com.lyft.cityguide.ui.screens.LandingScreen;
+import com.lyft.cityguide.ui.screens.menu.InitMenuScreen;
+import com.lyft.cityguide.ui.screens.spinner.InitSpinnerScreen;
+import com.lyft.cityguide.ui.screens.toast.InitToastScreen;
 import com.lyft.scoop.Scoop;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * MainActivity
  */
 public class MainActivity extends BaseActivity {
-    @Bind(R.id.main_ui_container)
-    MainUIContainer container;
 
     private Scoop rootScoop;
 
@@ -27,14 +24,29 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         rootScoop = new Scoop.Builder("root").build();
-        rootScoop.inflate(R.layout.root_layout, (ViewGroup) findViewById(R.id.main_layout), true);
-        ButterKnife.bind(this);
+        rootScoop.inflate(R.layout.root, (ViewGroup) findViewById(R.id.main_layout), true);
+    }
 
-        appRouter.goTo(new LandingScreen());
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!appRouter.hasActiveScreen()) {
+            appRouter.goTo(new LandingScreen());
+        }
+
+        toastRouter.resetTo(new InitToastScreen());
+        spinnerRouter.resetTo(new InitSpinnerScreen());
+        menuRouter.resetTo(new InitMenuScreen());
     }
 
     @Override
     public void onBackPressed() {
+        if (menuRouter.hasActiveScreen()) {
+            menuRouter.goBack();
+            return;
+        }
+
         if (!appRouter.goBack()) {
             finish();
         }

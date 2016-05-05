@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.annimon.stream.Stream;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -53,13 +54,8 @@ abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
         return position;
     }
 
-    public void setItems(List<T> items) {
-        items.clear();
-        Stream.of(items).forEach(items::add);
+    public void addItems(Collection<T> newItems) {
+        Stream.of(newItems).forEach(items::add);
         notifyDataSetChanged();
-    }
-
-    public void addItem(T item) {
-        items.add(item);
     }
 }
