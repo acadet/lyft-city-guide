@@ -85,6 +85,11 @@ class ListPointsOfInterestJob extends BLLJob {
                     Observable<List<PointOfInterest>> placeObservable;
 
                     if (isAskingForMore) {
+                        if (currentLocation == null) { // User is asking for more before any fetching has been done
+                            subscriber.onError(new BLLErrors.NoMorePOI());
+                            return;
+                        }
+
                         placeObservable = googlePlaceService.more();
                     } else {
                         placeObservable = googlePlaceService.search(currentLocation, searchRangeSetting, placeType);

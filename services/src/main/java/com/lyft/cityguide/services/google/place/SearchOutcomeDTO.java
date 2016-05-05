@@ -23,10 +23,6 @@ class SearchOutcomeDTO {
         this.nextPageToken = nextPageToken;
     }
 
-    public boolean hasNextPageToken() {
-        return nextPageToken != null;
-    }
-
     public List<PlaceDTO> getPlaces() {
         return places;
     }
@@ -34,9 +30,5 @@ class SearchOutcomeDTO {
     public SearchOutcomeDTO addPlace(PlaceDTO place) {
         places.add(place);
         return this;
-    }
-
-    public boolean hasPlaces() {
-        return places.size() > 0;
     }
 }
