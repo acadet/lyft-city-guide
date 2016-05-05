@@ -1,6 +1,6 @@
 # Lyft City Guide
 
-My **revised\*\*2** implementation of the Lyft City Guide exercice. 
+My **revised\*\*2** implementation of the Lyft City Guide exercise. 
 
 Supports:
 
